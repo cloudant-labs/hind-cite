@@ -376,3 +376,5 @@ module.exports = function (grunt) {
     'build'
   ]);
 };
+
+// TODO: It does not appear that this properly installs karma.  I manually installed karma-jasmine and karma-chrome-launcher, but it's missing a lot per this: https://github.com/yeoman/generator-karma/issues/44  ; But generator-karma and generator-angular are currently at incompatible versions!  SO, keep an eye on it and if I start having karma problems, look here first.  Uggh.
