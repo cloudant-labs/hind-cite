@@ -16,6 +16,15 @@ with open('local_config.json','r') as f:
 COUCH_FULLPATH='https://{0}:{1}@{2}/{3}'.format(COUCH_UN, COUCH_PW, COUCH_SERVER, COUCH_DB)
 
 
+"""
+This uses couchapp to manage views http://couchapp.org
+http://couchapp.org/page/couchapp-us
+In essence:
+    couchapp clone https://UN:PW@cs.cloudant.com/news
+    # Creates a directory structure with all the view data
+    # Simply manipulate that data (and save in source control) then do the following to update
+    couchapp push https://UN:PW@cs.cloudant.com/news
+"""
 
 def setView():
     cmd=['couchapp', 'push', COUCH_FULLPATH]
