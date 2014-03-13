@@ -7,7 +7,7 @@ window.name = "NG_DEFER_BOOTSTRAP!";
 console.log('appBootstrap: Before require');
 
 require(["/scripts/require_config.js"], function () {
-    require(['angular', 'scripts/app'], function (angular, app) {
+    require(['angular', 'scripts/app', 'jquery', 'bootstrap'], function (angular, app) {
 
         console.log('appBootstrap: before bootstap');
         angular.bootstrap(document, ['hnApp'])

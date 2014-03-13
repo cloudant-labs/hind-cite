@@ -7,7 +7,7 @@ require.config({
 
         angular: '/bower_components/angular/angular',
         angularRoute: '/bower_components/angular-route/angular-route',
-        jquery: '/bower_components/jquery.min',
+        jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min',
         underscore: 'http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min',
         d3: 'http://cdnjs.cloudflare.com/ajax/libs/d3/3.3.11/d3.min',
         bootstrap: 'http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min',
