@@ -72,24 +72,9 @@ var getData = (function ($, _, config) {
         get(url, successFn, errFn);
     }
 
-    function test() {
-        var params={group:true, startkey:'"2014-02-07"', endkey:'"2014-02-08"'};
-        var url='https://cs.cloudant.com/news/_design/by/_view/snaps-per-day'+'?'+$.param(params);
 
-        $.ajax({
-            url: url,
-            dataType: 'jsonp',
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log('Error:',textStatus, errorThrown)
-            },
-            success: function(data, textStatus, jqXHR) {
-                console.log('Success:', data);
-            }
-        })
-    }
 
     return {
-        test : test,
         paramsToQuery : paramsToQuery,
         createUrl : createUrl,
         createSnapsUrl : createSnapsUrl,
