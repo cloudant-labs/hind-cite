@@ -20,7 +20,8 @@
     "load-grunt-tasks": "~0.2.1",
     "grunt-google-cdn": "~0.2.2",
     "grunt-contrib-connect": "~0.7.1",
-    "grunt-contrib-imagemin": "~0.3.0"
+    "grunt-contrib-imagemin": "~0.3.0",
+    "http-rewrite-middleware": "~0.1.5"
   },
   "devDependencies": {
     "grunt": "~0.4.3",
