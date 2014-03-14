@@ -1,3 +1,45 @@
-<h1>Snaps Per Day Page</h1>
+<div ng-controller="snapsPerDayCtrl">
+    <h1>Snaps Per Day Page</h1>
 
-<hist-chart>This is a hist chart</hist-chart>
+    <spd-chart id="chart1"  title="Number of Snapshots Per Day" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp">This is a hist chart</spd-chart>
+
+    <hr>
+    <br>
+    <h1>Below is a hardcoded rickshaw chart</h1>
+
+    <style>
+        #chart_container {
+            display: inline-block;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #chart {
+            float: left;
+        }
+        #legend {
+            float: left;
+            margin-left: 15px;
+        }
+        #offset_form {
+            float: left;
+            margin: 2em 0 0 15px;
+            font-size: 13px;
+        }
+        #y_axis {
+            float: left;
+            width: 40px;
+        }
+        #x_axis {
+            /*float: left;*/
+            left: 40px;
+        }
+    </style>
+
+    <div id="chart_container">
+        <div id="y_axis"></div>
+        <div id="chart"></div>
+
+
+
+
+    </div>
+</div>

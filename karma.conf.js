@@ -19,6 +19,7 @@ module.exports = function(config) {
             'app/bower_components/angular-cookies/angular-cookies.js',
             'app/bower_components/angular-sanitize/angular-sanitize.js',
             'app/bower_components/angular-route/angular-route.js',
+            'app/bower_components/rickshaw/ricksaw.js',
             'bower_components/d3/d3.js',
             'app/scripts/*.js',
             'app/scripts/**/*.js',
