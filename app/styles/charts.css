@@ -13,3 +13,8 @@
 .x_axis {
     color: red;
 }
+
+.rickshaw_graph .x_tick .title {
+    bottom: -24px;
+    left: -18px;
+}

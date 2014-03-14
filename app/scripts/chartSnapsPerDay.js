@@ -65,8 +65,6 @@ var chartSnapsPerDay = (function ($, _, Rickshaw) {
 
             var xAxis = new Rickshaw.Graph.Axis.Time({
                 graph: graph,
-                //element: document.querySelector(idToSelector(elId, 'x_axis'))
-
             });
 
             var yAxis = new Rickshaw.Graph.Axis.Y({

@@ -7,8 +7,8 @@ var directivesProvider=angular.module('directivesProvider', ['servicesProvider']
 directivesProvider.directive('spdChart', ['getDataSvc',
     function factory(getDataSvc) {
         var directiveDefinitionObject = {
-            template: '<div>' + '<h2>This is the histChartDirective</h2>'
-                + '<div class="chart_container">'
+            template:
+                  '<div class="chart_container">'
                 +    ' <div class="y_axis"></div>'
                 +    ' <div class="chart"></div>'
                 +    ' <div class="x_axis"></div>'
