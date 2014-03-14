@@ -8,9 +8,11 @@ directivesProvider.directive('spdChart', ['getDataSvc',
     function factory(getDataSvc) {
         var directiveDefinitionObject = {
             template: '<div>' + '<h2>This is the histChartDirective</h2>'
-                + 'data: ==>{{data}}<== </br>'
-                + '<div> <div class="y_axis"></div><div class="chart"></div></div>'
-                +'</div>',
+                + '<div class="chart_container">'
+                +    ' <div class="y_axis"></div>'
+                +    ' <div class="chart"></div>'
+                +    ' <div class="x_axis"></div>'
+                + '</div>',
             scope: {
                 title : '@',
                 data : '=',
