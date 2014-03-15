@@ -26,6 +26,7 @@ var config = (function () {
         COUCH_DB : 'news',
         COUCH_DESIGN : 'by',
         VIEW_SNAPSPERDAY : 'snaps-per-day',
+        VIEW_ID : 'id',
 
         medChartSize: medChartSize
 

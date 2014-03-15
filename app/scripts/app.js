@@ -19,8 +19,11 @@ angular.module('hnApp', [
             })
             .when('/snapsPerDay', {
                 templateUrl: 'views/snapsPerDay.html',
-                controller: 'MainCtrl'
-            })      .otherwise({
+            })
+            .when('/post', {
+                templateUrl: 'views/post.html',
+            })
+            .otherwise({
                 redirectTo: '/'
             });
     }]);

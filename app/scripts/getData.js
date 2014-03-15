@@ -48,6 +48,10 @@ var getData = (function ($, _, config) {
         return createUrl(config.VIEW_SNAPSPERDAY, params);
     }
 
+    function createIdUrl(params) {
+        return createUrl(config.VIEW_ID, params);
+    }
+
     function get(url, successFn, errFn) {
         if (! errFn){
             errFn = function(jqXHR, textStatus, errorThrown) {
@@ -72,14 +76,33 @@ var getData = (function ($, _, config) {
         get(url, successFn, errFn);
     }
 
+    /**
+     *
+     * @param id - this is the key. eg: '6712703'
+     * @param otherParams - other params to send (though not sure they are needed)
+     * @param successFn
+     * @param errFn
+     */
+    function getById(id, otherParams, successFn, errFn){
+        if (! id ) {
+            throw new Error('getById: improper parameters. No id propery');
+        }
+        var params = {} || otherParams;
+        params.key=id;
+
+        var url=createIdUrl(params);
+        get(url, successFn, errFn);
+    }
 
 
     return {
         paramsToQuery : paramsToQuery,
         createUrl : createUrl,
         createSnapsUrl : createSnapsUrl,
+        createIdUrl : createIdUrl,
         get : get,
-        getSnapshots : getSnapshots
+        getSnapshots : getSnapshots,
+        getById : getById
     };
 
 }($, _, config));

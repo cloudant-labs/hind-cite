@@ -1,13 +1,13 @@
 'use strict';
 
-var chartSnapsPerDay = (function ($, _, Rickshaw) {
+var chartPost = (function ($, _, Rickshaw) {
 
     function chart() {
         var elId, chartSize, data, graph;
 
         function init(config) {
             if (!config || !config.elId || !config.chartSize) {
-                throw new Error('chart.init - missing config properties: ', config);
+                throw new Error('snapsPerDay.init - missing config properties: ', config);
             }
 
             elId = config.elId;
@@ -20,16 +20,25 @@ var chartSnapsPerDay = (function ($, _, Rickshaw) {
         /**
          *
          * @param data -
-         * [
-         {"key":"2014-03-01","value":17160},
-         {"key":"2014-03-02","value":17220}
-         ]
+         *  [
+            ...
+            history :
+                [
+                  {
+                    "points": 6,
+                    "rank": 7,
+                    "comments": 0,
+                    "timestamp_str": "2014-02-24 14:42:36"
+                  },
+                     ...
+                ]
+            ]
          * @return [{x: 0, y: value}, ...]
          */
         function dataCloudantToRickshaw(data) {
             var out = [];
-            data.forEach(function (d, i) {
-                out.push({x: Date.parse(d.key)/1000, y: d.value})
+            data[0].value.history.forEach(function (d, i) {
+                out.push({x: Date.parse(d.timestamp_str)/1000, y: d.rank})
             });
 
             console.log('dataCloudantToRickshaw. ', data, '-->', out);
@@ -47,12 +56,12 @@ var chartSnapsPerDay = (function ($, _, Rickshaw) {
         function draw(config) {
 
             if (!config || !config.data) {
-                throw new Error('chart.draw - missing config.data: ', config);
+                throw new Error('snapsPerDay.draw - missing config.data: ', config);
             }
 
             graph = new Rickshaw.Graph({
                 element: document.querySelector(idToSelector(elId, 'chart')),
-                renderer: 'bar',
+                renderer: 'line',
                 width : chartSize.width,
                 height: chartSize.height,
                 series: [
@@ -86,7 +95,7 @@ var chartSnapsPerDay = (function ($, _, Rickshaw) {
 
 
     return {
-        snapsPerDay: chart
+        chart: chart
     };
 
 }($, _, Rickshaw));
