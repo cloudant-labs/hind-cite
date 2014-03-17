@@ -9,7 +9,6 @@
     float: left;
     width: 40px;
 }
-
 .x_axis {
     color: red;
 }
@@ -18,3 +17,16 @@
     bottom: -24px;
     left: -18px;
 }
+
+/* TODO: Above is Rickshaw - delete */
+
+.nogrid .tick:not(.zero) {
+    opacity: 0;
+}
+
+.nvd3.multiChart .axis .nv-axis line {
+  stroke: none;
+  fill: none;
+}
+
+

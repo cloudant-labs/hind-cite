@@ -140,14 +140,18 @@ var chartPost = (function ($, _, Rickshaw, nv) {
          * @return [{x: 0, y: value}, ...]
          */
         function dataCloudantToNV(data) {
-            var nvdata = [];
-
-            var data1 = [];
+            var datal = [[],[],[]];
             data[0].value.history.forEach(function (d, i) {
-                data1.push({x: new Date (Date.parse(d.timestamp_str)) , y: d.rank})
+                datal[0].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.rank})
+                datal[1].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.points})
+                datal[2].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.comments})
             });
 
-            nvdata.push({key: "Rank", values: data1})
+            var nvdata=[
+                {key: "Rank", values: datal[0]},
+                {key: "Points", values: datal[1]},
+                {key: "Comments", values: datal[2]}
+            ];
 
             console.log('dataCloudantToNV. ', data, '-->', nvdata);
             return nvdata;
@@ -173,31 +177,40 @@ var chartPost = (function ($, _, Rickshaw, nv) {
                 throw new Error('snapsPerDay.draw - missing config.data: ', config);
             }
 
-            var postData = dataCloudantToNV(config.data);
+            var postData = dataCloudantToNV(config.data);''
+
+            postData[0].type='line';
+            postData[0].yAxis=1;
+            postData[1].type='line';
+            postData[1].yAxis=2;
+            postData[2].type='line';
+            postData[2].yAxis=2;
 
             nv.addGraph(function () {
-                var chart = nv.models.lineChart()
-                        .margin({left: 100})  //Adjust chart margins to give the x-axis some breathing room.
-                        .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
-                        .transitionDuration(350)  //how fast do you want the lines to transition?
-                        .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
-                        .showYAxis(true)        //Show the y-axis
-                        .showXAxis(true)        //Show the x-axis
-                    ;
+                var chart = nv.models.multiChart()
+                     .margin({top: 30, right: 60, bottom: 50, left: 70})
+
 
                 chart.xAxis     //Chart x-axis settings
-                    .axisLabel('Date')
+                    .axisLabel('Time (UTC)')
                     .tickFormat(function(d) {
-                        return d3.time.format('%y-%m-%d %H:%M')(new Date(d));
+                        return d3.time.format('%_m/%_d/%y %H:%M')(new Date(d));
                     });
 
 
-                chart.yDomain([60,1])
-                chart.yAxis     //Chart y-axis settings
+                chart.yDomain1([60,1])
+                chart.yAxis1     //Chart y-axis settings
                     .axisLabel('Rank')
                     .tickFormat(d3.format('d'));
 
+                // TODO: It would be nice to set the y-axis to always have 0 as the min. This works, but it sets the max value to the max of both series, instead of adapting when legend changes.
+                // chart.yDomain2([0, d3.max(postData[1].values.map(function(d){return d.y;}).concat(postData[2].values.map(function(d){return d.y;})))])
+                chart.yAxis2
+                    .axisLabel('Number')
+                    .tickFormat(d3.format(',g'))
 
+
+                // TODO: P1 Bug - Unselecting rank causes the scale to reverse and the content to NOT disappear
                 d3.select(idToSelector(elId, 'svg'))    //Select the <svg> element you want to render the chart in.
                     .datum(postData)         //Populate the <svg> element with chart data...
                     .call(chart);          //Finally, render the chart!
