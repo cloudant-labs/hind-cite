@@ -57,7 +57,7 @@ directivesProvider.directive('postChart', ['getDataSvc',
             template:
                   '<div class="chart_container">'
                 +    ' <div class="y_axis"></div>'
-                +    ' <div class="chart"></div>'
+                +    ' <div class="chart" id="chartNVD3"><svg style="height:500px"> </svg></div>'
                 +    ' <div class="x_axis"></div>'
                 + '</div>',
             scope: {
