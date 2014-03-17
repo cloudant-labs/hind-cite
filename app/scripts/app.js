@@ -15,7 +15,7 @@ angular.module('hnApp', [
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                controller: 'mainCtrl'
             })
             .when('/snapsPerDay', {
                 templateUrl: 'views/snapsPerDay.html',

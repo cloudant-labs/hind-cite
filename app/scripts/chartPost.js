@@ -59,6 +59,12 @@ var chartPost = (function ($, _, Rickshaw) {
                 throw new Error('snapsPerDay.draw - missing config.data: ', config);
             }
 
+            var postData=dataCloudantToRickshaw(config.data);
+            var postScale=d3.scale.linear()
+                .domain([0,60])
+                .range([60,0])
+                .nice();  // Note - this is NOT working the way I expect.  The chart looks right, but the axis does not.
+
             graph = new Rickshaw.Graph({
                 element: document.querySelector(idToSelector(elId, 'chart')),
                 renderer: 'line',
@@ -66,10 +72,11 @@ var chartPost = (function ($, _, Rickshaw) {
                 height: chartSize.height,
                 series: [
                     {
-                        data: dataCloudantToRickshaw(config.data),
-                        color: 'steelblue'
+                        data: postData,
+                        color: 'steelblue',
+                        scale: postScale
                     }
-                ]
+                ],
             });
 
             var xAxis = new Rickshaw.Graph.Axis.Time({
@@ -80,7 +87,8 @@ var chartPost = (function ($, _, Rickshaw) {
                 graph: graph,
                 orientation: 'left',
                 tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                element: document.querySelector(idToSelector(elId, 'y_axis'))
+                element: document.querySelector(idToSelector(elId, 'y_axis')),
+                scale: postScale
             });
 
 
