@@ -6,5 +6,6 @@ app/bower_components
 .idea
 npm-debug.log
 app/nvd3/
+app/scripts/nvd3
 
 
