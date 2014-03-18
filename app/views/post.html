@@ -1,9 +1,27 @@
 <div ng-controller="postCtrl">
-    <h1>History of a post</h1>
-    <p>A 'post' is an article submission that reached the top 60.
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline" role="form">
+                <label>Post Id &nbsp;</label>
+                <div class="form-group">
+                    <input id="postid" type="text" class="form-control" placeholder="Enter post id" ng-model="d.postid">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h1><a href="#" data-toggle="tooltip" title="A 'post' is an article submission that reached the top 60">Post History</a> </h1> <!-- TODO: Debug tooltip - too slow, and bad formatting -->
+    <h3>{{d.data.title}} <span style="font-size:small; font-weight:normal;">{{ dateVal(d.data.created) | date: 'short' }}</span></h3> <!-- TODO: Change all dates to local (Now utc) -->
+    <p class="small">
+        [<a href="https://news.ycombinator.com/item?id={{ d.data.id }}" target="_blank">Comments</a>]  <!-- TODO - Not all have ids -->
+        <a href="{{ d.data.href }}">{{ d.data.href }}</a>
+        [<a href="https://news.ycombinator.com/user?id={{ d.data.author }}" target="_blank">{{ d.data.author }}</a>]
+        <small>[id:  {{ d.data.id }} ]</small>
     </p>
 
-    <post-chart id="chart1"   chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"></post-chart>
+
+
+    <post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"></post-chart>
 
 
 </div>

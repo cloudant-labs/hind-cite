@@ -27,3 +27,15 @@ angular.module('hnApp', [
                 redirectTo: '/'
             });
     }]);
+
+// Also do non-angular project initialization
+$(document).ready(function() {
+
+    $("* [rel='tooltip']").tooltip({
+        html: true,
+        trigger: 'click hover focus manual',
+        delay: {show: 0, hide:200},
+        placement: 'top'
+    });
+
+});

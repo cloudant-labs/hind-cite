@@ -42,7 +42,7 @@ var chartPost = (function ($, _, nv) {
          */
         function dataCloudantToNV(data) {
             var datal = [[],[],[]];
-            data[0].value.history.forEach(function (d, i) {
+            data.history.forEach(function (d, i) {
                 datal[0].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.rank})
                 datal[1].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.points})
                 datal[2].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.comments})

@@ -30,15 +30,25 @@ controllersProvider
 controllersProvider
     .controller('postCtrl', ['$scope', 'getDataSvc', function ($scope, getDataSvc) {
         $scope.d = {};
-        $scope.d.data=[];
-        $scope.d.id='7290931';
+        $scope.d.data={};
+        $scope.d.postid='7290931';
+        $scope.dateVal=function(dateStr) {return new Date(dateStr); };
 
         console.log('postCtrl - entering', $scope);
 
-        getDataSvc.getById($scope.d.id,null, function success(data) {
-            console.log('postCtrl - got data. Raw: ', data );
-            $scope.$apply($scope.d.data=data.rows);
-            $scope.$apply($scope.d.data.timestamp=Date.now());
-        });
+        $scope.$watch('d.postid', function(newVal, oldVal){
+
+            if (newVal == null) {
+                return;
+            }
+
+            getDataSvc.getById($scope.d.postid,null, function success(data) {
+                console.log('postCtrl - got data. Raw: ', data );
+                $scope.$apply($scope.d.data=data.rows[0].value);
+                $scope.$apply($scope.d.data.timestamp=Date.now());
+            });
+
+        })
+
 
     }]);
