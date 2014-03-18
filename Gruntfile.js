@@ -16,6 +16,8 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
+    var process=require('process');
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -348,9 +350,45 @@ module.exports = function (grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: true
             }
+        },
+
+        // Rsync for deployment - https://www.npmjs.org/package/grunt-rsync
+        rsync: {
+            options: {
+                args: ["-izha","--stats"],
+                exclude: [".git*","*.scss","node_modules"],
+                recursive: true,
+                ssh: true,
+                privateKey: process.env.SSH_PRIVATE_KEY,
+                dryRun: false,
+            },
+            stage_site: {
+                options: {
+                    exclude: ['robots.txt'],
+                    src: "dist/",
+                    dest: "/var/www/hnstage.k2company.com",
+                    host: process.env.SSH_USER+"@hnstage.k2company.com",
+                    syncDest: true
+                }
+            },
+            stage_apache: {
+                options: {
+                    src: "apache_config/*",
+                    dest: "/etc/apache2/sites-available",
+                    host: process.env.SSH_USER+"@hnstage.k2company.com",
+                    exclude:[],
+                    syncDest: false,
+                    recursive: false
+                }
+            }
         }
     });
 
+    grunt.registerTask('pushto', function (target) {
+        if (target === 'stage') {
+            return grunt.task.run(['rsync:stage_site', 'rsync:stage_apache']);
+        }
+    });
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
@@ -366,6 +404,9 @@ module.exports = function (grunt) {
             'watch'
         ]);
     });
+
+
+
 
     grunt.registerTask('server', function () {
         grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
