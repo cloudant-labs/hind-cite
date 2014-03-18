@@ -10,16 +10,5 @@
 
     </div>
 
-    <div ng-controller="snapsPerDayCtrl">
-        <h1>Number of snapshots per day</h1>
-        <p>A 'snapshot' is an individual data point. So, as single page has 30 snapshots every time we do a screen scrape
-            (which is approximately every 5 minutes). We would expect to see about 17,280 snapshots a day (2 pages * every 5
-            minutes for 24 horus) if all goes well. A bar with significantly fewer data points means all did not go well -
-            our script failed, our server went down, we were working on the script, or HackerNews was down.
-        </p>
-
-        <spd-chart id="chart1"  title="Number of Snapshots Per Day" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp">This is a hist chart</spd-chart>
-
-
-    </div>
+    <ng-include src="'views/post.html'"></ng-include>
 </div>

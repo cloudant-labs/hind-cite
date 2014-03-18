@@ -27,34 +27,23 @@ controllersProvider
 
     }]);
 
+
 controllersProvider
-    .controller('postCtrl', ['$scope', 'getDataSvc', function ($scope, getDataSvc) {
+    .controller('postCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data={};
         $scope.d.postid='7290931';
         $scope.dateVal=function(dateStr) {return new Date(dateStr); };
-        $scope.numComments=function() {
-            if (!$scope.d.data || !$scope.d.data.history) {
-                return 0
-            }
-
-            var maxComments=0;
-            $scope.d.data.history.forEach(function(d){
-                maxComments = Math.max(maxComments, 0 || d.comments);
-            });
-            return maxComments;
+        $scope.numComments=function()
+            {return sumHistRec($scope.d.data, 'comments');
         };
-        $scope.numPoints=function() {
-            if (!$scope.d.data || !$scope.d.data.history) {
-                return 0
-            }
-
-            var maxPoints=0;
-            $scope.d.data.history.forEach(function(d){
-                maxPoints = Math.max(maxPoints, 0 || d.points);
-            });
-            return maxPoints;
+        $scope.numPoints=function()
+            {return sumHistRec($scope.d.data, 'points');
         };
+
+        if ($location.search().postid) {
+            $scope.d.postid=$location.search().postid;
+        }
 
         console.log('postCtrl - entering', $scope);
 
@@ -63,6 +52,9 @@ controllersProvider
             if (newVal == null) {
                 return;
             }
+
+            // Update url
+            $location.search({postid : $scope.d.postid});
 
             getDataSvc.getById($scope.d.postid,null, function success(data) {
                 console.log('postCtrl - got data. Raw: ', data );
@@ -74,3 +66,23 @@ controllersProvider
 
 
     }]);
+
+/** Returns max value of field in data.history
+ *
+ * @param data - result of getSnapshots
+ * @param field - a field (string) in data.history
+ * @returns {number}
+ * @example sumHist($scope.d.data, 'comments') --> 25
+ */
+function sumHistRec(data, field){
+
+    if (!data || !data.history) {
+        return 0
+    }
+
+    var maxVal=0;
+    data.history.forEach(function(d){
+        maxVal = Math.max(maxVal, 0 || d[field]);
+    });
+    return maxVal;
+}
