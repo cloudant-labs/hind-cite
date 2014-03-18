@@ -43,9 +43,9 @@ var chartPost = (function ($, _, nv) {
         function dataCloudantToNV(data) {
             var datal = [[],[],[]];
             data.history.forEach(function (d, i) {
-                datal[0].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.rank})
-                datal[1].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.points})
-                datal[2].push({x: new Date (Date.parse(d.timestamp_str)) , y: d.comments})
+                datal[0].push({x: d.timestamp_d , y: d.rank})  // TODO- handle missing data?
+                datal[1].push({x: d.timestamp_d , y: d.points})
+                datal[2].push({x: d.timestamp_d , y: d.comments})
             });
 
             var nvdata=[
@@ -78,7 +78,7 @@ var chartPost = (function ($, _, nv) {
                 throw new Error('snapsPerDay.draw - missing config.data: ', config);
             }
 
-            var postData = dataCloudantToNV(config.data);''
+            var postData = dataCloudantToNV(config.data);
 
             postData[0].type='line';
             postData[0].yAxis=1;
@@ -93,7 +93,7 @@ var chartPost = (function ($, _, nv) {
 
 
                 chart.xAxis     //Chart x-axis settings
-                    .axisLabel('Time (UTC)')
+                    .axisLabel('Time (local TZ)')
                     .tickFormat(function(d) {
                         return d3.time.format('%_m/%_d/%y %H:%M')(new Date(d));
                     });

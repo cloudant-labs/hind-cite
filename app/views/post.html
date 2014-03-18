@@ -16,7 +16,7 @@
     <h3><a href="{{ d.data.href }}" target="_blank">{{d.data.title}} </a><span style="font-size:small; font-weight:normal;"> ({{ d.data.domain }})</span></h3>
     {{numPoints()}} points
     by <a href="https://news.ycombinator.com/user?id={{ d.data.author }}" target="_blank">{{ d.data.author }} </a>
-    | {{ dateVal(d.data.created) | date: 'short' }}
+    | {{ d.data.created_d | date: 'short' }}
     | <a href="https://news.ycombinator.com/item?id={{ d.data.id }}" target="_blank">{{numComments()}} Comments </a>
     <br>
 

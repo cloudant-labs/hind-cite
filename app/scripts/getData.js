@@ -71,9 +71,28 @@ var getData = (function ($, _, config) {
         })
     }
 
+
     function getSnapshots(params, successFn, errFn){
         var url=createSnapsUrl(params);
         get(url, successFn, errFn);
+    }
+
+   /**
+     *
+     * @param raw - raw data from cloudant
+     * @returns Just the relevant data, with created_d, and timestamp_d --> localized date objects.
+     */
+    function reformatByIdData(raw){
+        var inner=raw.rows[0].value;
+        inner.created_d = inner.created && new Date(inner.created + " UTC");
+
+        if (inner.history) {
+            inner.history.forEach(function(d){
+                d.created_d = d.created && new Date(d.created + " UTC");
+                d.timestamp_d = d.timestamp_str && new Date(d.timestamp_str + " UTC");
+            })
+        }
+        return inner;
     }
 
     /**
@@ -91,7 +110,10 @@ var getData = (function ($, _, config) {
         params.key=id;
 
         var url=createIdUrl(params);
-        get(url, successFn, errFn);
+        get(url, function(rawData){
+            var modData=reformatByIdData(rawData);
+            successFn(modData);
+        }, errFn);
     }
 
 

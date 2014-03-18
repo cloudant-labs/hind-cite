@@ -58,7 +58,7 @@ controllersProvider
 
             getDataSvc.getById($scope.d.postid,null, function success(data) {
                 console.log('postCtrl - got data. Raw: ', data );
-                $scope.$apply($scope.d.data=data.rows[0].value);
+                $scope.$apply($scope.d.data=data);
                 $scope.$apply($scope.d.data.timestamp=Date.now());
             });
 
