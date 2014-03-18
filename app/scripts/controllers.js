@@ -33,6 +33,28 @@ controllersProvider
         $scope.d.data={};
         $scope.d.postid='7290931';
         $scope.dateVal=function(dateStr) {return new Date(dateStr); };
+        $scope.numComments=function() {
+            if (!$scope.d.data || !$scope.d.data.history) {
+                return 0
+            }
+
+            var maxComments=0;
+            $scope.d.data.history.forEach(function(d){
+                maxComments = Math.max(maxComments, 0 || d.comments);
+            });
+            return maxComments;
+        };
+        $scope.numPoints=function() {
+            if (!$scope.d.data || !$scope.d.data.history) {
+                return 0
+            }
+
+            var maxPoints=0;
+            $scope.d.data.history.forEach(function(d){
+                maxPoints = Math.max(maxPoints, 0 || d.points);
+            });
+            return maxPoints;
+        };
 
         console.log('postCtrl - entering', $scope);
 
