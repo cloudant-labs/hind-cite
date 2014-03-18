@@ -9629,7 +9629,7 @@ nv.models.multiChart = function() {
       stack2.yDomain(yScale2.domain())
         
         
-        
+      // TODO: Need to do pull request and get all "RR" changes merged back in.
       // RR- Serious bug here! This does not delete the last series when you deselect (because it only does the transition if it isn't the last data series.        
       var hasLines1 = data.filter(function(d) {return d.type == 'line' && d.yAxis == 1})
       var hasLines2 = data.filter(function(d) {return d.type == 'line' && d.yAxis == 2})
