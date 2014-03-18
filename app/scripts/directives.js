@@ -93,3 +93,4 @@ directivesProvider.directive('postChart', ['getDataSvc',
         return directiveDefinitionObject;
     }
 ]);
+// TODO - Make the chart update with new data (ie: keep it live)
