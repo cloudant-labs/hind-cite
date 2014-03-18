@@ -1,18 +1,22 @@
 'use strict';
 
-var chartSnapsPerDay = (function ($, _, Rickshaw) {
-
+var chartSnapsPerDay =  (function ($, _, nv) {
     function chart() {
         var elId, chartSize, data, graph;
 
         function init(config) {
             if (!config || !config.elId || !config.chartSize) {
-                throw new Error('chart.init - missing config properties: ', config);
+                throw new Error('snapsPerDay.init - missing config properties: ', config);
             }
 
             elId = config.elId;
             chartSize = config.chartSize;
             data = config.data;
+
+            d3.select(idToSelector(elId, 'chart'))
+                .append("svg")
+                .style('height', chartSize.svg_height)
+                .style('width', chartSize.svg_width)
 
 
         }
@@ -20,62 +24,92 @@ var chartSnapsPerDay = (function ($, _, Rickshaw) {
         /**
          *
          * @param data -
-         * [
-         {"key":"2014-03-01","value":17160},
-         {"key":"2014-03-02","value":17220}
+         *  [
+         ...
+         history :
+         [
+         {
+           "points": 6,
+           "rank": 7,
+           "comments": 0,
+           "timestamp_str": "2014-02-24 14:42:36"
+         },
+         ...
+         ]
          ]
          * @return [{x: 0, y: value}, ...]
          */
-        function dataCloudantToRickshaw(data) {
-            var out = [];
+        function dataCloudantToNV(data) {
+            var datal = [[]];
+            var format=d3.time.format('%Y-%m-%d');
+
             data.forEach(function (d, i) {
-                out.push({x: Date.parse(d.key)/1000, y: d.value})
+                datal[0].push({x: format.parse(d.key) , y: d.value})
+
             });
 
-            console.log('dataCloudantToRickshaw. ', data, '-->', out);
-            return out;
+            var nvdata=[
+                {key: "Snaps Per Day", values: datal[0]}
+            ];
+
+            console.log('dataCloudantToNV. ', data, '-->', nvdata);
+            return nvdata;
         }
 
-        function idToSelector(id, elName) {
-            if (!_.contains(['chart', 'y_axis', 'x_axis'], elName)) {
-               throw new Error('idToSelector - unexpected element name: ', elName);
+        function idToSelector(id, subSelector) {
+            if (!_.contains(['chart', 'svg'], subSelector)) {
+                throw new Error('idToSelector - unexpected element name: ', subSelector);
             }
 
-            return '#'+id+' .'+ elName;
+            var sel='#'+id;
+
+            if (subSelector==='svg') {
+                sel += ' '+ subSelector;
+            }
+
+            return sel;
         }
 
         function draw(config) {
 
             if (!config || !config.data) {
-                throw new Error('chart.draw - missing config.data: ', config);
+                throw new Error('snapsPerDay.draw - missing config.data: ', config);
             }
 
-            graph = new Rickshaw.Graph({
-                element: document.querySelector(idToSelector(elId, 'chart')),
-                renderer: 'bar',
-                width : chartSize.width,
-                height: chartSize.height,
-                series: [
-                    {
-                        data: dataCloudantToRickshaw(config.data),
-                        color: 'steelblue'
-                    }
-                ]
+            var postData = dataCloudantToNV(config.data);''
+
+            nv.addGraph(function() {
+                var chart = nv.models.multiBarChart()
+                        .x(function(d) { return d.x })
+                        .y(function(d) { return d.y })
+                        .tooltips(true)
+                        .reduceXTicks(true)
+                        .transitionDuration(350)
+                        .showControls(false)
+                        .showLegend(false)
+                    ;
+
+                chart.xAxis
+                    .tickFormat(function(d) {
+                      return d3.time.format('%x')(d)
+                })
+                    .axisLabel('Date (UTC)')
+
+                chart.yAxis
+                    .tickFormat(d3.format(',g'))
+                    .axisLabel('Number');
+
+
+                d3.select(idToSelector(elId, 'svg'))
+                    .datum(postData)
+                    .call(chart);
+
+                nv.utils.windowResize(chart.update);
+
+                return chart;
             });
 
-            var xAxis = new Rickshaw.Graph.Axis.Time({
-                graph: graph,
-            });
 
-            var yAxis = new Rickshaw.Graph.Axis.Y({
-                graph: graph,
-                orientation: 'left',
-                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                element: document.querySelector(idToSelector(elId, 'y_axis'))
-            });
-
-
-            graph.render();
         }
 
         return {
@@ -86,8 +120,8 @@ var chartSnapsPerDay = (function ($, _, Rickshaw) {
 
 
     return {
-        snapsPerDay: chart
+        chart: chart
     };
 
-}($, _, Rickshaw));
+}($, _, nv));
 

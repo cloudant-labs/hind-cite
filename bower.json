@@ -13,7 +13,6 @@
     "angular-route": "1.2.6",
     "underscore": "~1.6.0",
     "d3": "~3.4.3",
-    "rickshaw": "~1.4.6",
     "nvd3": "~1.1.15-beta"
   },
   "devDependencies": {
