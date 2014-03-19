@@ -9,10 +9,9 @@
 
 
     <!--<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'-->
-          <!--name='viewport'>-->
+    <!--name='viewport'>-->
     <!--<meta content="authenticity_token" name="csrf-param"/>-->
     <!--<meta content="z7CRAFJAoBUgWwC3tOKf/eGG3SdozbuOkQn0sChXwvg=" name="csrf-token"/>-->
-
 
 
     <link href="/algolia/home.css" media="screen" rel="stylesheet"/>
@@ -125,19 +124,25 @@
                             <div class="title_url">
                                 <div class="title">
                                     {{#highlighted_title}}
-                                    <a href="{{ url }}" target="_blank">{{{ highlighted_title }}}</a>
-                                    {{#highlighted_url}}
-                                    ({{{ highlighted_url }}})
-                                    {{/highlighted_url}}
+                                        <a href="{{ url }}" target="_blank">{{{ highlighted_title }}}</a>
+                                    
+                                        {{#highlighted_url}}
+                                            ({{{ highlighted_url }}})
+                                        {{/highlighted_url}}
+
                                     {{/highlighted_title}}
+
                                     {{#highlighted_story_title}}
-                                    {{#highlighted_story_url}}
-                                    <a href="{{ story_url }}" target="_blank">{{{ highlighted_story_title }}}</a> ({{{
-                                    highlighted_story_url }}})
-                                    {{/highlighted_story_url}}
-                                    {{^highlighted_story_url}}
-                                    {{{ highlighted_story_title }}}
-                                    {{/highlighted_story_url}}
+
+                                        {{#highlighted_story_url}}
+                                            <a href="{{ story_url }}" target="_blank">{{{ highlighted_story_title }}}</a> ({{{
+                                            highlighted_story_url }}})
+                                        {{/highlighted_story_url}}
+
+                                        {{^highlighted_story_url}}
+                                            {{{ highlighted_story_title }}}
+                                        {{/highlighted_story_url}}
+
                                     {{/highlighted_story_title}}
                                 </div>
                                 <div class="url">
