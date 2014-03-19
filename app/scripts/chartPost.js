@@ -3,10 +3,10 @@
 
 var chartPost = (function ($, _, nv) {
     function chart() {
-        var elId, chartSize, data, graph;
+        var elId, chartSize, data, graph, nvChart;
 
         function init(config) {
-            if (!config || !config.elId ) {
+            if (!config || !config.elId) {
                 throw new Error('snapsPerDay.init - missing config properties: ', config);
             }
 
@@ -16,7 +16,6 @@ var chartPost = (function ($, _, nv) {
 
             d3.select(idToSelector(elId, 'chart'))
                 .append("svg")
-
 
 
         }
@@ -40,14 +39,18 @@ var chartPost = (function ($, _, nv) {
          * @return [{x: 0, y: value}, ...]
          */
         function dataCloudantToNV(data) {
-            var datal = [[],[],[]];
+            var datal = [
+                [],
+                [],
+                []
+            ];
             data.history.forEach(function (d, i) {
-                datal[0].push({x: d.timestamp_d , y: d.rank})  // TODO- handle missing data?
-                datal[1].push({x: d.timestamp_d , y: d.points})
-                datal[2].push({x: d.timestamp_d , y: d.comments})
+                datal[0].push({x: d.timestamp_d, y: d.rank})  // TODO- handle missing data?
+                datal[1].push({x: d.timestamp_d, y: d.points})
+                datal[2].push({x: d.timestamp_d, y: d.comments})
             });
 
-            var nvdata=[
+            var nvdata = [
                 {key: "Rank", values: datal[0]},
                 {key: "Points", values: datal[1]},
                 {key: "Comments", values: datal[2]}
@@ -62,15 +65,29 @@ var chartPost = (function ($, _, nv) {
                 throw new Error('idToSelector - unexpected element name: ', subSelector);
             }
 
-            var sel='#'+id;
+            var sel = '#' + id;
 
-            if (subSelector==='svg') {
+            if (subSelector === 'svg') {
                 sel += ' svg';
             } else if (subSelector == 'chart') {
                 sel += ' .chart';
             }
 
             return sel;
+        }
+
+        /**
+         * Modifies postData in place.
+         */
+        function postDataToNVD3Series(postData) {
+
+            postData[0].type = 'line';
+            postData[0].yAxis = 1;
+            postData[1].type = 'line';
+            postData[1].yAxis = 2;
+            postData[2].type = 'line';
+            postData[2].yAxis = 2;
+
         }
 
         function draw(config) {
@@ -80,50 +97,44 @@ var chartPost = (function ($, _, nv) {
             }
 
             var postData = dataCloudantToNV(config.data);
-
-            postData[0].type='line';
-            postData[0].yAxis=1;
-            postData[1].type='line';
-            postData[1].yAxis=2;
-            postData[2].type='line';
-            postData[2].yAxis=2;
+            postDataToNVD3Series(postData);
 
             nv.addGraph(function () {
-                var chart = nv.models.multiChart()
-                     .margin({top: 30, right: 60, bottom: 50, left: 70})
+                nvChart = nv.models.multiChart()
+                    .margin({top: 30, right: 60, bottom: 50, left: 70})
 
 
-                chart.xAxis     //Chart x-axis settings
+                nvChart.xAxis
                     .axisLabel('Time (local TZ)')
-                    .tickFormat(function(d) {
+                    .tickFormat(function (d) {
                         return d3.time.format('%_m/%_d/%y %H:%M')(new Date(d));
                     });
 
 
-                chart.yDomain1([60,1])
-                chart.yAxis1     //Chart y-axis settings
+                nvChart.yDomain1([60, 1])
+                nvChart.yAxis1
                     .axisLabel('Rank')
                     .tickFormat(d3.format('d'));
 
                 // TODO: It would be nice to set the y-axis to always have 0 as the min. This works, but it sets the max value to the max of both series, instead of adapting when legend changes.
-                // chart.yDomain2([0, d3.max(postData[1].values.map(function(d){return d.y;}).concat(postData[2].values.map(function(d){return d.y;})))])
-                chart.yAxis2
+
+                nvChart.yAxis2
                     .axisLabel('Number')// TODO: - Missing label - probably margin issue.
                     .tickFormat(d3.format(',g'))
 
 
-                d3.select(idToSelector(elId, 'svg'))    //Select the <svg> element you want to render the chart in.
-                    .datum(postData)         //Populate the <svg> element with chart data...
-                    .call(chart);          //Finally, render the chart!
+                d3.select(idToSelector(elId, 'svg'))
+                    .datum(postData)
+                    .call(nvChart);
 
-                //Update the chart when window resizes.
                 nv.utils.windowResize(function () {
-                    chart.update()
+                    nvChart.update()
                 });
-                return chart;
+                return nvChart;
             });
 
         }
+
 
         return {
             init: init,

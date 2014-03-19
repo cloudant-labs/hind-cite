@@ -11199,7 +11199,11 @@ nv.models.scatter = function() {
               .attr('class', function(d,i) { return 'nv-path-'+i; });
           pointPaths.exit().remove();
           pointPaths
-              .attr('d', function(d) {
+              .attr('d', function(d,i) {
+                  if (!d || ! d.data ) {
+                       // RR VERY strange - with multichart, on update of data, some of the voronoi are undefined!  No idea why - but maybe this will fix it
+                      return 'M 0 0';
+                  }
                 if (d.data.length === 0)
                     return 'M 0 0'
                 else
