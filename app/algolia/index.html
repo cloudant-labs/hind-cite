@@ -124,8 +124,8 @@
                             <div class="title_url">
                                 <div class="title">
                                     {{#highlighted_title}}
-                                        <a href="{{ url }}" target="_blank">{{{ highlighted_title }}}</a>
-                                    
+                                        {{{ highlighted_title }}}
+
                                         {{#highlighted_url}}
                                             ({{{ highlighted_url }}})
                                         {{/highlighted_url}}
@@ -135,8 +135,8 @@
                                     {{#highlighted_story_title}}
 
                                         {{#highlighted_story_url}}
-                                            <a href="{{ story_url }}" target="_blank">{{{ highlighted_story_title }}}</a> ({{{
-                                            highlighted_story_url }}})
+                                            {{{ highlighted_story_title }}}
+                                            ({{{ highlighted_story_url }}})
                                         {{/highlighted_story_url}}
 
                                         {{^highlighted_story_url}}
@@ -146,18 +146,14 @@
                                     {{/highlighted_story_title}}
                                 </div>
                                 <div class="url">
-                                    <a href="{{ item_url }}{{#item_url_anchor}}{{ item_url_anchor }}{{/item_url_anchor}}"
-                                       target="_blank">{{ item_url }}</a>
+                                    {{ item_url }}
                                 </div>
                                 <div class="points"><b>{{ points }}</b> point{{#points_plural}}s{{/points_plural}}</div>
-                                <div class="author"> by <a href="https://news.ycombinator.com/user?id={{ author }}"
-                                                           target="_blank">{{{ highlighted_author }}}</a></div>
+                                <div class="author"> by {{{ highlighted_author }}}</div>
                                 <div class="created_at"><abbr class="timeago" title="{{ created_at }}"></abbr></div>
                                 {{#has_comments}}
                                 <div class="comments">
-                                    <a href="https://news.ycombinator.com/item?id={{ item_id }}" target="_blank">{{
-                                        comments }} comment{{#comments_plural}}s{{/comments_plural}}</a>
-                                    <a href="/follow/{{ item_id }}">Follow</a>
+                                    {{ comments }} comment{{#comments_plural}}s{{/comments_plural}}
                                 </div>
                                 {{/has_comments}}
                                 <br/>
