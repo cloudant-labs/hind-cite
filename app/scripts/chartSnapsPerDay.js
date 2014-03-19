@@ -77,7 +77,7 @@ var chartSnapsPerDay =  (function ($, _, nv) {
                 throw new Error('snapsPerDay.draw - missing config.data: ', config);
             }
 
-            var postData = dataCloudantToNV(config.data);''
+            var postData = dataCloudantToNV(config.data);
 
             nv.addGraph(function() {
                 var chart = nv.models.multiBarChart()
@@ -88,7 +88,9 @@ var chartSnapsPerDay =  (function ($, _, nv) {
                         .transitionDuration(350)
                         .showControls(false)
                         .showLegend(false)
+                        .delay(0)
                     ;
+
 
                 chart.xAxis
                     .tickFormat(function(d) {
