@@ -161,7 +161,7 @@ Number.prototype.number_with_delimiter = function(delimiter) {
 
       var originalQuery = query;
       var searchParams = {
-        hitsPerPage: args.hitsPerPage || 25,
+        hitsPerPage: args.hitsPerPage || 10,  // RR - changed from 25
         page: p,
         getRankingInfo: 1,
         minWordSizefor1Typo: 5,

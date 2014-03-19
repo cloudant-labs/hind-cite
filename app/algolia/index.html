@@ -15,6 +15,8 @@
 
 
     <link href="/algolia/home.css" media="screen" rel="stylesheet"/>
+    <link href="/styles/charts.css" media="screen" rel="stylesheet"/>
+
     <script src="/algolia/hnsearch.js"></script>
 
 
@@ -26,7 +28,6 @@
             <div class='row'>
                 <div class='span12'>
                     <div id='search-panel'>
-
                         <h1 class='text-center'>Search Hacker News</h1>
 
                         <form action='#' id='search-form' method='get' onsubmit='return false;'>
@@ -106,7 +107,10 @@
                             </div>
                         </form>
                         <div id='stats'></div>
-                        <div id='hits'></div>
+                        <table class="table table-bordered table-striped ">
+                            <tbody id='hits'>
+                            </tbody>
+                        </table>
                         <div class='text-center' id='noresults'></div>
                         <div class='text-center' id='pagination'></div>
 
@@ -117,55 +121,67 @@
                         });
                     </script>
                     <script type="text/template" id="hitTemplate">
-                        <div class="{{ classes }}" data-id="{{ item_id }}">
-                            <div class="thumb pull-left hidden-xs">
-                                <img src="//drcs9k8uelb9s.cloudfront.net/{{ thumb_item_id }}.png">
-                            </div>
-                            <div class="title_url">
-                                <div class="title">
-                                    {{#highlighted_title}}
-                                        {{{ highlighted_title }}}
+                        <tr>
+                            <td class="vcenter">
+                                <button type="button" class="btn btn-primary btn-sm">Select<br>{{ item_id }}</button>
+                            </td>
+                            <td>
+                                <div class="{{ classes }}" data-id="{{ item_id }}">
+                                    <div class="thumb pull-left hidden-xs">
+                                        <img src="//drcs9k8uelb9s.cloudfront.net/{{ thumb_item_id }}.png">
+                                    </div>
+                                    <div class="title_url">
+                                        <div class="title">
+                                            {{#highlighted_title}}
+                                            {{{ highlighted_title }}}
 
-                                        {{#highlighted_url}}
+                                            {{#highlighted_url}}
                                             ({{{ highlighted_url }}})
-                                        {{/highlighted_url}}
+                                            {{/highlighted_url}}
 
-                                    {{/highlighted_title}}
+                                            {{/highlighted_title}}
 
-                                    {{#highlighted_story_title}}
+                                            {{#highlighted_story_title}}
 
-                                        {{#highlighted_story_url}}
+                                            {{#highlighted_story_url}}
                                             {{{ highlighted_story_title }}}
                                             ({{{ highlighted_story_url }}})
-                                        {{/highlighted_story_url}}
+                                            {{/highlighted_story_url}}
 
-                                        {{^highlighted_story_url}}
+                                            {{^highlighted_story_url}}
                                             {{{ highlighted_story_title }}}
-                                        {{/highlighted_story_url}}
+                                            {{/highlighted_story_url}}
 
-                                    {{/highlighted_story_title}}
+                                            {{/highlighted_story_title}}
+                                        </div>
+                                        <div class="url">
+                                            {{ item_url }}
+                                        </div>
+                                        <div class="points"><b>{{ points }}</b>
+                                            point{{#points_plural}}s{{/points_plural}}
+                                        </div>
+                                        <div class="author"> by {{{ highlighted_author }}}</div>
+                                        <div class="created_at"><abbr class="timeago" title="{{ created_at }}"></abbr>
+                                        </div>
+                                        {{#has_comments}}
+                                        <div class="comments">
+                                            {{ comments }} comment{{#comments_plural}}s{{/comments_plural}}
+                                        </div>
+                                        {{/has_comments}}
+                                        <br/>
+                                        {{#story_text}}
+                                        <div class="story_text">{{{ story_text }}}</div>
+                                        {{/story_text}}
+                                        {{#comment_text}}
+                                        <div class="comment_text">{{{ comment_text }}}</div>
+                                        {{/comment_text}}
+                                    </div>
                                 </div>
-                                <div class="url">
-                                    {{ item_url }}
-                                </div>
-                                <div class="points"><b>{{ points }}</b> point{{#points_plural}}s{{/points_plural}}</div>
-                                <div class="author"> by {{{ highlighted_author }}}</div>
-                                <div class="created_at"><abbr class="timeago" title="{{ created_at }}"></abbr></div>
-                                {{#has_comments}}
-                                <div class="comments">
-                                    {{ comments }} comment{{#comments_plural}}s{{/comments_plural}}
-                                </div>
-                                {{/has_comments}}
-                                <br/>
-                                {{#story_text}}
-                                <div class="story_text">{{{ story_text }}}</div>
-                                {{/story_text}}
-                                {{#comment_text}}
-                                <div class="comment_text">{{{ comment_text }}}</div>
-                                {{/comment_text}}
-                            </div>
+                            </td>
                             <div class="clearfix"></div>
-                        </div>
+                            </div>
+
+                        </tr>
                     </script>
 
 
@@ -177,3 +193,4 @@
 
 </body>
 </html>
+
