@@ -6,7 +6,7 @@ var chartPost = (function ($, _, nv) {
         var elId, chartSize, data, graph;
 
         function init(config) {
-            if (!config || !config.elId || !config.chartSize) {
+            if (!config || !config.elId ) {
                 throw new Error('snapsPerDay.init - missing config properties: ', config);
             }
 
@@ -16,8 +16,7 @@ var chartPost = (function ($, _, nv) {
 
             d3.select(idToSelector(elId, 'chart'))
                 .append("svg")
-                .style('height', chartSize.svg_height)
-                .style('width', chartSize.svg_width)
+
 
 
         }
@@ -66,7 +65,9 @@ var chartPost = (function ($, _, nv) {
             var sel='#'+id;
 
             if (subSelector==='svg') {
-                sel += ' '+ subSelector;
+                sel += ' svg';
+            } else if (subSelector == 'chart') {
+                sel += ' .chart';
             }
 
             return sel;
@@ -111,7 +112,6 @@ var chartPost = (function ($, _, nv) {
                     .tickFormat(d3.format(',g'))
 
 
-                // TODO: P1 Bug - Unselecting rank causes the scale to reverse and the content to NOT disappear
                 d3.select(idToSelector(elId, 'svg'))    //Select the <svg> element you want to render the chart in.
                     .datum(postData)         //Populate the <svg> element with chart data...
                     .call(chart);          //Finally, render the chart!

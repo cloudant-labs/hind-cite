@@ -24,7 +24,6 @@ directivesProvider.directive('spdChart', ['getDataSvc',
                     scope.id=element.attr('id');
 
                     scope.chart=chartSnapsPerDay.chart();
-                    scope.chartsize=config[attrs.chartsize];  // TODO don't hardcode this link to config?
                     console.log(scope.id, scope.chartsize);
                     scope.chart.init({elId: scope.id, chartSize : scope.chartsize, data: []});
 
@@ -69,7 +68,6 @@ directivesProvider.directive('postChart', ['getDataSvc',
                     scope.id=element.attr('id');
 
                     scope.chart=chartPost.chart();
-                    scope.chartsize=config[attrs.chartsize];  // TODO don't hardcode this link to config?
                     console.log(scope.id, scope.chartsize);
                     scope.chart.init({elId: scope.id, chartSize : scope.chartsize, data: []});
 

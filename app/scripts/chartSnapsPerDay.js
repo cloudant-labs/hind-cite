@@ -5,7 +5,7 @@ var chartSnapsPerDay =  (function ($, _, nv) {
         var elId, chartSize, data, graph;
 
         function init(config) {
-            if (!config || !config.elId || !config.chartSize) {
+            if (!config || !config.elId ) {
                 throw new Error('snapsPerDay.init - missing config properties: ', config);
             }
 
@@ -15,8 +15,7 @@ var chartSnapsPerDay =  (function ($, _, nv) {
 
             d3.select(idToSelector(elId, 'chart'))
                 .append("svg")
-                .style('height', chartSize.svg_height)
-                .style('width', chartSize.svg_width)
+
 
 
         }
@@ -64,7 +63,9 @@ var chartSnapsPerDay =  (function ($, _, nv) {
             var sel='#'+id;
 
             if (subSelector==='svg') {
-                sel += ' '+ subSelector;
+                sel += ' svg';
+            } else if (subSelector=='chart') {
+                sel += ' .chart';
             }
 
             return sel;
