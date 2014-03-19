@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'
-          name='viewport'>
+
     <title>HN Search powered by Algolia</title>
     <meta content='Hacker News Search, millions articles and comments at your fingertips.' name='description'>
-    <link href="/algolia/bootstrap.min.css" media="all" rel="stylesheet"/>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" media="all" rel="stylesheet"/>
     <script src="/algolia/ap1.js"></script>
-    <meta content="authenticity_token" name="csrf-param"/>
-    <meta content="z7CRAFJAoBUgWwC3tOKf/eGG3SdozbuOkQn0sChXwvg=" name="csrf-token"/>
-    <link href="https://hn.algolia.com/rss" rel="alternate" title="HN Front page" type="application/rss+xml"/>
-    <link href="https://hn.algolia.com/latest.atom" rel="alternate" title="Latest HN items"
-          type="application/atom+xml"/>
-    <meta content='summary' name='twitter:card'>
-    <meta content='@algolia' name='twitter:site'>
-    <meta content='HN Search powered by Algolia' name='twitter:title'>
-    <meta content='Hacker News Search, millions articles and comments at your fingertips.' name='twitter:description'>
-    <meta content='https://hn.algolia.com/assets/yc-logo-653b752056fffe8d82090e4031455900.png' name='twitter:image:src'>
-    <meta content='hn.algolia.com' name='twitter:domain'>
-    <meta content='HN Search powered by Algolia' property='st:title'>
-    <meta content='https://hn.algolia.com/?q=TESTSEARCH' property='og:url'>
-    <meta content='HN Search' property='og:site_name'>
-    <meta content='HN Search powered by Algolia' property='og:title'>
-    <meta content='Hacker News Search, millions articles and comments at your fingertips.' property='og:description'>
-    <meta content='https://hn.algolia.com/assets/yc-logo-653b752056fffe8d82090e4031455900.png' property='og:image'>
-    <meta content='400' property='og:image:width'>
-    <meta content='400' property='og:image:height'>
+
+
+    <!--<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui'-->
+          <!--name='viewport'>-->
+    <!--<meta content="authenticity_token" name="csrf-param"/>-->
+    <!--<meta content="z7CRAFJAoBUgWwC3tOKf/eGG3SdozbuOkQn0sChXwvg=" name="csrf-token"/>-->
+
+
+
     <link href="/algolia/home.css" media="screen" rel="stylesheet"/>
     <script src="/algolia/hnsearch.js"></script>
+
 
 </head>
 <body>
@@ -37,9 +27,7 @@
             <div class='row'>
                 <div class='span12'>
                     <div id='search-panel'>
-                        <div class='hidden-xs' id='style-toggler'>
-                            <a href="#" onclick="hnsearch.toggleStyle();; return false;">Change style <span></span></a>
-                        </div>
+
                         <h1 class='text-center'>Search Hacker News</h1>
 
                         <form action='#' id='search-form' method='get' onsubmit='return false;'>
@@ -70,7 +58,7 @@
                                     <div id='inputfield'>
                                         <input autocomplete='off' autocorrect='off' name='address'
                                                placeholder='HN Stories, Comments, Source, Author ...' spellcheck='false'
-                                               type='text' value='TESTSEARCH'>
+                                               type='text' value=''>
                                     </div>
                                     <div class='searchbutton'>
                                         <i class='icon-search icon-large'></i>
@@ -122,10 +110,7 @@
                         <div id='hits'></div>
                         <div class='text-center' id='noresults'></div>
                         <div class='text-center' id='pagination'></div>
-                        <div class='text-center' id='history'>
-                            <small><strong>1,286,309</strong> stories and <strong>5,536,672</strong> comments indexed
-                            </small>
-                        </div>
+
                     </div>
                     <script>
                         $(document).ready(function () {
@@ -188,41 +173,6 @@
         </div>
     </div>
 </div>
-<footer class='text-center'>
-    <hr>
-    <ul class='list-inline'>
-        <li><a href="/about">About</a></li>
-        <li><a href="https://github.com/algolia/hn-search">Github</a></li>
-        <li><a href="/status">Status</a></li>
-        <li><a href="/">Search</a></li>
-        <!-- %li= link_to 'Stats', stats_path -->
-        <li><a href="/api">API</a></li>
-        <li><a href="/cool_apps">Cool Apps</a></li>
-        <li>
-            <a href="http://www.algolia.com/?utm_source=hn_search&amp;utm_medium=link&amp;utm_term=footer&amp;utm_campaign=hn_algolia"
-               onclick="_gaq.push([&#39;_link&#39;, &#39;http://www.algolia.com&#39;]); return false;"
-               title="Hosted full-text, numerical, faceted search"><img alt="Algolia"
-                                                                        src="//d3ibatyzauff7b.cloudfront.net/assets/algolia128x40.png"
-                                                                        style="height: 1em;"/></a>
-        </li>
-    </ul>
-</footer>
-<script>
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-32446386-1']);
-    _gaq.push(['_setDomainName', 'hn.algolia.com']);
-    _gaq.push(['_setAllowLinker', true]);
-    _gaq.push(['_trackPageview', '/hnsearch']);
 
-
-    (function () {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-    })();
-</script>
 </body>
 </html>
