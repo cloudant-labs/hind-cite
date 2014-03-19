@@ -82,21 +82,6 @@ directivesProvider.directive('postChart', ['getDataSvc',
 
                         scope.chart.draw({data:scope.data});
 
-                        setTimeout(function(){
-                            setInterval(function() {
-                                var h=scope.data.history;
-                                var l=h[h.length-1];
-                                l.comments-=1;
-                                l.rank-=1;
-                                l.points-=1;
-                                l.timestamp_d=new Date(l.timestamp_d.getTime()+1000*60*5);
-                                h.push(l);
-                                console.log('New Data: ', l);
-                                scope.chart.draw({data:scope.data});
-                            }, 1000);
-                        }, 6000);
-
-
                     })
 
 
