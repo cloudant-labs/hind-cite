@@ -1186,8 +1186,8 @@ nv.utils.optionsFunc = function(args) {
           axisLabel.enter().append('text').attr('class', 'nv-axislabel');
           axisLabel
               .style('text-anchor', rotateYLabel ? 'middle' : 'begin')
-              .attr('transform', rotateYLabel ? 'rotate(90)' : '')
-              .attr('y', rotateYLabel ? (-Math.max(margin.right,width) + 12) : -10) //TODO: consider calculating this based on largest tick width... OR at least expose this on chart
+              .attr('transform', rotateYLabel ? 'rotate(90)' : '')  // RR - added axisLabelDistance option
+              .attr('y', rotateYLabel ? (-Math.max(margin.right,width) + axisLabelDistance) : -10) //TODO: consider calculating this based on largest tick width... OR at least expose this on chart
               .attr('x', rotateYLabel ? (scale.range()[0] / 2) : axis.tickPadding());
           if (showMaxMin) {
             var axisMaxMin = wrap.selectAll('g.nv-axisMaxMin')

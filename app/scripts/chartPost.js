@@ -101,12 +101,12 @@ var chartPost = (function ($, _, nv) {
 
             nv.addGraph(function () {
                 nvChart = nv.models.multiChart()
-                    .margin({top: 30, right: 60, bottom: 50, left: 70})
+                    .margin({top: 30, right: 50, bottom: 50, left: 50})
 
 
                 nvChart.xAxis
                     .axisLabel('Time (local TZ)')
-                    .tickFormat(function (d) {
+                    .tickFormat(function (d, i) {
                         return d3.time.format('%_m/%_d/%y %H:%M')(new Date(d));
                     });
 
@@ -114,12 +114,14 @@ var chartPost = (function ($, _, nv) {
                 nvChart.yDomain1([60, 1])
                 nvChart.yAxis1
                     .axisLabel('Rank')
+                    .axisLabelDistance(50)
                     .tickFormat(d3.format('d'));
 
                 // TODO: It would be nice to set the y-axis to always have 0 as the min. This works, but it sets the max value to the max of both series, instead of adapting when legend changes.
 
                 nvChart.yAxis2
-                    .axisLabel('Number')// TODO: - Missing label - probably margin issue.
+                    .axisLabel('Number')
+                    .axisLabelDistance(50)
                     .tickFormat(d3.format(',g'))
 
 
