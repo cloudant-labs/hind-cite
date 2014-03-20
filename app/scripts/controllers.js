@@ -67,6 +67,17 @@ controllersProvider
 
     }]);
 
+controllersProvider
+    .controller('hnsearchCtrl', ['$scope',  function ($scope) {
+        $scope.d = {};
+
+        console.log('hnsearchCtrl - entering', $scope);
+
+        window.hnsearch = new HNSearch('UJ5WYC0L7X', '8ece23f8eb07cd25d40262a1764599b1', 'Item_production', 'User_production');
+
+
+    }]);
+
 /** Returns max value of field in data.history
  *
  * @param data - result of getSnapshots

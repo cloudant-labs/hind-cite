@@ -1,3 +1,8 @@
+/**
+ * This file is directly taken from Algolia, with one exception:
+ * HNSearch.prototype.init - must modify this to integrate with this application. 
+ */
+
 Number.prototype.number_with_delimiter = function (delimiter) {
     var number = this + '', delimiter = delimiter || ',';
     var split = number.split('.');
@@ -13,6 +18,8 @@ Number.prototype.number_with_delimiter = function (delimiter) {
         this.init(applicationID, apiKey, indexName, userIndexName);
     }
 
+
+    
     HNSearch.prototype = {
         init: function (applicationID, apiKey, indexName, userIndexName) {
             var self = this;
@@ -28,8 +35,10 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.$noresults = $('#noresults');
             this.page = 0;
             this.firstQuery = true;
-            this.hitTemplate = Hogan.compile($('#hitTemplate').text());
+            this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'});
             this.prefixedSearch = true;
+            
+            var searchArgs={url:false, hitsPerPage:10 };
 
             $('#inputfield input').tagautocomplete({
                 character: 'author:',
@@ -55,7 +64,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                 e.preventDefault();
                 // disable prefix search on form submitting
                 self.prefixedSearch = false;
-                self.search(0);
+                self.search(0, searchArgs);
             });
             $('#inputfield input').keyup(function (e) {
                 $('#inputfield input').tagautocomplete(['keyup', e]);
@@ -69,7 +78,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                         self.prefixedSearch = true;
                         break;
                 }
-                self.search(0);
+                self.search(0, searchArgs);
             }).keypress(function (e) {
                 $('#inputfield input').tagautocomplete(['keypress', e]);
             }).keydown(function (e) {
@@ -79,10 +88,10 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             }).blur(function (e) {
                 $('#inputfield input').tagautocomplete(['blur', e]);
             }).change(function (e) {
-                self.search(0);
+                self.search(0, searchArgs);
             });
             $('input[type="radio"]').change(function (e) {
-                self.search(0);
+                self.search(0, searchArgs);
             });
 
             if ($('#inputfield input').val() !== '') {
@@ -106,7 +115,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             }
 
             if ($('#inputfield input').val() !== '') {
-                this.search(0);
+                this.search(0, searchArgs);
             } else {
                 $('#inputfield input').focus();
 
@@ -167,7 +176,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
 
             var originalQuery = query;
             var searchParams = {
-                hitsPerPage: args.hitsPerPage || 10,  // RR - changed from 25
+                hitsPerPage: args.hitsPerPage || 25,
                 page: p,
                 getRankingInfo: 1,
                 minWordSizefor1Typo: 5,
@@ -284,6 +293,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
         },
 
         searchCallback: function (content) {
+
             if (this.page != content.page) {
                 return;
             }
