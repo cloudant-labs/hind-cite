@@ -40,5 +40,25 @@
 
 /* for Algolia */
 td.vcenter{
- vertical-align: middle !important;
+    vertical-align: middle !important;
 }
+
+/* TODO - fix search width hack (algolia)
+   This is a hack (not sure how to fix it properly.
+   The title url in algolia results is forcing the table to be larger than the encompassing modal.
+   Note - the hack works pretty well except for very small windows. (below 450px)
+ */
+.title_url_width {
+    max-width: 250px;
+}
+@media(min-width:767px){
+    .title_url_width {
+        max-width: 350px;
+    }
+}
+@media(min-width:992px){
+    .title_url_width {
+        max-width: 650px;
+    }
+}
+

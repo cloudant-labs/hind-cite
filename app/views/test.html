@@ -1,7 +1,31 @@
 <div ng-controller="hnsearchCtrl">
 
-    <ng-include src="'views/templates/hnsearch_searchbox.html'"></ng-include>
-    <ng-include src="'views/templates/hnsearch_results.html'"></ng-include>
+
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#hnsearchModal">
+        Text Search
+    </button>
+
+    <div id='hnsearchModal' class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- This partial works with the selectModal directive -->
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h1 class='modal-title'>Search Hacker News</h1>
+                </div>
+                <div class="modal-body">
+
+                    <ng-include src="'views/templates/hnsearch_searchbox.html'"></ng-include>
+                    <ng-include src="'views/templates/hnsearch_results.html'"></ng-include>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>

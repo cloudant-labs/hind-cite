@@ -73,7 +73,10 @@ controllersProvider
 
         console.log('hnsearchCtrl - entering', $scope);
 
-        window.hnsearch = new HNSearch('UJ5WYC0L7X', '8ece23f8eb07cd25d40262a1764599b1', 'Item_production', 'User_production');
+        setTimeout(function() {
+            console.log('HACK: Initialize HNsearch (after 2 second wait to allow templates to load)');
+            window.hnsearch = new HNSearch('UJ5WYC0L7X', '8ece23f8eb07cd25d40262a1764599b1', 'Item_production', 'User_production');
+        }, 2000);
 
 
     }]);
