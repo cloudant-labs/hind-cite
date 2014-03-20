@@ -1,6 +1,7 @@
 /**
  * This file is directly taken from Algolia, with one exception:
- * HNSearch.prototype.init - must modify this to integrate with this application. 
+ * HNSearch.prototype.init - must modify this to integrate with this application.
+ * $scope
  */
 
 Number.prototype.number_with_delimiter = function (delimiter) {
@@ -14,14 +15,14 @@ Number.prototype.number_with_delimiter = function (delimiter) {
 };
 
 (function ($) {
-    window.HNSearch = function (applicationID, apiKey, indexName, userIndexName) {
-        this.init(applicationID, apiKey, indexName, userIndexName);
+    window.HNSearch = function (applicationID, apiKey, indexName, userIndexName, $scope) {
+        this.init(applicationID, apiKey, indexName, userIndexName, $scope);
     }
 
 
     
     HNSearch.prototype = {
-        init: function (applicationID, apiKey, indexName, userIndexName) {
+        init: function (applicationID, apiKey, indexName, userIndexName, $scope) {
             var self = this;
 
             var client = new AlgoliaSearch(applicationID, apiKey, null, true, [applicationID + '-2.algolia.io', applicationID + '-3.algolia.io']);
@@ -37,6 +38,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.firstQuery = true;
             this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'});
             this.prefixedSearch = true;
+            this.$scope = $scope // RR - For passing data back to angular controller
             
             var searchArgs={url:false, hitsPerPage:10 };
 
@@ -371,6 +373,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                     }
                 }
                 this.notify(hit);
+                v.$scope = this.$scope;
                 res += this.hitTemplate.render(v);
             }
             this.$hits.html(res);
