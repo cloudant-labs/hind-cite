@@ -23,6 +23,9 @@ angular.module('hnApp', [
             .when('/post', {
                 templateUrl: 'views/post.html',
             })
+            .when('/test', {
+                templateUrl: 'views/test.html',
+            })
             .otherwise({
                 redirectTo: '/'
             });
