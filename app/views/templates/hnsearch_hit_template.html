@@ -1,8 +1,8 @@
 <script type="text/template"  id="hitTemplate">
     <tr>
         <td class="vcenter">
-            <button type="button" class="btn btn-primary btn-sm" onclick="hnsearch.$scope.$apply(hnsearch.$scope.d.selectedId = '<% item_id %>')" >Select<br><% item_id %></button>
-            <!-- TODO: If date < earliest data, gray out -->
+            <button type="button" class="btn btn-primary btn-sm" onclick="hnsearch.setSelectedId('<% item_id %>')"  >Select<br><% item_id %></button>
+
         </td>
         <td class="vcenter">
             <div class="<% classes %>" data-id="<% item_id %>">
@@ -62,3 +62,5 @@
 
     </tr>
 </script>
+<!-- TODO: If date < earliest data, gray out -->
+

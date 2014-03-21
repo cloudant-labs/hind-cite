@@ -39,7 +39,15 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'});
             this.prefixedSearch = true;
             this.$scope = $scope // RR - For passing data back to angular controller
-            
+            this.setSelectedId = function(selectedId){
+                console.log('setSelected Id', selectedId);
+                $('#hnsearchModal').modal('hide');
+
+                hnsearch.$scope.$apply(hnsearch.$scope.d.selectedId = selectedId);
+            };
+
+
+
             var searchArgs={url:false, hitsPerPage:10 };
 
             $('#inputfield input').tagautocomplete({
@@ -89,9 +97,11 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                 $('#inputfield input').tagautocomplete(['focus', e]);
             }).blur(function (e) {
                 $('#inputfield input').tagautocomplete(['blur', e]);
-            }).change(function (e) {
-                self.search(0, searchArgs);
-            });
+            })
+            // RR - this is causing a bad bug, because when you deslect the text input box (like clicking on a button), this event steals the click!
+//            .change(function (e) {
+//                self.search(0, searchArgs);
+//            });
             $('input[type="radio"]').change(function (e) {
                 self.search(0, searchArgs);
             });
@@ -375,9 +385,12 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                 this.notify(hit);
                 v.$scope = this.$scope;
                 res += this.hitTemplate.render(v);
+
+
             }
             this.$hits.html(res);
             $('#hits .timeago').timeago();
+
 
             // pagination
             var pagination = '';
