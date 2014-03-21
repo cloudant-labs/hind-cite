@@ -3,13 +3,18 @@
 var controllersProvider = angular.module('controllersProvider', ['servicesProvider']);
 
 controllersProvider
-    .controller('mainCtrl', function ($scope) {
-        $scope.awesomeThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma'
-        ];
-    });
+    .controller('mainCtrl', ['$scope', '$log', function ($scope, $log) {
+        $log.log('******************************************************************************');
+        $log.log('Brought to you by Cloudant.com, an IBM Company');
+        $log.log('Cloudant - Distributed database as a service');
+        $log.log('******************************************************************************\n');
+
+        $log.log('******************************************************************************');
+        $log.log('Realtime search provided by Algolia -  http://www.algolia.com/console');
+        $log.log('Algolia - POWERFUL REALTIME SEARCH API BUILT FOR DEVELOPERS');
+        $log.log('******************************************************************************\n');
+
+    }]);
 
 
 controllersProvider
