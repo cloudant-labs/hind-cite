@@ -88,6 +88,36 @@ controllersProvider
         $scope.d = {};
         $scope.d.data = {};
         $scope.d.postIds = ['7441799', '7442764', '7439444'];
+        $scope.d.postIdsText='';  // Set in watch
+
+
+
+        $scope.idsToText=function(idarray) {
+            console.log('idsToText: ', idarray.join(','));
+            return idarray.join(',');
+        };
+
+        $scope.textToIds=function(idtext){
+            var split=idtext.split(/[\s,;.]+/);
+            var out=[];
+            split.forEach(function(id) {
+                id=id.replace(/ /g,'');
+                if (/^[0-9]{7}$/.test(id)){
+                    out.push(id);
+                }
+            });
+
+            console.log('textToIds: ', idtext, ' --> ', out);
+            return out;
+
+        };
+
+        // Initialize ids based on url
+        if ($location.search().postIds) {
+            $scope.d.postIdsText = $location.search().postIds;
+            $scope.d.postIds=$scope.textToIds($scope.d.postIdsText);
+        }
+
 
         $scope.dateVal = function (dateStr) {
             return new Date(dateStr);
@@ -101,9 +131,7 @@ controllersProvider
             return sumHistRec($scope.d.data, 'points');
         };
 
-        if ($location.search().postid) {
-            $scope.d.postid = $location.search().postid;
-        }
+
 
         console.log('multiPostCtrl - entering', $scope);
 
@@ -113,8 +141,11 @@ controllersProvider
                 return;
             }
 
+            $scope.d.postIdsText=$scope.idsToText($scope.d.postIds);
+            $scope.d.data={};
+
             // Update url
-            //$location.search({postid: $scope.d.postid});  // TODO - fix url
+            $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g,'')});  // TODO - fix url
 
             $scope.d.postIds.forEach(function(id) {
                 getDataSvc.getById(id, null, function success(data) {
@@ -123,17 +154,15 @@ controllersProvider
                     $scope.$apply($scope.d.data.timestamp = Date.now());
                 });
             });
-
-
-
-        })
-
-        $scope.$watch('d.selectedId', function(newVal, oldVal){
-            if ($scope.d.selectedId == null) return;
-
-            console.log('multiPostCtrl d.selectedId changed:', newVal);
-            $scope.d.postid=$scope.d.selectedId;
         });
+
+        $scope.$watch('d.postIdsText', function(newVal) {
+            if(newVal==null) {return;}
+
+            $scope.d.postIds=$scope.textToIds($scope.d.postIdsText);
+        });
+
+
 
 
     }]);

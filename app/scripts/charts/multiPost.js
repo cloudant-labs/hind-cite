@@ -37,7 +37,8 @@ var chartMultiPost = (function ($, _, nv) {
 
                     rawSeries = raw[key];
                     outSeries = {
-                        key: rawSeries.id,
+                        key: rawSeries.title.substring(0,10),
+                        id: rawSeries.id,
                         title: rawSeries.title,
                         values: []
                     };

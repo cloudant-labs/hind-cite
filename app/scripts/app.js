@@ -15,23 +15,28 @@ angular.module('hnApp', [
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
-                caseInsensitiveMatch: true
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
             })
             .when('/snapsPerDay', {
                 templateUrl: 'views/snapsPerDay.html',
-                caseInsensitiveMatch: true
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
             })
             .when('/post', {
                 templateUrl: 'views/post.html',
-                caseInsensitiveMatch: true
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
             })
             .when('/test', {
                 templateUrl: 'views/test.html',
-                caseInsensitiveMatch: true
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
             })
             .when('/multipost', {
                 templateUrl: 'views/multiPost.html',
-                caseInsensitiveMatch: true
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
             })
             .otherwise({
                 redirectTo: '/'
