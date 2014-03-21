@@ -36,6 +36,8 @@ controllersProvider
         $scope.dateVal = function (dateStr) {
             return new Date(dateStr);
         };
+        $scope.d.selectedId=null;
+
         $scope.numComments = function () {
             return sumHistRec($scope.d.data, 'comments');
         };
@@ -66,13 +68,22 @@ controllersProvider
 
         })
 
+        $scope.$watch('d.selectedId', function(newVal, oldVal){
+            if ($scope.d.selectedId == null) return;
+
+            console.log('postCtrl d.selectedId changed:', newVal);
+            $scope.d.postid=$scope.d.selectedId;
+        });
+
 
     }]);
 
+/**
+ * Subservient controller, passing data back to parent via $scope.d.selectedId
+ */
 controllersProvider
     .controller('hnsearchCtrl', ['$scope', function ($scope) {
-        $scope.d = {};
-        $scope.d.selectedId = null;
+        $scope.d.selectedId = null;  // NOTE - this requires a parent controller with $scope.d={}
 
         console.log('hnsearchCtrl - entering', $scope);
 

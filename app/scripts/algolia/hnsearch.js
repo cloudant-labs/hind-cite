@@ -1,7 +1,5 @@
 /**
- * This file is directly taken from Algolia, with one exception:
- * HNSearch.prototype.init - must modify this to integrate with this application.
- * $scope
+ * Please see algolia.md in this directory for more information
  */
 
 Number.prototype.number_with_delimiter = function (delimiter) {
@@ -36,19 +34,17 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.$noresults = $('#noresults');
             this.page = 0;
             this.firstQuery = true;
-            this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'});
+            this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'}); //RR
             this.prefixedSearch = true;
             this.$scope = $scope // RR - For passing data back to angular controller
-            this.setSelectedId = function(selectedId){
+            this.setSelectedId = function(selectedId){ //RR
                 console.log('setSelected Id', selectedId);
+                $('#hnsearchModal').removeClass('fade');  // HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately.
                 $('#hnsearchModal').modal('hide');
 
                 hnsearch.$scope.$apply(hnsearch.$scope.d.selectedId = selectedId);
             };
-
-
-
-            var searchArgs={url:false, hitsPerPage:10 };
+            var searchArgs={url:false, hitsPerPage:10 }; //RR
 
             $('#inputfield input').tagautocomplete({
                 character: 'author:',
