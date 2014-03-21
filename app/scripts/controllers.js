@@ -87,7 +87,8 @@ controllersProvider
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
-        $scope.d.postid = '7290931';
+        $scope.d.postIds = ['7441799', '7442764', '7439444'];
+
         $scope.dateVal = function (dateStr) {
             return new Date(dateStr);
         };
@@ -104,22 +105,26 @@ controllersProvider
             $scope.d.postid = $location.search().postid;
         }
 
-        console.log('postCtrl - entering', $scope);
+        console.log('multiPostCtrl - entering', $scope);
 
-        $scope.$watch('d.postid', function (newVal, oldVal) {
+        $scope.$watchCollection('d.postIds', function (newVals, oldVals) {
 
-            if (newVal == null) {
+            if (newVals == null) {
                 return;
             }
 
             // Update url
-            $location.search({postid: $scope.d.postid});
+            //$location.search({postid: $scope.d.postid});  // TODO - fix url
 
-            getDataSvc.getById($scope.d.postid, null, function success(data) {
-                console.log('multiPostCtrl - got data. Raw: ', data);
-                $scope.$apply($scope.d.data = data);
-                $scope.$apply($scope.d.data.timestamp = Date.now());
+            $scope.d.postIds.forEach(function(id) {
+                getDataSvc.getById(id, null, function success(data) {
+                    console.log('multiPostCtrl - got data. for id ['+id+'] Raw: ', data);
+                    $scope.$apply($scope.d.data[id] = data);
+                    $scope.$apply($scope.d.data.timestamp = Date.now());
+                });
             });
+
+
 
         })
 

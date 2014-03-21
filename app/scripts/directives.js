@@ -111,8 +111,9 @@ directivesProvider.directive('multiPostChart', ['getDataSvc',
                 post: function(scope, element, attrs) { // post-link function
 
                     scope.id=element.attr('id');
+                    scope.metric='rank'; // TODO Get this from a select list - rank, points, comments
 
-                    scope.chart=chartPost.chart();
+                    scope.chart=chartMultiPost.chart();
                     console.log(scope.id, scope.chartsize);
                     scope.chart.init({elId: scope.id, chartSize : scope.chartsize, data: []});
 
@@ -125,7 +126,7 @@ directivesProvider.directive('multiPostChart', ['getDataSvc',
                             return;
                         }
 
-                        scope.chart.draw({data:scope.data});
+                        scope.chart.draw({data:scope.data, metric: scope.metric});
 
                     })
 
