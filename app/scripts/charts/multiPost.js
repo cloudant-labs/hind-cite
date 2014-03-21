@@ -20,24 +20,13 @@ var chartMultiPost = (function ($, _, nv) {
 
             }
 
-            /**
-             *
-             * @param data -
-             *  [
-             ...
-             history :
-             [
-             {
-               "points": 6,
-               "rank": 7,
-               "comments": 0,
-               "timestamp_str": "2014-02-24 14:42:36"
-             },
-             ...
-             ]
-             ]
-             * @return [{x: 0, y: value}, ...]
-             */
+            function toTitleCase(str) {
+                return str.replace(/\w\S*/g, function (txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                });
+            }
+
+
             function dataCloudantToNV(raw, metric) {
                 var rawSeries, outSeries, out = [];
 
@@ -48,13 +37,14 @@ var chartMultiPost = (function ($, _, nv) {
 
                     rawSeries = raw[key];
                     outSeries = {
-                        key: rawSeries.id ,
+                        key: rawSeries.id,
                         title: rawSeries.title,
                         values: []
                     };
 
+                    var t0 = rawSeries.history[0].timestamp_d.getTime();
                     rawSeries.history.forEach(function (snap) {
-                        outSeries.values.push({x: snap.timestamp_d, y: snap[metric]})
+                        outSeries.values.push({x: (snap.timestamp_d.getTime() - t0) / (1000 * 60 * 60), y: snap[metric]}) // Time in hours since first snap
                     });
 
                     out.push(outSeries);
@@ -96,14 +86,16 @@ var chartMultiPost = (function ($, _, nv) {
 
 
                     nvChart.xAxis
-                        .axisLabel('Time (local timezone)')
-                        .tickFormat(function (d, i) {
-                            return d3.time.format('%_m/%_d/%y %H:%M')(new Date(d));
-                        });
+                        .axisLabel('Hours From First Post')
+                        .tickFormat(d3.format('.0f'))
 
+
+                    if (config.metric === 'rank') {
+                        nvChart.yDomain([60, 1])
+                    }
 
                     nvChart.yAxis
-                        .axisLabel(config.metric)
+                        .axisLabel(toTitleCase(config.metric))
                         .axisLabelDistance(50)
                         .tickFormat(d3.format('d'));
 
