@@ -86,7 +86,7 @@ angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
-        $scope.d.postIds = ['7415660', '7412612', '7422988', '7437940', '7439444'];
+        $scope.d.postIds = ['7415660', '7412612'];
         $scope.d.postIdsText = '';  // Set in watch
         $scope.d.metric = 'rank';
 
@@ -130,6 +130,23 @@ angular.module('mainApp')
             return sumHistRec($scope.d.data, 'points');
         };
 
+        $scope.addPostId=function(postId){
+            $scope.$apply($scope.d.postIds.push(postId));
+        };
+
+        $scope.removePostId = function(postId){
+            $scope.$apply($scope.d.postIds= $scope.d.postIds.filter(function(val) {return val === postId;}));
+        };
+
+        $scope.dataOnly = function() {
+            var out={};
+            for (var key in $scope.d.data) {
+                if  (/^[0-9]{7}$/.test(key) ){
+                    out[key] = $scope.d.data[key];
+                }
+            }
+            return out;
+        };
 
         console.log('multiPostCtrl - entering', $scope);
 

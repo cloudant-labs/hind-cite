@@ -37,12 +37,13 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'}); //RR
             this.prefixedSearch = true;
             this.$scope = $scope // RR - For passing data back to angular controller
-            this.setSelectedId = function(selectedId){ //RR
+            this.addSelectedId = function(selectedId){ //RR
                 console.log('setSelected Id', selectedId);
                 $('#hnsearchModal').removeClass('fade');  // HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately.
                 $('#hnsearchModal').modal('hide');
 
-                hnsearch.$scope.$apply(hnsearch.$scope.d.selectedId = selectedId);
+                hnsearch.$scope.addPostId(selectedId);
+                //hnsearch.$scope.$apply(hnsearch.$scope.d.selectedId = selectedId);
             };
             var searchArgs={url:false, hitsPerPage:10 }; //RR
 
