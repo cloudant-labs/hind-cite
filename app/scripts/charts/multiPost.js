@@ -20,11 +20,7 @@ var chartMultiPost = (function ($, _, nv) {
 
             }
 
-            function toTitleCase(str) {
-                return str.replace(/\w\S*/g, function (txt) {
-                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                });
-            }
+
 
 
             function dataCloudantToNV(raw, metric) {
@@ -37,7 +33,7 @@ var chartMultiPost = (function ($, _, nv) {
 
                     rawSeries = raw[key];
                     outSeries = {
-                        key: rawSeries.title.substring(0,10),
+                        key: rawSeries.title, //.substring(0,10),
                         id: rawSeries.id,
                         title: rawSeries.title,
                         values: []
@@ -84,11 +80,15 @@ var chartMultiPost = (function ($, _, nv) {
                 nv.addGraph(function () {
                     nvChart = nv.models.lineChart()
                         .margin({top: 30, right: 50, bottom: 50, left: 50})
+                        .useInteractiveGuideline(true)
+
+                    nvChart.legend.key(function(d) {return d.key.substring(0,10)});
 
 
                     nvChart.xAxis
                         .axisLabel('Hours From First Post')
                         .tickFormat(d3.format('.0f'))
+                        .tickValues(_.range(0,2000,6))
 
 
                     if (config.metric === 'rank') {
@@ -96,8 +96,9 @@ var chartMultiPost = (function ($, _, nv) {
                     }
 
                     nvChart.yAxis
-                        .axisLabel(toTitleCase(config.metric))
+                        .axisLabel(_.toTitleCase(config.metric))
                         .axisLabelDistance(50)
+                        .tickValues([1,30,60])
                         .tickFormat(d3.format('d'));
 
 

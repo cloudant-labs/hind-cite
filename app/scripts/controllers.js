@@ -41,7 +41,7 @@ controllersProvider
         $scope.dateVal = function (dateStr) {
             return new Date(dateStr);
         };
-        $scope.d.selectedId=null;
+        $scope.d.selectedId = null;
 
         $scope.numComments = function () {
             return sumHistRec($scope.d.data, 'comments');
@@ -73,11 +73,11 @@ controllersProvider
 
         })
 
-        $scope.$watch('d.selectedId', function(newVal, oldVal){
+        $scope.$watch('d.selectedId', function (newVal, oldVal) {
             if ($scope.d.selectedId == null) return;
 
             console.log('postCtrl d.selectedId changed:', newVal);
-            $scope.d.postid=$scope.d.selectedId;
+            $scope.d.postid = $scope.d.selectedId;
         });
 
 
@@ -87,22 +87,22 @@ controllersProvider
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
-        $scope.d.postIds = ['7441799', '7442764', '7439444'];
-        $scope.d.postIdsText='';  // Set in watch
+        $scope.d.postIds = ['7415660', '7412612', '7422988', '7437940', '7439444'];
+        $scope.d.postIdsText = '';  // Set in watch
+        $scope.d.metric = 'rank';
 
 
-
-        $scope.idsToText=function(idarray) {
+        $scope.idsToText = function (idarray) {
             console.log('idsToText: ', idarray.join(','));
             return idarray.join(',');
         };
 
-        $scope.textToIds=function(idtext){
-            var split=idtext.split(/[\s,;.]+/);
-            var out=[];
-            split.forEach(function(id) {
-                id=id.replace(/ /g,'');
-                if (/^[0-9]{7}$/.test(id)){
+        $scope.textToIds = function (idtext) {
+            var split = idtext.split(/[\s,;.]+/);
+            var out = [];
+            split.forEach(function (id) {
+                id = id.replace(/ /g, '');
+                if (/^[0-9]{7}$/.test(id)) {
                     out.push(id);
                 }
             });
@@ -115,14 +115,14 @@ controllersProvider
         // Initialize ids based on url
         if ($location.search().postIds) {
             $scope.d.postIdsText = $location.search().postIds;
-            $scope.d.postIds=$scope.textToIds($scope.d.postIdsText);
+            $scope.d.postIds = $scope.textToIds($scope.d.postIdsText);
         }
 
 
         $scope.dateVal = function (dateStr) {
             return new Date(dateStr);
         };
-        $scope.d.selectedId=null;
+        $scope.d.selectedId = null;
 
         $scope.numComments = function () {
             return sumHistRec($scope.d.data, 'comments');
@@ -130,7 +130,6 @@ controllersProvider
         $scope.numPoints = function () {
             return sumHistRec($scope.d.data, 'points');
         };
-
 
 
         console.log('multiPostCtrl - entering', $scope);
@@ -141,28 +140,28 @@ controllersProvider
                 return;
             }
 
-            $scope.d.postIdsText=$scope.idsToText($scope.d.postIds);
-            $scope.d.data={};
+            $scope.d.postIdsText = $scope.idsToText($scope.d.postIds);
+            $scope.d.data = {};
 
             // Update url
-            $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g,'')});  // TODO - fix url
+            $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')});  // TODO - fix url
 
-            $scope.d.postIds.forEach(function(id) {
+            $scope.d.postIds.forEach(function (id) {
                 getDataSvc.getById(id, null, function success(data) {
-                    console.log('multiPostCtrl - got data. for id ['+id+'] Raw: ', data);
+                    console.log('multiPostCtrl - got data. for id [' + id + '] Raw: ', data);
                     $scope.$apply($scope.d.data[id] = data);
                     $scope.$apply($scope.d.data.timestamp = Date.now());
                 });
             });
         });
 
-        $scope.$watch('d.postIdsText', function(newVal) {
-            if(newVal==null) {return;}
+        $scope.$watch('d.postIdsText', function (newVal) {
+            if (newVal == null) {
+                return;
+            }
 
-            $scope.d.postIds=$scope.textToIds($scope.d.postIdsText);
+            $scope.d.postIds = $scope.textToIds($scope.d.postIdsText);
         });
-
-
 
 
     }]);
@@ -177,9 +176,9 @@ controllersProvider
         console.log('hnsearchCtrl - entering', $scope);
 
         // Delay initializing HNsearch until all pieces are loaded
-        var maxDelay=2000, startTime=new Date();
-        var intId=window.setInterval(function () {
-            if (! $('#search-panel').length || ! $('#hitTemplate').length){
+        var maxDelay = 2000, startTime = new Date();
+        var intId = window.setInterval(function () {
+            if (!$('#search-panel').length || !$('#hitTemplate').length) {
                 if (Date.now() - startTime < maxDelay) {
                     return;
                 } else {
@@ -187,7 +186,7 @@ controllersProvider
                 }
             }
             window.clearInterval(intId);
-            console.log('Initializing hnsearch after delay: ', Date.now()-startTime);
+            console.log('Initializing hnsearch after delay: ', Date.now() - startTime);
 
             window.hnsearch = new HNSearch('UJ5WYC0L7X', '8ece23f8eb07cd25d40262a1764599b1', 'Item_production', 'User_production', $scope);
         }, 100);
@@ -197,9 +196,10 @@ controllersProvider
 
             console.log('hnsearchCtrl: d.selectedIds watch fired: ', newValue);
         });
-
-
     }]);
+// TODO - add selector for rank/points/comments
+// TODO - Work on text-search selector for multiple
+// TODO - Add statistics
 
 /** Returns max value of field in data.history
  *
