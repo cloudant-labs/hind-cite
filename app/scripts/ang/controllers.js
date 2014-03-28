@@ -135,7 +135,7 @@ angular.module('mainApp')
         };
 
         $scope.removePostId = function(postId){
-            $scope.$apply($scope.d.postIds= $scope.d.postIds.filter(function(val) {return val === postId;}));
+            $scope.$apply($scope.d.postIds= $scope.d.postIds.filter(function(val) {return val !== postId;}));
         };
 
         $scope.dataOnly = function() {

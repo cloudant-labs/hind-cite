@@ -40,7 +40,7 @@
         </thead>
         <tbody>
             <tr ng-repeat=" (key, rec) in dataOnly()">
-                <td>{{ rec.id }} &nbsp; <span class="glyphicon glyphicon-minus-sign small text-danger"></span></td>
+                <td>{{ rec.id }} &nbsp; <span class="glyphicon glyphicon-minus-sign small text-danger" ng-click="removePostId(rec.id)"></span>
                 <td><a href="{{ rec.href }}" target="_blank" >{{ rec.title }} </a></td>
             </tr>
 
