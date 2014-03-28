@@ -1,8 +1,7 @@
 'use strict';
 
-var filtersProvider = angular.module('filtersProvider', []);
 
-filtersProvider
+angular.module('mainApp')
     .filter('titleCase', function () {
         return function (input) {
             return input.replace(/\w\S*/g, function (txt) {

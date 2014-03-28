@@ -2,12 +2,13 @@
 
 // requires getData
 
-var svcProvider = angular.module('servicesProvider', []);
+
+
 
 /**
  * Simple service wrapper on getData
  */
-svcProvider.factory('getDataSvc', function() {
+angular.module('mainApp').factory('getDataSvc', function() {
 
     return getData;
 });

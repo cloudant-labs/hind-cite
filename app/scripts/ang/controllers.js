@@ -1,8 +1,7 @@
 'use strict';
 
-var controllersProvider = angular.module('controllersProvider', ['servicesProvider']);
 
-controllersProvider
+angular.module('mainApp')
     .controller('mainCtrl', ['$scope', '$log', function ($scope, $log) {
         $log.log('******************************************************************************');
         $log.log('Brought to you by Cloudant.com, an IBM Company');
@@ -17,7 +16,7 @@ controllersProvider
     }]);
 
 
-controllersProvider
+angular.module('mainApp')
     .controller('snapsPerDayCtrl', ['$scope', 'getDataSvc', function ($scope, getDataSvc) {
         $scope.d = {};
         $scope.d.data = [];
@@ -33,7 +32,7 @@ controllersProvider
     }]);
 
 
-controllersProvider
+angular.module('mainApp')
     .controller('postCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
@@ -83,7 +82,7 @@ controllersProvider
 
     }]);
 
-controllersProvider
+angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
@@ -169,7 +168,7 @@ controllersProvider
 /**
  * Subservient controller, passing data back to parent via $scope.d.selectedId
  */
-controllersProvider
+angular.module('mainApp')
     .controller('hnsearchCtrl', ['$scope', function ($scope) {
         $scope.d.selectedId = null;  // NOTE - this requires a parent controller with $scope.d={}
 

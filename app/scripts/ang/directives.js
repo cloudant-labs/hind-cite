@@ -2,9 +2,8 @@
 
 // requires
 
-var directivesProvider=angular.module('directivesProvider', ['servicesProvider']);
 
-directivesProvider.directive('spdChart', ['getDataSvc',
+angular.module('mainApp').directive('spdChart', ['getDataSvc',
     function factory(getDataSvc) {
         var directiveDefinitionObject = {
             template:
@@ -48,7 +47,7 @@ directivesProvider.directive('spdChart', ['getDataSvc',
     }
 ]);
 
-directivesProvider.directive('postChart', ['getDataSvc',
+angular.module('mainApp').directive('postChart', ['getDataSvc',
     function factory(getDataSvc) {
         var directiveDefinitionObject = {
             template:
@@ -93,7 +92,7 @@ directivesProvider.directive('postChart', ['getDataSvc',
     }
 ]);
 
-directivesProvider.directive('multiPostChart', ['getDataSvc',
+angular.module('mainApp').directive('multiPostChart', ['getDataSvc',
     function factory(getDataSvc) {
         var directiveDefinitionObject = {
             template:

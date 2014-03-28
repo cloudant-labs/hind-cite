@@ -1,14 +1,10 @@
 'use strict';
 
-angular.module('hnApp', [
+angular.module('mainApp', [
         'ngCookies',
         'ngResource',
         'ngSanitize',
-        'ngRoute',
-        'controllersProvider',
-        'directivesProvider',
-        'servicesProvider',
-        'filtersProvider'
+        'ngRoute'
     ])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
