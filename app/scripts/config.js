@@ -27,6 +27,7 @@ var config = (function () {
         COUCH_DESIGN : 'by',
         VIEW_SNAPSPERDAY : 'snaps-per-day',
         VIEW_ID : 'id',
+        VIEW_LATEST : 'latest',
 
         medChartSize: medChartSize
 

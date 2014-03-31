@@ -52,6 +52,10 @@ var getData = (function ($, _, config) {
         return createUrl(config.VIEW_ID, params);
     }
 
+    function createLatestUrl(params){
+        return createUrl(config.VIEW_LATEST, params);
+    }
+
     function get(url, successFn, errFn) {
         if (! errFn){
             errFn = function(jqXHR, textStatus, errorThrown) {
@@ -77,22 +81,32 @@ var getData = (function ($, _, config) {
         get(url, successFn, errFn);
     }
 
+    /**
+     * Sets the created_d and timestamp_d fields for the whole record, and for each history record.
+     * @param rec - a HNPost record
+     * @returns - updates record IN PLACE
+     */
+    function setTimestamps(rec){        
+        rec.created_d = rec.created && new Date(rec.created + " UTC");
+
+        if (rec.history) {
+            rec.history.forEach(function(d){
+                d.created_d = d.created && new Date(d.created + " UTC");
+                d.timestamp_d = d.timestamp_str && new Date(d.timestamp_str + " UTC");
+            })
+        }        
+    }
+    
    /**
      *
      * @param raw - raw data from cloudant
      * @returns Just the relevant data, with created_d, and timestamp_d --> localized date objects.
      */
     function reformatByIdData(raw){
-        var inner=raw.rows[0].value;
-        inner.created_d = inner.created && new Date(inner.created + " UTC");
+        var rec=raw.rows[0].value;
 
-        if (inner.history) {
-            inner.history.forEach(function(d){
-                d.created_d = d.created && new Date(d.created + " UTC");
-                d.timestamp_d = d.timestamp_str && new Date(d.timestamp_str + " UTC");
-            })
-        }
-        return inner;
+        setTimestamps(rec);
+        return rec;
     }
 
     /**
@@ -117,6 +131,37 @@ var getData = (function ($, _, config) {
     }
 
 
+
+    function reformatLatest(raw){
+        var out=[], curRec;
+
+        raw.rows.forEach(function(row, idx){
+            curRec = row.value;
+            curRec.key=curRec.key[0];  // Just keep the rank
+            setTimestamps(curRec.doc);
+            out.push(curRec);
+        });
+        return out;
+    }
+
+    function getLatest(maxNum, otherParams, successFn, errFn){
+        if (maxNum === null) {
+            throw new Error('getLatest: improper parameters. maxNum not set properly');
+        }
+        var params = {} || otherParams;
+        params.reduce=true;
+        params.group=true;
+        params.group_level=1;
+        params.limit=maxNum;
+
+        var url=createLatestUrl(params);
+        get(url, function(rawData){
+            var modData=reformatLatest(rawData);
+            successFn(modData);
+        }, errFn);
+    }
+
+
     return {
         paramsToQuery : paramsToQuery,
         createUrl : createUrl,
@@ -124,7 +169,10 @@ var getData = (function ($, _, config) {
         createIdUrl : createIdUrl,
         get : get,
         getSnapshots : getSnapshots,
-        getById : getById
+        getById : getById,
+        createLatestUrl : createLatestUrl,
+        getLatest : getLatest,
+        reformatLatest : reformatLatest
     };
 
 }($, _, config));
