@@ -16,3 +16,5 @@ function(doc) {
         emit('0000-00-00',1);
     }
 }
+
+// TODO - Clean up db so all records have doc_type='post', then add doc_type check
