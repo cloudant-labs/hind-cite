@@ -139,3 +139,36 @@ describe('getLatest works', function(){
     });
 
 });
+
+describe('getMultIds works', function(){
+    var retVal, done;
+
+    beforeEach(function(){
+        retVal={};
+        done=false;
+    });
+
+
+    it('returns proper data', function(){
+        runs(function() {
+            getData.getMultIds(["7415660","7412612"], {}, function(data){
+                retVal=data;
+                done=true;
+            }, function(){
+                retVal='ERROR';
+                done=true;
+            })
+        });
+
+
+        waitsFor(function() {
+            return done;
+        }, 'timed out', 6000);
+
+        runs(function(){
+            expect(retVal.length).toBe(2);
+        });
+
+    });
+
+});

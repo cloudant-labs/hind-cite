@@ -162,12 +162,13 @@ angular.module('mainApp')
             // Update url
             $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')});  // TODO - fix url
 
-            $scope.d.postIds.forEach(function (id) {
-                getDataSvc.getById(id, null, function success(data) {
-                    console.log('multiPostCtrl - got data. for id [' + id + '] Raw: ', data);
-                    $scope.$apply($scope.d.data[id] = data);
-                    $scope.$apply($scope.d.data.timestamp = Date.now());
+
+            getDataSvc.getMultIds($scope.d.postIds, null, function success(data) {
+                console.log('multiPostCtrl - got data. Raw: ', data);
+                data.forEach(function(rec){
+                    $scope.$apply($scope.d.data[rec.id] = rec);
                 });
+                $scope.$apply($scope.d.data.timestamp = Date.now());
             });
         });
 
