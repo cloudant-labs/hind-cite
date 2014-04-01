@@ -33,56 +33,6 @@ angular.module('mainApp')
 
 
 angular.module('mainApp')
-    .controller('postCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
-        $scope.d = {};
-        $scope.d.data = {};
-        $scope.d.postid = '7290931';
-        $scope.dateVal = function (dateStr) {
-            return new Date(dateStr);
-        };
-        $scope.d.selectedId = null;
-
-        $scope.numComments = function () {
-            return sumHistRec($scope.d.data, 'comments');
-        };
-        $scope.numPoints = function () {
-            return sumHistRec($scope.d.data, 'points');
-        };
-
-        if ($location.search().postid) {
-            $scope.d.postid = $location.search().postid;
-        }
-
-        console.log('postCtrl - entering', $scope);
-
-        $scope.$watch('d.postid', function (newVal, oldVal) {
-
-            if (newVal == null) {
-                return;
-            }
-
-            // Update url
-            $location.search({postid: $scope.d.postid});
-
-            getDataSvc.getById($scope.d.postid, null, function success(data) {
-                console.log('postCtrl - got data. Raw: ', data);
-                $scope.$apply($scope.d.data = data);
-                $scope.$apply($scope.d.data.timestamp = Date.now());
-            });
-
-        })
-
-        $scope.$watch('d.selectedId', function (newVal, oldVal) {
-            if ($scope.d.selectedId == null) return;
-
-            console.log('postCtrl d.selectedId changed:', newVal);
-            $scope.d.postid = $scope.d.selectedId;
-        });
-
-
-    }]);
-
-angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
