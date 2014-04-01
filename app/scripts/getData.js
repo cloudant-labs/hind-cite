@@ -136,9 +136,8 @@ var getData = (function ($, _, config) {
         var out=[], curRec;
 
         raw.rows.forEach(function(row, idx){
-            curRec = row.value;
-            curRec.key=curRec.key[0];  // Just keep the rank
-            setTimestamps(curRec.doc);
+            curRec=row.value.doc;
+            setTimestamps(curRec);
             out.push(curRec);
         });
         return out;

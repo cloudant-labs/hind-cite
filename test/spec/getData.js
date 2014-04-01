@@ -106,8 +106,14 @@ describe('getLatest works', function(){
 
     it('returns proper data', function(){
         runs(function() {
-            getData.getLatest(2, {}, function(data){
+            getData.getLatest(5, {}, function(data){
                 retVal=data;
+                console.log('MANUAL: Compare the following list with HackerNews Page 1 (should be similar)');
+                console.log('rank\t\ttitle');
+                console.log('====\t\t==============');
+                retVal.forEach(function(rec, i){
+                   console.log("    ".substring(0, 4 - (String(i).length))+i+'\t\t'+rec.title);
+                });
                 done=true;
             }, function(){
                 retVal='ERROR';
@@ -121,7 +127,13 @@ describe('getLatest works', function(){
         }, 'timed out', 2500);
 
         runs(function(){
-            expect(retVal).toEqual("HELLO");
+            expect(retVal.length).toEqual(5);
+            expect(retVal[0].history).toBeDefined();
+            expect(retVal[0].history[retVal[0].history.length-1].rank).toEqual(1);
+            expect(retVal[4].history[retVal[4].history.length-1].rank).toEqual(5);
+            expect(retVal[0].created_d).toBeDefined();
+            expect(retVal[0].history[0].timestamp_d).toBeDefined();
+            expect(retVal[0].history[0].created_d).toBeDefined();
         });
 
     });
