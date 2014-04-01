@@ -9,10 +9,10 @@
         </div>
         <div class="panel-body]">
            <form class="form-inline" role="form">
-                <label>Enter id &nbsp;</label>
+                <label>&nbsp; Enter Ids &nbsp;</label>
 
                 <div class="form-group">
-                    <input id="postIds" type="text" class="form-control" placeholder="Enter post id"
+                    <input id="postIds" type="text" class="form-control" placeholder="Enter list of ids"
                            ng-model="d.postIdsText">
                 </div>
                 &nbsp; OR &nbsp;
@@ -20,14 +20,16 @@
                     Search for Post
                 </button>
                 &nbsp; OR &nbsp;
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="">
-                    TBD - Pick by list
-                </button>
+                <select class="form-control" ng-model="d.topN">
+                    <option value="deselected" disabled selected>Select Top Posts</option>
+                    <option value="10" >Current Top 10</option>
+                    <option value="20" >Current Top 20</option>
+                    <option value="30" >Current Top 30</option>
+                </select>
             </form>
         </div>
 
     </div>
-
 
     <h1>Post Comparison</h1>
 

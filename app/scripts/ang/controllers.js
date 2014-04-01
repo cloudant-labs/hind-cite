@@ -36,10 +36,10 @@ angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
-        $scope.d.postIds = ['7415660', '7412612'];
+        $scope.d.postIds = [];
         $scope.d.postIdsText = '';  // Set in watch
         $scope.d.metric = 'rank';
-
+        $scope.d.topN = "10";
 
         $scope.idsToText = function (idarray) {
             console.log('idsToText: ', idarray.join(','));
@@ -65,6 +65,8 @@ angular.module('mainApp')
         if ($location.search().postIds) {
             $scope.d.postIdsText = $location.search().postIds;
             $scope.d.postIds = $scope.textToIds($scope.d.postIdsText);
+        } else if ($location.search().topN) {
+            $scope.d.topN=$location.search().topN;
         }
 
 
@@ -80,42 +82,52 @@ angular.module('mainApp')
             return sumHistRec($scope.d.data, 'points');
         };
 
-        $scope.addPostId=function(postId){
+        $scope.addPostId = function (postId) {
             $scope.$apply($scope.d.postIds.push(postId));
         };
 
-        $scope.removePostId = function(postId){
-            $scope.$apply($scope.d.postIds= $scope.d.postIds.filter(function(val) {return val !== postId;}));
+        $scope.removePostId = function (postId) {
+            $scope.$apply($scope.d.postIds = $scope.d.postIds.filter(function (val) {
+                return val !== postId;
+            }));
         };
 
-        $scope.dataOnly = function() {
-            var out={};
+        $scope.dataOnly = function () {
+            var out = {};
             for (var key in $scope.d.data) {
-                if  (/^[0-9]{7}$/.test(key) ){
+                if (/^[0-9]{7}$/.test(key)) {
                     out[key] = $scope.d.data[key];
                 }
             }
             return out;
         };
 
+        function setUrl(method) {
+            if (method == 'idlist') {
+                $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')});  // TODO - fix url
+
+            } else if (method == 'dropdown') {
+                $location.search({topN: $scope.d.topN});
+            } else {
+                throw new Error('multiPostCtrl.setUrl - improper method:', method);
+            }
+        }
+
         console.log('multiPostCtrl - entering', $scope);
 
         $scope.$watchCollection('d.postIds', function (newVals, oldVals) {
 
-            if (newVals == null) {
+            if (newVals == null || $scope.d.postIds.length === 0) {
                 return;
             }
 
             $scope.d.postIdsText = $scope.idsToText($scope.d.postIds);
             $scope.d.data = {};
-
-            // Update url
-            $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')});  // TODO - fix url
-
+            $scope.d.topN = 'deselected';
 
             getDataSvc.getMultIds($scope.d.postIds, null, function success(data) {
                 console.log('multiPostCtrl - got data. Raw: ', data);
-                data.forEach(function(rec){
+                data.forEach(function (rec) {
                     $scope.$apply($scope.d.data[rec.id] = rec);
                 });
                 $scope.$apply($scope.d.data.timestamp = Date.now());
@@ -128,6 +140,34 @@ angular.module('mainApp')
             }
 
             $scope.d.postIds = $scope.textToIds($scope.d.postIdsText);
+        });
+
+        $scope.$watch('d.topN', function (newVal) {
+            if (newVal == null || newVal == 'deselected') {
+                return;
+            }
+            $scope.d.postIds=[];
+
+            getDataSvc.getLatest(Number($scope.d.topN), null, function success(data) {
+                console.log('multiPostCtrl - got data. Raw: ', data);
+                $scope.d.data={};
+                data.forEach(function (rec) {
+                    $scope.$apply($scope.d.data[rec.id] = rec);
+                });
+                $scope.$apply($scope.d.data.timestamp = Date.now());
+            });
+        });
+
+        // Set url  (do in one place, so it doesn't keep overwriting itself)
+        $scope.$watchCollection('[d.postIds, d.topN]', function(newVals){
+           if (newVals==null){
+               return;
+           }
+           if ($scope.d.postIds.length > 0) {
+               setUrl('idlist');
+           } else if ($scope.d.topN !== 'deselected') {
+               setUrl('dropdown')
+           }
         });
 
 
