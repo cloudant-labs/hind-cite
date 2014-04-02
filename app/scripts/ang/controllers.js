@@ -36,8 +36,9 @@ angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
         $scope.d = {};
         $scope.d.data = {};
-        $scope.d.postIds = [];
-        $scope.d.newIds = [];
+        $scope.d.postIds = [];  // Current list of fetched ids
+        $scope.d.newIds = [];   // Ids that need to be added
+        $scope.d.tmpIds=[];     // Holding pen (for hnsearch control)
         $scope.d.metric = 'rank';
         $scope.d.addByDropdown = "10";
         $scope.d.dropdownIdsOnly = true;  // clean if no ids added / removed from list
@@ -92,6 +93,19 @@ angular.module('mainApp')
             $scope.$apply($scope.d.newIds = $scope.d.newIds.concat($scope.textToIds(postIdText)));
         };
 
+        $scope.addToTmpIds = function(postId){
+            if (_.contains($scope.d.tmpIds, postId)) {
+                return;
+            }
+            $scope.d.tmpIds.push(postId);
+        }
+        $scope.removeFromTmpIds = function(postId){
+            $scope.d.tmpIds = _.without($scope.d.tmpIds, postId);
+        }
+        $scope.submitTmpIds = function() {
+            $scope.$apply($scope.d.newIds=$scope.d.newIds.concat($scope.d.tmpIds));
+            $scope.d.tmpIds=[];
+        }
         function setDropdownIdsModified() {
             $scope.d.dropdownIdsOnly = false;
             $scope.d.addByDropdown = 'deselected';
@@ -102,11 +116,7 @@ angular.module('mainApp')
         }
 
         $scope.removePostId = function (postId) {
-            $scope.d.postIds =
-                $scope.d.postIds.filter(
-                    function (val) {
-                        return val !== postId;
-                    });
+            $scope.d.postIds = _.without($scope.d.postIds, postId);
             setDropdownIdsModified();
             $scope.d.requestByIdDirty = true;
         };

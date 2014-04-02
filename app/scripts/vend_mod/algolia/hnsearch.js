@@ -39,10 +39,11 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.$scope = $scope // RR - For passing data back to angular controller
             this.addSelectedId = function(selectedId){ //RR
                 console.log('setSelected Id', selectedId);
-                $('#hnsearchModal').removeClass('fade');  // HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately.
-                $('#hnsearchModal').modal('hide');
+//                $('#hnsearchModal').removeClass('fade');  // HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately.
+//                $('#hnsearchModal').modal('hide');
 
-                hnsearch.$scope.addNewIdText(selectedId);
+                hnsearch.$scope.addToTmpIds(selectedId);
+                hnsearch.$scope.submitTmpIds();
             };
             var searchArgs={url:false, hitsPerPage:10 }; //RR
 
