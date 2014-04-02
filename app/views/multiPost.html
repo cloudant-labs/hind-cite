@@ -4,24 +4,24 @@
     <div class="panel panel-default ">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <div>Select Post</div>
+                <div>Add Posts</div>
             </h3>
         </div>
         <div class="panel-body]">
            <form class="form-inline" role="form">
-                <label>&nbsp; Enter Ids &nbsp;</label>
+                <label>&nbsp; By Id &nbsp;</label>
 
                 <div class="form-group">
-                    <input id="postIds" type="text" class="form-control" placeholder="Enter list of ids"
+                    <input id="postIds" type="text" class="form-control" placeholder="id1, id2, ..."
                            ng-model="d.postIdsText">
                 </div>
                 &nbsp; OR &nbsp;
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#hnsearchModal">
-                    Search for Post
+                    By Search
                 </button>
                 &nbsp; OR &nbsp;
-                <select class="form-control" ng-model="d.topN">
-                    <option value="deselected" disabled selected>Select Top Posts</option>
+                <select class="form-control" ng-model="d.addByDropdown">
+                    <option value="deselected" disabled selected>By List</option>
                     <option value="10" >Current Top 10</option>
                     <option value="20" >Current Top 20</option>
                     <option value="30" >Current Top 30</option>
@@ -31,12 +31,15 @@
 
     </div>
 
+    <p>Post ids: {{ d.postIds }}</p>
+    <p>CleanList: {{ d.cleanList }}</p>
     <h1>Post Comparison</h1>
+
 
     <table class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th> ID </th>
+                <th> ID <button class="btn btn-danger btn-xs" ng-click="clearAllIds()">Clear all</button> </th>
                 <th> Title </th>
             </tr>
         </thead>

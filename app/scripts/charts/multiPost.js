@@ -5,6 +5,8 @@ var chartMultiPost = (function ($, _, nv) {
         function chart() {
             var elId, chartSize, data, graph, nvChart;
 
+            nv.dev=false;  // turn off nvd3 automatic console logging
+
             function init(config) {
                 if (!config || !config.elId) {
                     throw new Error('snapsPerDay.init - missing config properties: ', config);
@@ -47,7 +49,6 @@ var chartMultiPost = (function ($, _, nv) {
                     out.push(outSeries);
                 }
 
-                console.log('dataCloudantToNV. ', raw, '-->', out);
                 return out;
             }
 

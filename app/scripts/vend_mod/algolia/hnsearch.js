@@ -42,8 +42,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                 $('#hnsearchModal').removeClass('fade');  // HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately.
                 $('#hnsearchModal').modal('hide');
 
-                hnsearch.$scope.addPostId(selectedId);
-                //hnsearch.$scope.$apply(hnsearch.$scope.d.selectedId = selectedId);
+                hnsearch.$scope.addNewIdText(selectedId);
             };
             var searchArgs={url:false, hitsPerPage:10 }; //RR
 
