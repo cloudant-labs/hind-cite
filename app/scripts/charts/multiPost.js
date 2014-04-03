@@ -5,7 +5,7 @@ var chartMultiPost = (function ($, _, nv) {
         function chart() {
             var elId, chartSize, data, graph, nvChart;
 
-            nv.dev=false;  // turn off nvd3 automatic console logging
+            nv.dev = false;  // turn off nvd3 automatic console logging
 
             function init(config) {
                 if (!config || !config.elId) {
@@ -21,8 +21,6 @@ var chartMultiPost = (function ($, _, nv) {
 
 
             }
-
-
 
 
             function dataCloudantToNV(raw, metric) {
@@ -72,7 +70,7 @@ var chartMultiPost = (function ($, _, nv) {
 
             function draw(config) {
 
-                if (!config || !config.data || !config.metric) {
+                if (!config || !config.data || !config.metric || !config.rankRange) {
                     throw new Error('snapsPerDay.draw - missing config.data: ', config);
                 }
 
@@ -83,24 +81,28 @@ var chartMultiPost = (function ($, _, nv) {
                         .margin({top: 30, right: 50, bottom: 50, left: 50})
                         .useInteractiveGuideline(true)
 
-                    nvChart.legend.key(function(d) {return d.key.substring(0,10)});
+                    nvChart.clamp(true);
+
+                    nvChart.legend.key(function (d) {
+                        return d.key.substring(0, 10)
+                    });
 
 
                     nvChart.xAxis
                         .axisLabel('Hours From First Post')
                         .tickFormat(d3.format('.0f'))
-                        .tickValues(_.range(0,2000,6))
-
-
-                    if (config.metric === 'rank') {
-                        nvChart.yDomain([60, 1])
-                    }
+                        .tickValues(_.range(0, 2000, 6));
 
                     nvChart.yAxis
                         .axisLabel(_.toTitleCase(config.metric))
                         .axisLabelDistance(50)
-                        .tickValues([1,30,60])
                         .tickFormat(d3.format('d'));
+
+                    if (config.metric == 'rank'){
+                        nvChart.yDomain([config.rankRange, 1]);
+                        nvChart.yAxis
+                        .tickValues([1,30,60])
+                    }
 
 
                     d3.select(idToSelector(elId, 'svg'))
@@ -128,8 +130,5 @@ var chartMultiPost = (function ($, _, nv) {
             chart: chart
         };
 
-    }
-        ($, _, nv)
-        )
-    ;
+    }($, _, nv));
 

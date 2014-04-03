@@ -1,4 +1,6 @@
 'use strict';
+/*global $:false, angular:false, console:false, _:false, HNSearch:false */
+
 
 
 angular.module('mainApp')
@@ -31,6 +33,25 @@ angular.module('mainApp')
 
     }]);
 
+/** Returns max value of field in data.history
+ *
+ * @param data - result of getSnapshots
+ * @param field - a field (string) in data.history
+ * @returns {number}
+ * @example sumHist($scope.d.data, 'comments') --> 25
+ */
+function sumHistRec(data, field) {
+
+    if (!data || !data.history) {
+        return 0;
+    }
+
+    var maxVal = 0;
+    data.history.forEach(function (d) {
+        maxVal = Math.max(maxVal, 0 || d[field]);
+    });
+    return maxVal;
+}
 
 angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', function ($scope, getDataSvc, $location, $timeout) {
@@ -39,7 +60,8 @@ angular.module('mainApp')
         $scope.d.postIds = [];  // Current list of fetched ids
         $scope.d.newIds = [];   // Ids that need to be added
         $scope.d.metric = 'rank';
-        $scope.d.addByDropdown = "10";
+        $scope.d.rankRange=30;
+        $scope.d.addByDropdown = '10';
         $scope.d.dropdownIdsOnly = true;  // clean if no ids added / removed from list
         $scope.d.selectedId = null;
         $scope.d.requestByIdDirty = false;
@@ -98,12 +120,12 @@ angular.module('mainApp')
         };
         $scope.removeFromNewIds = function (postId) {
             $scope.$apply($scope.d.newIds = _.without($scope.d.newIds, postId));
-        }
+        };
         $scope.submitPostIdsText = function () {
             var newIds = $scope.textToIds($scope.d.postIdsText);
             $scope.d.newIds = _.union($scope.d.newIds, newIds);
             $scope.d.postIdsText = '';
-        }
+        };
 
         function setDropdownIdsModified() {
             $scope.d.dropdownIdsOnly = false;
@@ -133,7 +155,9 @@ angular.module('mainApp')
         $scope.dataOnly = function () {
             var out = {};
             for (var key in $scope.d.data) {
+                //noinspection JSUnfilteredForInLoop
                 if (/^[0-9]{7}$/.test(key)) {
+                    //noinspection JSUnfilteredForInLoop
                     out[key] = $scope.d.data[key];
                 }
             }
@@ -174,7 +198,7 @@ angular.module('mainApp')
 
 
         $scope.$watch('d.addByDropdown', function (newVal) {
-            if (newVal == null || newVal == 'deselected') {
+            if (newVal === null || newVal === 'deselected') {
                 return;
             }
             setDropdownIdsOnly();
@@ -194,8 +218,8 @@ angular.module('mainApp')
         });
 
 
-        $scope.$watchCollection("d.newIds", function (newVals) {
-            if (newVals == null || newVals.length == 0) {
+        $scope.$watchCollection('d.newIds', function (newVals) {
+            if (newVals === null || newVals.length === 0) {
                 return;
             }
             $scope.d.newIds.forEach(function (postId) {
@@ -208,7 +232,7 @@ angular.module('mainApp')
 
         $scope.$watch('d.requestByIdDirty', function (newVal) {
 
-            if (newVal == null || !newVal) {
+            if (newVal === null || !newVal) {
                 return;
             }
 
@@ -224,7 +248,7 @@ angular.module('mainApp')
             });
         });
 
-        $scope.$watchCollection('d.postIds', function (newVals) {
+        $scope.$watchCollection('d.postIds', function () {
             setUrl();
         });
 
@@ -253,7 +277,9 @@ angular.module('mainApp')
         }, 100);
 
         $scope.$watch('d.selectedId', function (newValue) {
-            if (newValue == null) return;
+            if (newValue === null) {
+                return;
+            }
 
             console.log('hnsearchCtrl: d.selectedIds watch fired: ', newValue);
             // TODO - REMOVE selectedId
@@ -263,22 +289,4 @@ angular.module('mainApp')
 // TODO - Work on text-search selector for multiple
 // TODO - Add statistics
 
-/** Returns max value of field in data.history
- *
- * @param data - result of getSnapshots
- * @param field - a field (string) in data.history
- * @returns {number}
- * @example sumHist($scope.d.data, 'comments') --> 25
- */
-function sumHistRec(data, field) {
 
-    if (!data || !data.history) {
-        return 0
-    }
-
-    var maxVal = 0;
-    data.history.forEach(function (d) {
-        maxVal = Math.max(maxVal, 0 || d[field]);
-    });
-    return maxVal;
-}

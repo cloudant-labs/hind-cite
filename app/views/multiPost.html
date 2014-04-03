@@ -32,10 +32,7 @@
 
     </div>
 
-    <p>postIdsText {{ d.postIdsText }}</p>
-    <p>newIds: {{ d.newIds }}</p>
-    <p>Post ids: {{ d.postIds }}</p>
-    <p>CleanList: {{ d.cleanList }}</p>
+
     <h1>Post Comparison</h1>
 
 
@@ -58,8 +55,46 @@
 
     <br>
 
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <div>Chart Controls</div>
+            </h3>
+        </div>
+        <div class="panel-body]">
+           <form class="form-inline" role="form">
+               <div class="form-group">
+                   <label>&nbsp; Metric: &nbsp;</label>
+                   <!-- TODO - Shouldn't need nbsp, and vert alignment is wrong-->
+                   <label class="radio-inline">
+                       <input type="radio" value="rank" ng-model="d.metric"> Rank
+                   </label>
+                   <label class="radio-inline">
+                       <input type="radio" value="points" ng-model="d.metric"> Points
+                   </label>
+                   <label class="radio-inline">
+                       <input type="radio" value="comments" ng-model="d.metric"> Comments
+                   </label>
+               </div>
+               <div class="form-group" ng-show="d.metric == 'rank'">
+                   <label>&nbsp;&nbsp; Rank Range: &nbsp;</label>
+                   <label class="radio-inline">
+                       <input type="radio" value="30" ng-model="d.rankRange"> 1-30
+                   </label>
+                   <label class="radio-inline">
+                       <input type="radio" value="60" ng-model="d.rankRange"> 1-60
+                   </label>
+               </div>
+           </form>
+        </div>
+
+    </div>
+
+    <br>
+
     <h1>{{ d.metric | titleCase}}</h1>
-    <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp" metric="d.metric"></multi-post-chart>
+    <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"
+                      metric="d.metric" rankRange="d.rankRange"></multi-post-chart>
 
 
     <div ng-controller="hnsearchCtrl">

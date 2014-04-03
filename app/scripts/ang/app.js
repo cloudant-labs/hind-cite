@@ -1,4 +1,6 @@
 'use strict';
+/*global $:false, angular:false */
+
 
 angular.module('mainApp', [
         'ngCookies',
@@ -43,7 +45,7 @@ angular.module('mainApp', [
 // Also do non-angular project initialization
 $(document).ready(function() {
 
-    $("* [rel='tooltip']").tooltip({
+    $('* [rel="tooltip"]').tooltip({
         html: true,
         trigger: 'click hover focus manual',
         delay: {show: 0, hide:200},

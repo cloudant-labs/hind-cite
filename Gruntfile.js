@@ -1,5 +1,6 @@
 // Generated on 2014-03-11 using generator-angular 0.7.1
 'use strict';
+/*jshint camelcase:false */
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -16,7 +17,7 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
-    var process=require('process');
+    var process = require('process');
 
     // Define the configuration for all the tasks
     grunt.initConfig({
@@ -128,7 +129,8 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                '<%= yeoman.app %>/scripts/**/*.js'
+                '<%= yeoman.app %>/scripts/**/*.js',
+                '!<%= yeoman.app %>/scripts/vend_mod/**/*.js'
             ],
             test: {
                 options: {
@@ -141,14 +143,16 @@ module.exports = function (grunt) {
         // Empties folders to start fresh
         clean: {
             dist: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '.tmp',
-                        '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*'
-                    ]
-                }]
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            '.tmp',
+                            '<%= yeoman.dist %>/*',
+                            '!<%= yeoman.dist %>/.git*'
+                        ]
+                    }
+                ]
             },
             server: '.tmp'
         },
@@ -159,12 +163,14 @@ module.exports = function (grunt) {
                 browsers: ['last 1 version']
             },
             dist: {
-                files: [{
-                    expand: true,
-                    cwd: '.tmp/styles/',
-                    src: '**/*.css',
-                    dest: '.tmp/styles/'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        cwd: '.tmp/styles/',
+                        src: '**/*.css',
+                        dest: '.tmp/styles/'
+                    }
+                ]
             }
         },
 
@@ -175,9 +181,6 @@ module.exports = function (grunt) {
                 ignorePath: '<%= yeoman.app %>/'
             }
         },
-
-
-
 
 
         // Renames files for browser caching purposes
@@ -216,22 +219,26 @@ module.exports = function (grunt) {
         // The following *-min tasks produce minified files in the dist folder
         imagemin: {
             dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/images',
-                    src: '**/*.{png,jpg,jpeg,gif}',
-                    dest: '<%= yeoman.dist %>/images'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.app %>/images',
+                        src: '**/*.{png,jpg,jpeg,gif}',
+                        dest: '<%= yeoman.dist %>/images'
+                    }
+                ]
             }
         },
         svgmin: {
             dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/images',
-                    src: '**/*.svg',
-                    dest: '<%= yeoman.dist %>/images'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.app %>/images',
+                        src: '**/*.svg',
+                        dest: '<%= yeoman.dist %>/images'
+                    }
+                ]
             }
         },
         htmlmin: {
@@ -242,12 +249,14 @@ module.exports = function (grunt) {
                     removeCommentsFromCDATA: true,
                     removeOptionalTags: true
                 },
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.dist %>',
-                    src: ['*.html', 'views/**/*.html'],
-                    dest: '<%= yeoman.dist %>'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['*.html', 'views/**/*.html'],
+                        dest: '<%= yeoman.dist %>'
+                    }
+                ]
             }
         },
 
@@ -255,12 +264,14 @@ module.exports = function (grunt) {
         // minsafe compatible so Uglify does not destroy the ng references
         ngmin: {
             dist: {
-                files: [{
-                    expand: true,
-                    cwd: '.tmp/concat/scripts',
-                    src: '*.js',
-                    dest: '.tmp/concat/scripts'
-                }]
+                files: [
+                    {
+                        expand: true,
+                        cwd: '.tmp/concat/scripts',
+                        src: '*.js',
+                        dest: '.tmp/concat/scripts'
+                    }
+                ]
             }
         },
 
@@ -274,26 +285,29 @@ module.exports = function (grunt) {
         // Copies remaining files to places other tasks can use
         copy: {
             dist: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= yeoman.app %>',
-                    dest: '<%= yeoman.dist %>',
-                    src: [
-                        '*.{ico,png,txt}',
-                        '.htaccess',
-                        '*.html',
-                        'views/**/*.html',
-                        'bower_components/**/*',
-                        'images/**/*.{webp}',
-                        'fonts/*'
-                    ]
-                }, {
-                    expand: true,
-                    cwd: '.tmp/images',
-                    dest: '<%= yeoman.dist %>/images',
-                    src: ['generated/*']
-                }]
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>',
+                        dest: '<%= yeoman.dist %>',
+                        src: [
+                            '*.{ico,png,txt}',
+                            '.htaccess',
+                            '*.html',
+                            'views/**/*.html',
+                            'bower_components/**/*',
+                            'images/**/*.{webp}',
+                            'fonts/*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        cwd: '.tmp/images',
+                        dest: '<%= yeoman.dist %>/images',
+                        src: ['generated/*']
+                    }
+                ]
             },
             styles: {
                 expand: true,
@@ -355,8 +369,8 @@ module.exports = function (grunt) {
         // Rsync for deployment - https://www.npmjs.org/package/grunt-rsync
         rsync: {
             options: {
-                args: ["-izha","--stats"],
-                exclude: [".git*","*.scss","node_modules"],
+                args: ['-izha', '--stats'],
+                exclude: ['.git*', '*.scss', 'node_modules'],
                 recursive: true,
                 ssh: true,
                 privateKey: process.env.SSH_PRIVATE_KEY,
@@ -365,18 +379,18 @@ module.exports = function (grunt) {
             stage_site: {
                 options: {
                     exclude: ['robots.txt'],
-                    src: "dist/",
-                    dest: "/var/www/hnstage.k2company.com",
-                    host: process.env.SSH_USER+"@hnstage.k2company.com",
+                    src: 'dist/',
+                    dest: '/var/www/hnstage.k2company.com',
+                    host: process.env.SSH_USER + '@hnstage.k2company.com',
                     syncDest: true
                 }
             },
             stage_apache: {
                 options: {
-                    src: "apache_config/*",
-                    dest: "/etc/apache2/sites-available",
-                    host: process.env.SSH_USER+"@hnstage.k2company.com",
-                    exclude:[],
+                    src: 'apache_config/*',
+                    dest: '/etc/apache2/sites-available',
+                    host: process.env.SSH_USER + '@hnstage.k2company.com',
+                    exclude: [],
                     syncDest: false,
                     recursive: false
                 }
@@ -404,8 +418,6 @@ module.exports = function (grunt) {
             'watch'
         ]);
     });
-
-
 
 
     grunt.registerTask('server', function () {

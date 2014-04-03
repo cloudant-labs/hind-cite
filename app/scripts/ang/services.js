@@ -1,7 +1,5 @@
 'use strict';
-
-// requires getData
-
+/*global angular:false, getData:false */
 
 
 
