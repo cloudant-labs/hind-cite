@@ -14,6 +14,7 @@
                 <div class="form-group">
                     <input id="postIds" type="text" class="form-control" placeholder="id1, id2, ..."
                            ng-model="d.postIdsText">
+                    <button ng-click="submitPostIdsText()" class="btn btn-success btn-xs">Add</button>
                 </div>
                 &nbsp; OR &nbsp;
                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#hnsearchModal">
@@ -31,6 +32,8 @@
 
     </div>
 
+    <p>postIdsText {{ d.postIdsText }}</p>
+    <p>newIds: {{ d.newIds }}</p>
     <p>Post ids: {{ d.postIds }}</p>
     <p>CleanList: {{ d.cleanList }}</p>
     <h1>Post Comparison</h1>

@@ -37,14 +37,37 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             this.hitTemplate = Hogan.compile($('#hitTemplate').text(), {delimiters: '<% %>'}); //RR
             this.prefixedSearch = true;
             this.$scope = $scope // RR - For passing data back to angular controller
-            this.addSelectedId = function(selectedId){ //RR
-                console.log('setSelected Id', selectedId);
-//                $('#hnsearchModal').removeClass('fade');  // HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately.
-//                $('#hnsearchModal').modal('hide');
 
-                hnsearch.$scope.addToTmpIds(selectedId);
-                hnsearch.$scope.submitTmpIds();
+            // RR Main function
+            // This does two things:
+            //    1) Add or remove the id from the parent scope's id list
+            //    2) Switch button between Add and Remove
+            this.clickedId = function(selectedId){ //RR
+                console.log('hnSearch: setSelected Id', selectedId);
+                var el = $('#srch_'+selectedId);
+                if (el.length===0){
+                    throw new Error('hnsearch clickedId - couldnt find element for id:', selectedId);
+                }
+
+                if (el.hasClass('srch_add')) {
+                    hnsearch.$scope.addNewId(selectedId);
+                    el.toggleClass('srch_add srch_remove btn-success btn-danger');
+                    el.html('<span class="glyphicon glyphicon-minus-sign small"></span> Remove');
+                } else if (el.hasClass('srch_remove')){
+                    hnsearch.$scope.removePostId(selectedId);
+                    el.toggleClass('srch_add srch_remove btn-success btn-danger');
+                    el.html('<span class="glyphicon glyphicon-plus-sign small"></span> Add');
+                } else {
+                    throw new Error ('hnsearch clickedId - missing srch_add or srch_remove class');
+                }
             };
+            // RR HACK: Since angular changes the DOM before the hide animation finishes, the backdrop never gets removed. Removing 'fade' makes it finish immediately
+            // Odd - this is currently not a problem!
+            // $('#hnsearchModal').removeClass('fade');
+            // $('#hnsearchModal').modal('hide');
+
+
+
             var searchArgs={url:false, hitsPerPage:10 }; //RR
 
             $('#inputfield input').tagautocomplete({
@@ -340,6 +363,7 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                 var v = {
                     classes: classes.join(' '),
                     item_id: hit.objectID,
+                    item_id_selector: 'srch_'+hit.objectID, // RR - for easier use in template
                     created_at: new Date(hit.created_at_i * 1000).toISOString(),
                     points: hit.points,
                     points_plural: (hit.points > 1),
