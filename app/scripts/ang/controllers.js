@@ -33,7 +33,7 @@ angular.module('mainApp')
 
 
 angular.module('mainApp')
-    .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', function ($scope, getDataSvc, $location) {
+    .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', function ($scope, getDataSvc, $location, $timeout) {
         $scope.d = {};
         $scope.d.data = {};
         $scope.d.postIds = [];  // Current list of fetched ids
@@ -92,14 +92,17 @@ angular.module('mainApp')
                 return;
             }
             $scope.$apply($scope.d.newIds.push(postId));  // TODO - keep an eye on this - it has failed sporadically. Weird.
+            if(!$scope.$$phase) {  // This can be called inside or outside of angular
+                $scope.$digest();
+            }
         };
         $scope.removeFromNewIds = function (postId) {
             $scope.$apply($scope.d.newIds = _.without($scope.d.newIds, postId));
         }
-        $scope.submitPostIdsText = function(){
-            var newIds=$scope.textToIds($scope.d.postIdsText);
+        $scope.submitPostIdsText = function () {
+            var newIds = $scope.textToIds($scope.d.postIdsText);
             $scope.d.newIds = _.union($scope.d.newIds, newIds);
-            $scope.d.postIdsText='';
+            $scope.d.postIdsText = '';
         }
 
         function setDropdownIdsModified() {
@@ -115,6 +118,9 @@ angular.module('mainApp')
             $scope.d.postIds = _.without($scope.d.postIds, postId);
             setDropdownIdsModified();
             $scope.d.requestByIdDirty = true;
+            if(!$scope.$$phase) {  // This can be called inside or outside of angular
+                $scope.$digest();
+            }
         };
 
         $scope.clearAllIds = function () {
@@ -150,11 +156,15 @@ angular.module('mainApp')
 
 
         function setUrl() {
-            if ($scope.d.dropdownIdsOnly && $scope.d.addByDropdown !== 'deselected') {
-                $location.search({list: $scope.d.addByDropdown});
-            } else {
-                $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')});  // TODO - fix url
-            }
+            // No idea why I need to wrap the $location calls in a timeout. They are already in a $digest, but they aren't always getting rendered till the next digest. This fixes it.
+            $timeout(function () {
+                if ($scope.d.dropdownIdsOnly && $scope.d.addByDropdown !== 'deselected') {
+                    $location.search({list: $scope.d.addByDropdown}).replace();
+                } else {
+                    $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')}).replace();
+                }
+            }, 1);
+
         }
 
 
@@ -214,10 +224,7 @@ angular.module('mainApp')
             });
         });
 
-        $scope.$watchCollection('[d.dropdownIdsOnly, d.addByDropdown, d.postIds]', function (newVals) {
-            if (newVals === null) {
-                return;
-            }
+        $scope.$watchCollection('d.postIds', function (newVals) {
             setUrl();
         });
 
