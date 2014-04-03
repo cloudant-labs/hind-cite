@@ -5501,6 +5501,9 @@ nv.models.lineChart = function() {
           .attr('y', margin.top + availableHeight / 2)
           .text(function(d) { return d });
 
+
+        // RR - Need to remove existing data lines if they already exist on update
+        container.select('g').remove()
         return chart;
       } else {
         container.selectAll('.nv-noData').remove();
