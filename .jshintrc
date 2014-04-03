@@ -20,5 +20,7 @@
     "globals": {
         "angular": false
     },
-    "globalstrict": true
+    "globalstrict": true,
+    "browser" : true,
+    "jquery" : true
 }

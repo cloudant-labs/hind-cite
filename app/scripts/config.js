@@ -1,8 +1,9 @@
 'use strict';
+/* jshint unused:false*/
 
 var config = (function () {
 
-    var standard_chart_margin  =  {
+    var standardChartMargin  =  {
         top: 20,
         right: 15,
         bottom: 30,
@@ -11,13 +12,13 @@ var config = (function () {
 
     // Note - You have to change all the values in this object to be consistent
     var medChartSize = {
-        margin: standard_chart_margin,
+        margin: standardChartMargin,
 
-        svg_width: 700 ,
-        width: 700  - standard_chart_margin.left - standard_chart_margin.right ,
+        svgWidth: 700 ,
+        width: 700  - standardChartMargin.left - standardChartMargin.right ,
 
-        svg_height: 400,
-        height: 400 - standard_chart_margin.top - standard_chart_margin.bottom
+        svgHeight: 400,
+        height: 400 - standardChartMargin.top - standardChartMargin.bottom
     };
 
 

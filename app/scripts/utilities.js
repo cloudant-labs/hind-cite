@@ -1,3 +1,5 @@
+'use strict';
+/*global _:false*/
 
 // Extend _ with helpful functions
 _.mixin({

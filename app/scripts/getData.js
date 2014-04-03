@@ -1,7 +1,11 @@
 'use strict';
+/* global console:false, $:false, _:false, config:false */
+/* jshint camelcase:false */  // camel: created_d is used elsewhere
+/* exported getData*/
 
 // require config.js, jquery
 
+//noinspection JSHint
 var getData = (function ($, _, config) {
 
     /**
@@ -27,7 +31,7 @@ var getData = (function ($, _, config) {
             }
         }
         return outList.map(function (rec) {
-            return rec[0] + '=' + rec[1]
+            return rec[0] + '=' + rec[1];
         }).join('&');
     }
 
@@ -62,7 +66,7 @@ var getData = (function ($, _, config) {
         if (!errFn) {
             errFn = function (jqXHR, textStatus, errorThrown) {
                 console.log('Error getting url:', url, textStatus, errorThrown);
-            }
+            };
         }
 
         if (!successFn) {
@@ -74,7 +78,7 @@ var getData = (function ($, _, config) {
             dataType: 'jsonp',
             error: errFn,
             success: successFn
-        })
+        });
     }
 
 
@@ -89,13 +93,13 @@ var getData = (function ($, _, config) {
      * @returns - updates record IN PLACE
      */
     function setTimestamps(rec) {
-        rec.created_d = rec.created && new Date(rec.created + " UTC");
+        rec.created_d = rec.created && new Date(rec.created + ' UTC');
 
         if (rec.history) {
             rec.history.forEach(function (d) {
-                d.created_d = d.created && new Date(d.created + " UTC");
-                d.timestamp_d = d.timestamp_str && new Date(d.timestamp_str + " UTC");
-            })
+                d.created_d = d.created && new Date(d.created + ' UTC');
+                d.timestamp_d = d.timestamp_str && new Date(d.timestamp_str + ' UTC');
+            });
         }
     }
 
@@ -131,9 +135,10 @@ var getData = (function ($, _, config) {
     }
 
 
+    //noinspection JSUnusedLocalSymbols,JSHint
     /**
      *
-     * @param id - this is the key. eg: '6712703'
+     * @param ids - this is the key. eg: '6712703'
      * @param otherParams - other params to send (though not sure they are needed)
      */
     function getMultIds(ids, otherParams, successFn, errFn) {
@@ -165,7 +170,7 @@ var getData = (function ($, _, config) {
     function reformatLatest(raw) {
         var out = [], curRec;
 
-        raw.rows.forEach(function (row, idx) {
+        raw.rows.forEach(function (row) {
             curRec = row.value.doc;
             setTimestamps(curRec);
             out.push(curRec);

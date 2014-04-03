@@ -1,9 +1,11 @@
 'use strict';
-
+/* global d3:false, _:false, nv:false*/
+/* exported chartMultiPost */
+/* jshint camelcase:false */
 
 var chartMultiPost = (function ($, _, nv) {
         function chart() {
-            var elId, chartSize, data, graph, nvChart;
+            var elId, chartSize, data, nvChart;
 
             nv.dev = false;  // turn off nvd3 automatic console logging
 
@@ -17,7 +19,7 @@ var chartMultiPost = (function ($, _, nv) {
                 data = config.data;
 
                 d3.select(idToSelector(elId, 'chart'))
-                    .append("svg")
+                    .append('svg');
 
 
             }
@@ -27,10 +29,11 @@ var chartMultiPost = (function ($, _, nv) {
                 var rawSeries, outSeries, out = [];
 
                 for (var key in raw) {
-                    if (key == 'timestamp') {
+                    if (key === 'timestamp') {
                         continue;
                     }
 
+                    //noinspection JSUnfilteredForInLoop
                     rawSeries = raw[key];
                     outSeries = {
                         key: rawSeries.title, //.substring(0,10),
@@ -40,8 +43,9 @@ var chartMultiPost = (function ($, _, nv) {
                     };
 
                     var t0 = rawSeries.history[0].timestamp_d.getTime();
+                    // TODO - Change this? JSHINT doesn't like it. Maybe it is bad form?
                     rawSeries.history.forEach(function (snap) {
-                        outSeries.values.push({x: (snap.timestamp_d.getTime() - t0) / (1000 * 60 * 60), y: snap[metric]}) // Time in hours since first snap
+                        outSeries.values.push({x: (snap.timestamp_d.getTime() - t0) / (1000 * 60 * 60), y: snap[metric]}); // Time in hours since first snap
                     });
 
                     out.push(outSeries);
@@ -60,7 +64,7 @@ var chartMultiPost = (function ($, _, nv) {
 
                 if (subSelector === 'svg') {
                     sel += ' svg';
-                } else if (subSelector == 'chart') {
+                } else if (subSelector === 'chart') {
                     sel += ' .chart';
                 }
 
@@ -79,12 +83,12 @@ var chartMultiPost = (function ($, _, nv) {
                 nv.addGraph(function () {
                     nvChart = nv.models.lineChart()
                         .margin({top: 30, right: 50, bottom: 50, left: 50})
-                        .useInteractiveGuideline(true)
+                        .useInteractiveGuideline(true);
 
                     nvChart.clamp(true);
 
                     nvChart.legend.key(function (d) {
-                        return d.key.substring(0, 10)
+                        return d.key.substring(0, 10);
                     });
 
 
@@ -98,10 +102,10 @@ var chartMultiPost = (function ($, _, nv) {
                         .axisLabelDistance(50)
                         .tickFormat(d3.format('d'));
 
-                    if (config.metric == 'rank'){
+                    if (config.metric === 'rank'){
                         nvChart.yDomain([config.rankRange, 1]);
                         nvChart.yAxis
-                        .tickValues([1,30,60])
+                        .tickValues([1,30,60]);
                     }
 
 
@@ -110,7 +114,7 @@ var chartMultiPost = (function ($, _, nv) {
                         .call(nvChart);
 
                     nv.utils.windowResize(function () {
-                        nvChart.update()
+                        nvChart.update();
                     });
 
                     return nvChart;
@@ -122,7 +126,7 @@ var chartMultiPost = (function ($, _, nv) {
             return {
                 init: init,
                 draw: draw
-            }
+            };
         }
 
 
