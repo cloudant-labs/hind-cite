@@ -93,12 +93,12 @@ var getData = (function ($, _, config) {
      * @returns - updates record IN PLACE
      */
     function setTimestamps(rec) {
-        rec.created_d = rec.created && new Date(rec.created + ' UTC');
+        rec.created_d = rec.created &&  _.hnDateStrToDate(rec.created);
 
         if (rec.history) {
             rec.history.forEach(function (d) {
-                d.created_d = d.created && new Date(d.created + ' UTC');
-                d.timestamp_d = d.timestamp_str && new Date(d.timestamp_str + ' UTC');
+                d.created_d = d.created && _.hnDateStrToDate(d.created);
+                d.timestamp_d = d.timestamp_str &&  _.hnDateStrToDate(d.timestamp_str);
             });
         }
     }

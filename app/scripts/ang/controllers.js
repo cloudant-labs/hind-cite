@@ -285,8 +285,9 @@ angular.module('mainApp')
             // TODO - REMOVE selectedId
         });
     }]);
-// TODO - add selector for rank/points/comments
-// TODO - Work on text-search selector for multiple
+
 // TODO - Add statistics
+// TODO - set order for post ids
+// TODO - add comments/points selector to url
 
 
