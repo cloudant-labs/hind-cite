@@ -18,13 +18,15 @@ function(doc) {
         });
     }
 
-    index('points', lasthistVal(doc, 'points'));
-    index('comments', lasthistVal(doc, 'comments'));
-    index('highestrank', highestRank(doc));
-    index('created', doc.created);
-    index('lastTimestamp', lasthistVal(doc, 'timestamp_str'));
+    index('points', lasthistVal(doc, 'points'), {store: true});
+    index('comments', lasthistVal(doc, 'comments'), {store: true});
+    index('highestrank', highestRank(doc), {store: true});
+    index('created', doc.created), {store: true};
+    index('lastTimestamp', lasthistVal(doc, 'timestamp_str'), {store: true});
     index('id', doc.id);
     index('title', doc.title);
     index('domain', doc.domain);
 
 }
+
+// TODO - remove Store

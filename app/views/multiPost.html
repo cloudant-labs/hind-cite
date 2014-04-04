@@ -23,9 +23,19 @@
                 &nbsp; OR &nbsp;
                 <select class="form-control" ng-model="d.addByDropdown">
                     <option value="deselected" disabled selected>By List</option>
-                    <option value="10" >Current Top 10</option>
-                    <option value="20" >Current Top 20</option>
-                    <option value="30" >Current Top 30</option>
+                    <optgroup label="Current top posts">
+                        <option value="['top','all']" >HN Front Page</option>
+                    </optgroup>
+                    <optgroup label="Most Points">
+                        <option value="['points','all']" >All data </option>
+                        <option value="['points',7]" >Past 7 days </option>
+                        <option value="['points',30]" >Past 30 days </option>
+                    </optgroup>
+                    <optgroup label="Most Comments">
+                        <option value="['points','all']" >All data </option>
+                        <option value="['points',7]" >Past 7 days </option>
+                        <option value="['points',30]" >Past 30 days </option>
+                    </optgroup>
                 </select>
             </form>
         </div>

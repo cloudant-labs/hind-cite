@@ -181,17 +181,17 @@ var getData = (function ($, _, config) {
 
     /**
      * Returns (in successFn) a list of documents - the last top N posts
-     * @param topN
+     * @param limit
      */
-    function getLatest(topN, otherParams, successFn, errFn) {
-        if (topN === null) {
+    function getLatest(limit, otherParams, successFn, errFn) {
+        if (limit === null) {
             throw new Error('getLatest: improper parameters. topN not set properly');
         }
         var params = {} || otherParams;
         params.reduce = true;
         params.group = true;
         params.group_level = 1;
-        params.limit = topN;
+        params.limit = limit;
 
         var url = createLatestUrl(params);
         get(url, function (rawData) {
@@ -255,9 +255,13 @@ var getData = (function ($, _, config) {
      *      createed/lastTimestamp: null, 2014* or ["2014-01-01 00:00:00", "9999"]
      *      points, comments, highestrank: null, Number, or range: [100, Infinity]
      * limit - number of records to be returned;
+     * otherParams.sort - eg: "-points"
      * All queries will be ANDed together
      */
     function getSearch(query, limit, otherParams, successFn, errFn) {
+        if (! otherParams || ! otherParams.sort) {
+            throw new Error('getSearch requires otherParams.sort');
+        }
         var params = otherParams || {};
         params.include_docs=true;
         params.limit = limit || 30;
@@ -270,7 +274,17 @@ var getData = (function ($, _, config) {
         }, errFn);
     }
 
+    function getByPoints(dateRange, limit, otherParams, successFn, errFn) {
+        var modParams=otherParams || {};
+        modParams.sort='-points';
+        getSearch({points:[0,Infinity], created: dateRange}, limit, modParams, successFn, errFn);
+    }
 
+    function getByComments(dateRange, limit, otherParams, successFn, errFn) {
+        var modParams=otherParams || {};
+        modParams.sort='-comments';
+        getSearch({comments:[0,Infinity], created: dateRange}, limit, modParams, successFn, errFn);
+    }
 
     return {
         paramsToQuery: paramsToQuery,
@@ -285,7 +299,9 @@ var getData = (function ($, _, config) {
         reformatLatest: reformatLatest,
         getMultIds: getMultIds,
         createSearchUrl:  createSearchUrl,
-        getSearch : getSearch
+        getSearch : getSearch,
+        getByPoints: getByPoints,
+        getByComments : getByComments
     };
 
 }($, _, config));

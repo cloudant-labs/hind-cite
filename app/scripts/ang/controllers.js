@@ -54,7 +54,7 @@ function sumHistRec(data, field) {
 }
 
 angular.module('mainApp')
-    .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', function ($scope, getDataSvc, $location, $timeout) {
+    .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', '$filter', '$parse', function ($scope, getDataSvc, $location, $timeout, $filter, $parse) {
         $scope.d = {};
         $scope.d.data = {};
         $scope.d.postIds = [];  // Current list of fetched ids
@@ -164,6 +164,35 @@ angular.module('mainApp')
             return out;
         };
 
+        function dropdownToQuery(){
+            var fn, query, field, dateRange=null, numRecs=30,
+                dropdown = $parse($scope.d.addByDropdown)(),
+                otherParams={};
+
+            var numDays=dropdown[1];
+            if (numDays==='all') {
+                dateRange=null;
+            } else if (typeof(numDays)==='number'){
+                dateRange=[$filter('date')(new  Date(Date.now()-numDays*24*60*60*1000),'yyyy-MM-dd HH:mm:ss'), '9999'];
+            } else {
+                throw new Error('Improper number of days for date limit:', numDays);
+            }
+
+            var limit=30;  // TODO - make limit configurable
+
+            if (dropdown[0]==='top') {
+                fn=getDataSvc.getLatest;
+            } else if (dropdown[0]==='points') {
+                fn=getDataSvc.getByPoints;
+            } else if (dropdown[0]==='comments') {
+                fn=getDataSvc.getByComments;
+            } else {
+                throw new Error ('Improper query type: ', dropdown[0], dropdown);
+            }
+
+            return {fn: fn, dateRange: dateRange, limit:limit};
+        }
+
 
         //
         // Initialize from URL
@@ -201,6 +230,10 @@ angular.module('mainApp')
             if (newVal === null || newVal === 'deselected') {
                 return;
             }
+
+            console.log('dropdownToQuery: ', dropdownToQuery());
+            return;
+
             setDropdownIdsOnly();
 
             getDataSvc.getLatest(Number($scope.d.addByDropdown), null, function success(data) {
