@@ -1,0 +1,7 @@
+{
+    "name": "perfield",
+    "fields": {
+        "created": "keyword",
+        "lastTimestamp": "keywoard"
+    }
+}
