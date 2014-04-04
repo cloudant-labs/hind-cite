@@ -29,6 +29,7 @@ var config = (function () {
         VIEW_SNAPSPERDAY : 'snaps-per-day',
         VIEW_ID : 'id',
         VIEW_LATEST : 'latest',
+        SEARCH_POSTS : 'posts',
 
         medChartSize: medChartSize
 

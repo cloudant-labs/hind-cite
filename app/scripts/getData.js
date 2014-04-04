@@ -200,6 +200,77 @@ var getData = (function ($, _, config) {
         }, errFn);
     }
 
+    /**
+     * This is not a perfectly complete URL creator.
+     * @param query eg: {points: 100, comments: [50,Infinity], created:['2014-03-01', '9999'] }
+     *  ==> ?q=points:100 AND comments: [50, Infinity] AND created: ['2014-03-01', '9999']
+     *
+     */
+    function createSearchUrl(searchName, query, params) {
+        if (Object.keys(query).length === 0) {
+            throw new Error('createSearchUrl - cant have empty query');
+        }
+
+        var url = _.template('https://<%= baseUrl %>/<%= db %>/_design/<%= designDoc %>/_search/<%= searchName %>?q=',
+            {
+                baseUrl: config.COUCH_SERVER,
+                db: config.COUCH_DB,
+                designDoc: config.COUCH_DESIGN,
+                searchName: searchName
+            });
+
+        var queryArray=[];
+        for (var key in query){
+            //noinspection JSUnfilteredForInLoop
+            if (query[key] instanceof(Array)){
+                //noinspection JSUnfilteredForInLoop
+                queryArray.push( _.template('<%= key %>:[<%= from %> TO <%= to %>]',
+                    {key: key, from:query[key][0], to:query[key][1]}));
+            } else {
+                //noinspection JSUnfilteredForInLoop
+                queryArray.push( _.template('<%= key %>:<%= val %>',
+                    {key: key, val:query[key]}));
+            }
+        }
+        url += queryArray.join(' AND ');
+
+        params =  params || {};
+        params.limit =  params.limit || 20;  // default limit, just in case
+        url += '&' + paramsToQuery(params);
+
+
+        console.log('createSearchUrl', searchName, query, params, ' ---> ', url);
+        return url;
+    }
+
+    function reformatSearch(rawData) {
+        return rawData.rows.map(function(row){
+            return row.doc;
+        });
+    }
+
+    /**
+     * query: {key : val}
+     * keys:
+     *      createed/lastTimestamp: null, 2014* or ["2014-01-01 00:00:00", "9999"]
+     *      points, comments, highestrank: null, Number, or range: [100, Infinity]
+     * limit - number of records to be returned;
+     * All queries will be ANDed together
+     */
+    function getSearch(query, limit, otherParams, successFn, errFn) {
+        var params = otherParams || {};
+        params.include_docs=true;
+        params.limit = limit || 30;
+
+        var url = createSearchUrl(config.SEARCH_POSTS,query, params);
+        get(url, function (rawData) {
+            var modData =  reformatSearch(rawData);
+            console.log(modData);
+            successFn(modData);
+        }, errFn);
+    }
+
+
 
     return {
         paramsToQuery: paramsToQuery,
@@ -212,7 +283,9 @@ var getData = (function ($, _, config) {
         createLatestUrl: createLatestUrl,
         getLatest: getLatest,
         reformatLatest: reformatLatest,
-        getMultIds: getMultIds
+        getMultIds: getMultIds,
+        createSearchUrl:  createSearchUrl,
+        getSearch : getSearch
     };
 
 }($, _, config));
