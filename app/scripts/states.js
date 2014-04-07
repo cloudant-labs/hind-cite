@@ -2,7 +2,7 @@
 /* exported states */
 
 
-var states=(function(){
+var statesModule=(function(){
 
     /**
      * Simple state manager.
@@ -13,11 +13,11 @@ var states=(function(){
      */
 
     function stateManager(statesInit) {
-        var _states;
+        var _states={};
 
         for (var key in statesInit) {
             if (! Array.isArray(statesInit[key])) {
-                throw new Error('Improper initialization format. Must be {key1: [list], key2:[list]}. Received: ', statesInit);
+                throw new Error('Improper initialization format. Must be {key1: [list], key2:[list]}. Received: ', JSON.stringify(statesInit,null,4));
             }
 
             _states[key]={};
@@ -25,9 +25,6 @@ var states=(function(){
               _states[key][s]=false;
             });
         }
-
-        console.log('stateManager - initial state: ', JSON.stringify(_states, null, 4));
-
 
         function errorCheck(obj, state) {
             if (! (obj in _states)) {
@@ -40,7 +37,7 @@ var states=(function(){
         }
 
         function set(obj, state) {
-            errorCheck();
+            errorCheck(obj, state);
 
             for (var s in _states[obj]) {
                 if (s===state) {
@@ -49,6 +46,7 @@ var states=(function(){
                     _states[obj][s] = false;
                 }
             }
+            return true;
         }
 
         function is(obj, state) {
