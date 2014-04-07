@@ -72,7 +72,7 @@ angular.module('mainApp')
             chart:    ['needsUpdate', 'chartUpdated'],
             url :     ['needsUpdated', 'urlUpdated'],
             postIds : ['fromList', 'fromManual']
-        });
+        }, $scope);
 
         //
         // Simple Support Functions
@@ -262,6 +262,7 @@ angular.module('mainApp')
                 });
                 $scope.d.data.timestamp = Date.now();
                 $scope.d.requestByLatestDirty = false;
+                states.set('data', 'dataUpdated');
                 $scope.$digest();  // Do once
             });
         });
@@ -294,6 +295,7 @@ angular.module('mainApp')
                 });
                 $scope.$apply($scope.d.data.timestamp = Date.now());
                 $scope.$apply($scope.d.requestByIdDirty = false);
+                states.set('data', 'dataUpdated');
             });
         });
 
@@ -301,6 +303,9 @@ angular.module('mainApp')
             setUrl();
         });
 
+        $scope.$on('data', function(event, arg) {
+            console.log(' <<<needsData event received:'+ event.name +'/' + arg);
+        });
     }]);
 
 /**
