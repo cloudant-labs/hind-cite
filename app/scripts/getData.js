@@ -17,7 +17,7 @@ var getData = (function ($, _, config) {
      */
     function paramsToQuery(params) {
         if (typeof(params) !== 'object') {
-            throw new TypeError('Expected object as input. Got: ' + typeof(params));
+            throw new TypeError('Expected object as input. Got: ' + typeof(params), params);
         }
 
         var outList = [];
@@ -93,12 +93,12 @@ var getData = (function ($, _, config) {
      * @returns - updates record IN PLACE
      */
     function setTimestamps(rec) {
-        rec.created_d = rec.created &&  _.hnDateStrToDate(rec.created);
+        rec.created_d = rec.created && _.hnDateStrToDate(rec.created);
 
         if (rec.history) {
             rec.history.forEach(function (d) {
                 d.created_d = d.created && _.hnDateStrToDate(d.created);
-                d.timestamp_d = d.timestamp_str &&  _.hnDateStrToDate(d.timestamp_str);
+                d.timestamp_d = d.timestamp_str && _.hnDateStrToDate(d.timestamp_str);
             });
         }
     }
@@ -201,6 +201,20 @@ var getData = (function ($, _, config) {
     }
 
     /**
+     * val - a number or string
+     * returns - number or string surrounded with quotes. ("input string")
+     */
+    function NumbOrQuotedString(val) {
+        if (typeof(val) === 'number') {
+            return val;
+        } else if (typeof(val) === 'string') {
+            return '"' + val + '"';
+        } else {
+            throw new Error('Unexpected type: typeof(val)', typeof(val), 'val: ', val);
+        }
+    }
+
+    /**
      * This is not a perfectly complete URL creator.
      * @param query eg: {points: 100, comments: [50,Infinity], created:['2014-03-01', '9999'] }
      *  ==> ?q=points:100 AND comments: [50, Infinity] AND created: ['2014-03-01', '9999']
@@ -219,23 +233,23 @@ var getData = (function ($, _, config) {
                 searchName: searchName
             });
 
-        var queryArray=[];
-        for (var key in query){
+        var queryArray = [];
+        for (var key in query) {
             //noinspection JSUnfilteredForInLoop
-            if (query[key] instanceof(Array)){
+            if (query[key] instanceof(Array)) {
                 //noinspection JSUnfilteredForInLoop
-                queryArray.push( _.template('<%= key %>:[<%= from %> TO <%= to %>]',
-                    {key: key, from:query[key][0], to:query[key][1]}));
+                queryArray.push(_.template('<%= key %>:[<%= from %> TO <%= to %>]',
+                    {key: key, from: NumbOrQuotedString(query[key][0]), to: NumbOrQuotedString(query[key][1])}));
             } else {
                 //noinspection JSUnfilteredForInLoop
-                queryArray.push( _.template('<%= key %>:<%= val %>',
-                    {key: key, val:query[key]}));
+                queryArray.push(_.template('<%= key %>:<%= val %>',
+                    {key: key, val: query[key]}));
             }
         }
         url += queryArray.join(' AND ');
 
-        params =  params || {};
-        params.limit =  params.limit || 20;  // default limit, just in case
+        params = params || {};
+        params.limit = params.limit || 20;  // default limit, just in case
         url += '&' + paramsToQuery(params);
 
 
@@ -244,9 +258,12 @@ var getData = (function ($, _, config) {
     }
 
     function reformatSearch(rawData) {
-        return rawData.rows.map(function(row){
-            return row.doc;
+        return rawData.rows.map(function (row) {
+            var rec = row.doc;
+            setTimestamps(rec);
+            return rec;
         });
+
     }
 
     /**
@@ -259,31 +276,39 @@ var getData = (function ($, _, config) {
      * All queries will be ANDed together
      */
     function getSearch(query, limit, otherParams, successFn, errFn) {
-        if (! otherParams || ! otherParams.sort) {
+        if (!otherParams || !otherParams.sort) {
             throw new Error('getSearch requires otherParams.sort');
         }
         var params = otherParams || {};
-        params.include_docs=true;
+        params.include_docs = true;
         params.limit = limit || 30;
 
-        var url = createSearchUrl(config.SEARCH_POSTS,query, params);
+        var url = createSearchUrl(config.SEARCH_POSTS, query, params);
         get(url, function (rawData) {
-            var modData =  reformatSearch(rawData);
+            var modData = reformatSearch(rawData);
             console.log(modData);
             successFn(modData);
         }, errFn);
     }
 
     function getByPoints(dateRange, limit, otherParams, successFn, errFn) {
-        var modParams=otherParams || {};
-        modParams.sort='-points';
-        getSearch({points:[0,Infinity], created: dateRange}, limit, modParams, successFn, errFn);
+        var modParams = otherParams || {};
+        modParams.sort = '-points';
+        var query = {points: [0, Infinity]};
+        if (dateRange) {
+            query.created = dateRange;
+        }
+        getSearch(query, limit, modParams, successFn, errFn);
     }
 
     function getByComments(dateRange, limit, otherParams, successFn, errFn) {
-        var modParams=otherParams || {};
-        modParams.sort='-comments';
-        getSearch({comments:[0,Infinity], created: dateRange}, limit, modParams, successFn, errFn);
+        var modParams = otherParams || {};
+        modParams.sort = '-comments';
+        var query = {comments: [0, Infinity]};
+        if (dateRange) {
+            query.created = dateRange;
+        }
+        getSearch(query, limit, modParams, successFn, errFn);
     }
 
     return {
@@ -298,10 +323,10 @@ var getData = (function ($, _, config) {
         getLatest: getLatest,
         reformatLatest: reformatLatest,
         getMultIds: getMultIds,
-        createSearchUrl:  createSearchUrl,
-        getSearch : getSearch,
+        createSearchUrl: createSearchUrl,
+        getSearch: getSearch,
         getByPoints: getByPoints,
-        getByComments : getByComments
+        getByComments: getByComments
     };
 
 }($, _, config));

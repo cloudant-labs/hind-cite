@@ -36,7 +36,7 @@ angular.module('statesServiceProvider', [])
 
             function broadcast(obj, state) {
                 if ($scope) {
-                    console.log('>>>stateManager: broadcasting event: '+ obj + '/' + state + ' to scope: ',$scope.$id);
+                    console.log('>>> '+obj + '/' + state );
                     $scope.$broadcast(obj, state);
                     //$scope.$emit(obj, state);  // TODO - just broadcast, probably
 
@@ -56,12 +56,16 @@ angular.module('statesServiceProvider', [])
 
             function set(obj, state) {
                 errorCheck(obj, state);
+                var oldVal = _states[obj][state];
 
                 for (var s in _states[obj]) {
                     _states[obj][s] = (s === state);
                 }
 
-                broadcast(obj, state);
+                if (oldVal !== _states[obj][state]) {
+                    broadcast(obj, state);
+                }
+
                 return true;
             }
 
@@ -69,6 +73,10 @@ angular.module('statesServiceProvider', [])
                 errorCheck(obj, state);
 
                 return _states[obj][state];
+            }
+
+            function get(obj) {
+                return _states[obj];
             }
 
             return {

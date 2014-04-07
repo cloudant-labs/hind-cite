@@ -21,7 +21,7 @@
                     By Search
                 </button>
                 &nbsp; OR &nbsp;
-                <select class="form-control" ng-model="d.addByDropdown">
+                <select class="form-control" ng-model="d.postListSelector">
                     <option value="deselected" disabled selected>By List</option>
                     <optgroup label="Current top posts">
                         <option value="['top','all']" >HN Front Page</option>
@@ -101,6 +101,10 @@
     </div>
 
     <br>
+    <p>d.postIds: {{ d.postIds }}</p>
+    <p>d.newIds: {{ d.newIds }}</p>
+    <p>d.dropdownToQueryResult: {{ d.dropdownToQueryResult }}</p>
+
 
     <h1>{{ d.metric | titleCase}}</h1>
     <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"
