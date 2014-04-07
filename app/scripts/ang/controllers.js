@@ -3,8 +3,9 @@
 
 
 
+
 angular.module('mainApp')
-    .controller('mainCtrl', ['$scope', '$log', function ($scope, $log) {
+    .controller('mainCtrl', ['$scope', '$log', function ($scope, $log, statesServices) {
         $log.log('******************************************************************************');
         $log.log('Brought to you by Cloudant.com, an IBM Company');
         $log.log('Cloudant - Distributed database as a service');
@@ -54,7 +55,7 @@ function sumHistRec(data, field) {
 }
 
 angular.module('mainApp')
-    .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', '$filter', '$parse', function ($scope, getDataSvc, $location, $timeout, $filter, $parse) {
+    .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', '$filter', '$parse', 'statesService', function ($scope, getDataSvc, $location, $timeout, $filter, $parse, statesService) {
         $scope.d = {};
         $scope.d.data = {};
         $scope.d.postIds = [];  // Current list of fetched ids
@@ -66,6 +67,12 @@ angular.module('mainApp')
         $scope.d.selectedId = null;
         $scope.d.requestByIdDirty = false;
         $scope.d.requestByLatestDirty = false;
+        var states=statesService.stateManager({
+            data :    ['needsData', 'dataUpdated'],
+            chart:    ['needsUpdate', 'chartUpdated'],
+            url :     ['needsUpdated', 'urlUpdated'],
+            postIds : ['fromList', 'fromManual']
+        });
 
         //
         // Simple Support Functions
@@ -108,6 +115,8 @@ angular.module('mainApp')
 
             $scope.d.postIds.push(postId);
             $scope.d.requestByIdDirty = true;
+            states.set('postIds', 'fromManual');
+            states.set('data', 'needsData');
         };
         $scope.addNewId = function (postId) {
             if (_.contains($scope.d.newIds, postId)) {
@@ -143,6 +152,8 @@ angular.module('mainApp')
             if(!$scope.$$phase) {  // This can be called inside or outside of angular
                 $scope.$digest();
             }
+            states.set('postIds', 'fromManual');
+            states.set('chart', 'needsUpdate');
         };
 
         $scope.clearAllIds = function () {
@@ -150,6 +161,8 @@ angular.module('mainApp')
             setDropdownIdsModified();
             $scope.d.requestByIdDirty = true;
             // TODO - BUG - NVD3 doesn't delete chart when data is empty
+            states.set('postIds', 'fromManual');
+            states.set('chart', 'needsUpdate');
         };
 
         $scope.dataOnly = function () {
@@ -226,6 +239,7 @@ angular.module('mainApp')
         //
 
 
+
         $scope.$watch('d.addByDropdown', function (newVal) {
             if (newVal === null || newVal === 'deselected') {
                 return;
@@ -235,6 +249,8 @@ angular.module('mainApp')
             return;
 
             setDropdownIdsOnly();
+            states.set('postIds', 'fromList');
+            states.set('data', 'needsData');
 
             getDataSvc.getLatest(Number($scope.d.addByDropdown), null, function success(data) {
                 console.log('multiPostCtrl - getLatest - got data. ', Number($scope.d.addByDropdown), data);
