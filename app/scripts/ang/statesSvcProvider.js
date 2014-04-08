@@ -37,8 +37,7 @@ angular.module('statesServiceProvider', [])
             function broadcast(obj, state) {
                 if ($scope) {
                     console.log('>>> '+obj + '/' + state );
-                    $scope.$broadcast(obj, state);
-                    //$scope.$emit(obj, state);  // TODO - just broadcast, probably
+                    $scope.$broadcast(obj, state); // TODO -  BUG - this causes a bug where if you change a select before it finishes loading, it loses your input.
 
 
                 }

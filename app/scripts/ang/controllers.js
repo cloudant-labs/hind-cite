@@ -60,7 +60,7 @@ angular.module('mainApp')
         $scope.d.newIds = [];   // Ids that need to be added
         $scope.d.metric = 'rank';
         $scope.d.rankRange = 30;
-        $scope.d.postListSelector = '10';
+        $scope.d.postListSelector = "['top','all']";
         $scope.d.dropdownIdsOnly = true;  // clean if no ids added / removed from list
         $scope.d.selectedId = null;
         $scope.d.requestByIdDirty = false;
@@ -68,7 +68,7 @@ angular.module('mainApp')
         var states = statesService.stateManager({
             data: ['needsData', 'dataUpdated'],
             chart: ['needsUpdate', 'chartUpdated'],
-            url: ['needsUpdated', 'urlUpdated'],
+            url: ['needsUpdate', 'urlUpdated'],
             postIds: ['fromList', 'fromManual']
         }, $scope);
 
@@ -134,33 +134,22 @@ angular.module('mainApp')
             $scope.d.postIdsText = '';
         };
 
-        function setDropdownIdsModified() {
-            $scope.d.dropdownIdsOnly = false;
-            $scope.d.postListSelector = 'deselected';
-        }
-
-        function setDropdownIdsOnly() {
-            $scope.d.dropdownIdsOnly = true;
-        }
-
         $scope.removePostId = function (postId) {
             $scope.d.postIds = _.without($scope.d.postIds, postId);
-            setDropdownIdsModified();
-            $scope.d.requestByIdDirty = true;
             if (!$scope.$$phase) {  // This can be called inside or outside of angular
                 $scope.$digest();
             }
             states.set('postIds', 'fromManual');
             states.set('chart', 'needsUpdate');
+            states.set('url', 'needsUpdate');
         };
 
         $scope.clearAllIds = function () {
             $scope.d.postIds = [];
-            setDropdownIdsModified();
-            $scope.d.requestByIdDirty = true;
             // TODO - BUG - NVD3 doesn't delete chart when data is empty
             states.set('postIds', 'fromManual');
             states.set('chart', 'needsUpdate');
+            states.set('url', 'needsUpdate');
         };
 
         $scope.dataOnly = function () {
@@ -210,23 +199,31 @@ angular.module('mainApp')
         //
         if ($location.search().postIds) {
             $scope.d.newIds = $scope.textToIds($location.search().postIds);
-            setDropdownIdsModified();
-            $scope.d.requestByIdDirty = true;
+            states.set('postIds', 'fromManual');
         } else if ($location.search().list) {
-            $scope.d.postListSelector = $location.search().list;
-            $scope.d.dropdownIdsOnly = true;
-            $scope.d.requestByLatestDirty = true;
+            var tmpl;
+            if (!isNaN(Number($location.search().limit))) {
+                tmpl='["<%= list %>",<%= limit %>]';
+            } else {
+                tmpl='["<%= list %>","<%= limit %>"]'; // quotes around limit
+            }
+            $scope.d.postListSelector = _.template(tmpl, {list: $location.search().list, limit:  $location.search().limit});
+            states.set('postIds', 'fromList');
         }
-
 
         function setUrl() {
             // No idea why I need to wrap the $location calls in a timeout. They are already in a $digest, but they aren't always getting rendered till the next digest. This fixes it.
             $timeout(function () {
                 if ($scope.d.dropdownIdsOnly && $scope.d.postListSelector !== 'deselected') {
-                    $location.search({list: $scope.d.postListSelector}).replace();
+                    var l = $parse($scope.d.postListSelector)();
+                    if (l) {
+                        $location.search({list: l[0], limit:l[1]}).replace();
+                    }
+
                 } else {
                     $location.search({postIds: $scope.idsToText($scope.d.postIds).replace(/ /g, '')}).replace();
                 }
+                states.set('url', 'urlUpdated');
             }, 1);
 
         }
@@ -241,8 +238,6 @@ angular.module('mainApp')
             if (newVal === null || newVal === 'deselected') {
                 return;
             }
-
-            setDropdownIdsOnly();
             states.set('postIds', 'fromList');
             states.set('data', 'needsData');
         });
@@ -257,23 +252,11 @@ angular.module('mainApp')
             });
 
             $scope.d.newIds = [];
-            setDropdownIdsModified();
             states.set('data', 'needsData');
             states.set('postIds', 'fromManual');
         });
 
-        $scope.$watch('d.requestByIdDirty', function (newVal) {
 
-            if (newVal === null || !newVal) {
-                return;
-            }
-
-
-        });
-
-        $scope.$watchCollection('d.postIds', function () {
-            setUrl();
-        });
 
         $scope.$on('data', function (event, arg) {
             console.log(' <<< ' + event.name + '/' + arg);
@@ -293,6 +276,7 @@ angular.module('mainApp')
                     $scope.$apply($scope.d.data.timestamp = Date.now());
                     $scope.$apply($scope.d.requestByIdDirty = false);
                     states.set('data', 'dataUpdated');
+                    states.set('url', 'needsUpdate');
                 });
             } else if (states.is('postIds', 'fromList')) {
                 console.log('getList');
@@ -312,6 +296,7 @@ angular.module('mainApp')
                     $scope.d.data.timestamp = Date.now();
                     $scope.d.requestByLatestDirty = false;
                     states.set('data', 'dataUpdated');
+                    states.set('url', 'needsUpdate');
                     $scope.$digest();  // Do once
                 };
 
@@ -331,14 +316,19 @@ angular.module('mainApp')
 
         $scope.$on('chart', function (event, arg) {
             console.log(' <<< ' + event.name + '/' + arg);
+            // TODO - need to figure out how to update the chart (sending events back and forth)
         });
 
         $scope.$on('url', function (event, arg) {
             console.log(' <<< ' + event.name + '/' + arg);
+            setUrl();
         });
 
         $scope.$on('postIds', function (event, arg) {
             console.log(' <<< ' + event.name + '/' + arg);
+            if (arg==='fromManual') {
+                $scope.d.postListSelector = 'deselected';
+            }
         });
     }]);
 

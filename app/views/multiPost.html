@@ -24,17 +24,17 @@
                 <select class="form-control" ng-model="d.postListSelector">
                     <option value="deselected" disabled selected>By List</option>
                     <optgroup label="Current top posts">
-                        <option value="['top','all']" >HN Front Page</option>
+                        <option value='["top","all"]' >HN Front Page</option>
                     </optgroup>
-                    <optgroup label="Most Points">
-                        <option value="['points','all']" >All data </option>
-                        <option value="['points',7]" >Past 7 days </option>
-                        <option value="['points',30]" >Past 30 days </option>
+                    <optgroup label='Most Points'>
+                        <option value='["points","all"]' >All data </option>
+                        <option value='["points",7]' >Past 7 days </option>
+                        <option value='["points",30]' >Past 30 days </option>
                     </optgroup>
-                    <optgroup label="Most Comments">
-                        <option value="['points','all']" >All data </option>
-                        <option value="['points',7]" >Past 7 days </option>
-                        <option value="['points',30]" >Past 30 days </option>
+                    <optgroup label='Most Comments'>
+                        <option value='["comments","all"]' >All data </option>
+                        <option value='["comments",7]' >Past 7 days </option>
+                        <option value='["comments",30]' >Past 30 days </option>
                     </optgroup>
                 </select>
             </form>
@@ -104,6 +104,7 @@
     <p>d.postIds: {{ d.postIds }}</p>
     <p>d.newIds: {{ d.newIds }}</p>
     <p>d.dropdownToQueryResult: {{ d.dropdownToQueryResult }}</p>
+    <p>d.postListSelector: {{ d.postListSelector }}</p>
 
 
     <h1>{{ d.metric | titleCase}}</h1>
