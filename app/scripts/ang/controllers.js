@@ -3,7 +3,7 @@
 
 
 angular.module('mainApp')
-    .controller('mainCtrl', ['$scope', '$log', function ($scope, $log, statesServices) {
+    .controller('mainCtrl', ['$scope', '$log', function ($scope, $log) {
         $log.log('******************************************************************************');
         $log.log('Brought to you by Cloudant.com, an IBM Company');
         $log.log('Cloudant - Distributed database as a service');
@@ -60,11 +60,8 @@ angular.module('mainApp')
         $scope.d.newIds = [];   // Ids that need to be added
         $scope.d.metric = 'rank';
         $scope.d.rankRange = 30;
-        $scope.d.postListSelector = "['top','all']";
-        $scope.d.dropdownIdsOnly = true;  // clean if no ids added / removed from list
-        $scope.d.selectedId = null;
-        $scope.d.requestByIdDirty = false;
-        $scope.d.requestByLatestDirty = false;
+        $scope.d.postListSelector = '["top","all"]';
+
         var states = statesService.stateManager({
             data: ['needsData', 'dataUpdated'],
             chart: ['needsUpdate', 'chartUpdated'],
@@ -106,15 +103,34 @@ angular.module('mainApp')
         };
 
 
+        /**
+         *
+         * @param postId - either a single id, or a list of ids
+         */
         $scope.addPostId = function (postId) {
-            if (_.contains($scope.d.postIds, postId)) {
-                return;
+            var postIdList, changed = false;
+            if (typeof(postId) === 'string') {
+                postIdList = [postId];
+            } else if (Array.isArray(postId)) {
+                postIdList = postId;
+            } else {
+                throw new Error('Improper postId - must be single elemement or list of ids. Got: ', postId);
             }
 
-            $scope.d.postIds.push(postId);
-            $scope.d.requestByIdDirty = true;
-            states.set('postIds', 'fromManual');
-            states.set('data', 'needsData');
+            postIdList.forEach(function (pid) {
+                if (_.contains($scope.d.postIds, pid)) {
+                    return;
+                }
+                $scope.d.postIds.push(pid);
+                changed = true;
+            });
+
+            if (changed) {
+                states.set('postIds', 'fromManual');
+                states.set('data', 'needsData');
+                states.set('url', 'needsUpdate');
+            }
+
         };
         $scope.addNewId = function (postId) {
             if (_.contains($scope.d.newIds, postId)) {
@@ -143,13 +159,13 @@ angular.module('mainApp')
                 $scope.$digest();
             }
             states.set('postIds', 'fromManual');
-            states.set('chart', 'needsUpdate');
             states.set('url', 'needsUpdate');
+            states.set('chart', 'needsUpdate');
         };
 
         $scope.clearAllIds = function () {
             $scope.d.postIds = [];
-            $scope.d.data={};
+            $scope.d.data = {};
             // TODO - BUG - NVD3 doesn't delete chart when data is empty
             states.set('postIds', 'fromManual');
             states.set('chart', 'needsUpdate');
@@ -168,10 +184,33 @@ angular.module('mainApp')
             return out;
         };
 
+        // Given actual returned data, remove any postIds that were not found.
+        $scope.updatePostIdsFromActual = function (data) {
+            var keys = Object.keys(data);
+            var actualIds = keys.map(function (key) {
+                return data[key].id;
+            });
+            var unFoundIds = _.difference($scope.d.postIds, actualIds);
+            if (unFoundIds.length > 0) {
+                $scope.d.postIds = _.difference($scope.d.postIds, unFoundIds);
+                if (!$scope.$$phase) {
+                    $scope.$digest();
+                }
+                states.set('url', 'needsUpdate');
+            }
+
+
+        };
+
+        $scope.resetHnSearch = function () {
+
+            //noinspection JSJQueryEfficiency
+            $('#inputfield input').val('').keyup();
+        };
+
         function dropdownToQuery() {
-            var fn, query, field, dateRange = null, numRecs = 10,
-                dropdown = $parse($scope.d.postListSelector)(),
-                otherParams = {};
+            var fn, dateRange = null,
+                dropdown = $parse($scope.d.postListSelector)();
 
             var numDays = dropdown[1];
             if (numDays === 'all') {
@@ -191,7 +230,7 @@ angular.module('mainApp')
             } else if (dropdown[0] === 'comments') {
                 fn = 'getByComments';
             } else {
-                throw new Error('Improper query type: ', dropdown[0], dropdown);
+                throw new Error('Improper query type: '+ dropdown[0]+dropdown);
             }
 
             return {fn: fn, dateRange: dateRange, limit: limit};
@@ -203,15 +242,16 @@ angular.module('mainApp')
         //
         if ($location.search().postIds) {
             $scope.d.newIds = $scope.textToIds($location.search().postIds);
+            $scope.d.postListSelector = 'deselected';
             states.set('postIds', 'fromManual');
         } else if ($location.search().list) {
             var tmpl;
             if (!isNaN(Number($location.search().limit))) {
-                tmpl='["<%= list %>",<%= limit %>]';
+                tmpl = '["<%= list %>",<%= limit %>]';
             } else {
-                tmpl='["<%= list %>","<%= limit %>"]'; // quotes around limit
+                tmpl = '["<%= list %>","<%= limit %>"]'; // quotes around limit
             }
-            $scope.d.postListSelector = _.template(tmpl, {list: $location.search().list, limit:  $location.search().limit});
+            $scope.d.postListSelector = _.template(tmpl, {list: $location.search().list, limit: $location.search().limit});
             states.set('postIds', 'fromList');
         }
 
@@ -221,7 +261,7 @@ angular.module('mainApp')
                 if ($scope.d.dropdownIdsOnly && $scope.d.postListSelector !== 'deselected') {
                     var l = $parse($scope.d.postListSelector)();
                     if (l) {
-                        $location.search({list: l[0], limit:l[1]}).replace();
+                        $location.search({list: l[0], limit: l[1]}).replace();
                     }
 
                 } else {
@@ -243,6 +283,7 @@ angular.module('mainApp')
                 return;
             }
             states.set('postIds', 'fromList');
+            states.set('url', 'needsUpdate');
             states.set('data', 'needsData');
         });
 
@@ -251,29 +292,25 @@ angular.module('mainApp')
             if (newVals === null || newVals.length === 0) {
                 return;
             }
-            $scope.d.newIds.forEach(function (postId) {
-                $scope.addPostId(postId);
-            });
+
+            $scope.addPostId($scope.d.newIds);
 
             $scope.d.newIds = [];
-            states.set('data', 'needsData');
             states.set('postIds', 'fromManual');
+            states.set('url', 'needsUpdate');
         });
 
 
-
         $scope.$on('data', function (event, arg) {
-            console.log(' <<< ' + event.name + '/' + arg);
             if (arg !== 'needsData') {
                 return;
             }
 
             if (states.is('postIds', 'fromManual')) {
-                console.log('getmanual');
-                $scope.d.data = {};
 
                 getDataSvc.getMultIds($scope.d.postIds, null, function success(data) {
                     console.log('multiPostCtrl - getMultIds - got data: ', data);
+                    $scope.d.data = {};
                     data.forEach(function (rec) {
                         $scope.$apply($scope.d.data[rec.id] = rec);
                     });
@@ -281,13 +318,11 @@ angular.module('mainApp')
                     $scope.$apply($scope.d.requestByIdDirty = false);
                     states.set('data', 'dataUpdated');
                     states.set('url', 'needsUpdate');
+                    $scope.updatePostIdsFromActual(data);
                 });
             } else if (states.is('postIds', 'fromList')) {
-                console.log('getList');
-
-                console.log('dropdownToQuery: ', dropdownToQuery());
-                $scope.d.dropdownToQueryResult=dropdownToQuery();
-                var q=dropdownToQuery();
+                $scope.d.dropdownToQueryResult = dropdownToQuery();
+                var q = dropdownToQuery();
 
                 var successFn = function success(data) {
                     console.log('Got Data: ', data);
@@ -301,15 +336,16 @@ angular.module('mainApp')
                     $scope.d.requestByLatestDirty = false;
                     states.set('data', 'dataUpdated');
                     states.set('url', 'needsUpdate');
+                    $scope.updatePostIdsFromActual(data);
                     $scope.$digest();  // Do once
                 };
 
-                if (q.fn ==='getLatest') {
+                if (q.fn === 'getLatest') {
                     getDataSvc.getLatest(q.limit, null, successFn);
                 } else if (q.fn === 'getByPoints') {
-                    getDataSvc.getByPoints(q.dateRange, q.limit, null,  successFn);
+                    getDataSvc.getByPoints(q.dateRange, q.limit, null, successFn);
                 } else if (q.fn === 'getByComments') {
-                    getDataSvc.getByComments(q.dateRange, q.limit, null,  successFn);
+                    getDataSvc.getByComments(q.dateRange, q.limit, null, successFn);
                 } else {
                     throw new Error('Unexpected query fn: ', q.fn);
                 }
@@ -318,29 +354,26 @@ angular.module('mainApp')
             }
         });
 
-        $scope.$on('chart', function (event, arg) {
-            console.log(' <<< ' + event.name + '/' + arg);
-            $scope.d.chartNeedsUpdate= states.is('chart', 'needsUpdate');  // Use a data element to easily communicate with chart directive
+        $scope.$on('chart', function () {
+            $scope.d.chartNeedsUpdate = states.is('chart', 'needsUpdate');  // Use a data element to easily communicate with chart directive
 
-            // TODO - need to figure out how to update the chart (sending events back and forth)
         });
         // If child directive is finished, update the state
-        $scope.$watch('d.chartNeedsUpdate', function(newVal, oldVal) {
+        $scope.$watch('d.chartNeedsUpdate', function (newVal, oldVal) {
             if (newVal === null || newVal === oldVal) {
                 return;
             }
-            states.set('chart',  !$scope.d.chartNeedsUpdate ? 'chartUpdated' : 'needsUpdate' );
+            states.set('chart', !$scope.d.chartNeedsUpdate ? 'chartUpdated' : 'needsUpdate');
         });
 
-        $scope.$on('url', function (event, arg) {
-            console.log(' <<< ' + event.name + '/' + arg);
+        $scope.$on('url', function () {
             setUrl();
         });
 
         $scope.$on('postIds', function (event, arg) {
-            console.log(' <<< ' + event.name + '/' + arg);
-            if (arg==='fromManual') {
+            if (arg === 'fromManual') {
                 $scope.d.postListSelector = 'deselected';
+                states.set('postIds', 'fromManual');
             }
         });
     }]);
@@ -367,14 +400,7 @@ angular.module('mainApp')
             window.hnsearch = new HNSearch('UJ5WYC0L7X', '8ece23f8eb07cd25d40262a1764599b1', 'Item_production', 'User_production', $scope);
         }, 100);
 
-        $scope.$watch('d.selectedId', function (newValue) {
-            if (newValue === null) {
-                return;
-            }
 
-            console.log('hnsearchCtrl: d.selectedIds watch fired: ', newValue);
-            // TODO - REMOVE selectedId
-        });
     }]);
 
 // TODO - Add statistics

@@ -65,7 +65,7 @@ angular.module('mainApp').directive('multiPostChart', ['getDataSvc',
             transclude: 'false',
             replace: true,
             link: {
-                post: function (scope, element, attrs) { // post-link function
+                post: function (scope, element) { // post-link function
 
                     scope.id = element.attr('id');
 

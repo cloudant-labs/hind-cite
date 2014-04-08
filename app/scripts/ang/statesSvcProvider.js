@@ -1,5 +1,5 @@
 'use strict';
-/*global angular:false,*/
+/*global angular:false*/
 
 
 angular.module('statesServiceProvider', [])
@@ -16,14 +16,12 @@ angular.module('statesServiceProvider', [])
          * $scope = if a valid angular scope, it will BROADCAST an event upon any change of state. (to enable $scope.$on() )
          */
 
-        console.log('statesServicesProvicer: in factory');
 
         function stateManager(statesInit, $scope) {
-            console.log('stateManager - initializing: ', statesInit, $scope);
-
             var _states = {};
 
             for (var key in statesInit) {
+                //noinspection JSUnfilteredForInLoop
                 if (!Array.isArray(statesInit[key])) {
                     throw new Error('Improper initialization format. Must be {key1: [list], key2:[list]}. Received: ', JSON.stringify(statesInit, null, 4));
                 }
@@ -36,10 +34,7 @@ angular.module('statesServiceProvider', [])
 
             function broadcast(obj, state) {
                 if ($scope) {
-                    console.log('>>> '+obj + '/' + state );
-                    $scope.$broadcast(obj, state); // TODO -  BUG - this causes a bug where if you change a select before it finishes loading, it loses your input.
-
-
+                    $scope.$broadcast(obj, state);
                 }
             }
 
@@ -55,9 +50,11 @@ angular.module('statesServiceProvider', [])
 
             function set(obj, state) {
                 errorCheck(obj, state);
+
                 var oldVal = _states[obj][state];
 
                 for (var s in _states[obj]) {
+                    //noinspection JSUnfilteredForInLoop,JSUnfilteredForInLoop
                     _states[obj][s] = (s === state);
                 }
 
@@ -80,7 +77,8 @@ angular.module('statesServiceProvider', [])
 
             return {
                 set: set,
-                is: is
+                is: is,
+                get : get
             };
         }
 

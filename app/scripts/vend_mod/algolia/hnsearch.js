@@ -43,7 +43,6 @@ Number.prototype.number_with_delimiter = function (delimiter) {
             //    1) Add or remove the id from the parent scope's id list
             //    2) Switch button between Add and Remove
             this.clickedId = function(selectedId){ //RR
-                console.log('hnSearch: setSelected Id', selectedId);
                 var el = $('#srch_'+selectedId);
                 if (el.length===0){
                     throw new Error('hnsearch clickedId - couldnt find element for id:', selectedId);

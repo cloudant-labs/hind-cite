@@ -22,5 +22,6 @@
     },
     "globalstrict": true,
     "browser" : true,
-    "jquery" : true
+    "jquery" : true,
+    "loopfunc": true
 }

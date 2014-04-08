@@ -17,7 +17,7 @@ var getData = (function ($, _, config) {
      */
     function paramsToQuery(params) {
         if (typeof(params) !== 'object') {
-            throw new TypeError('Expected object as input. Got: ' + typeof(params), params);
+            throw new TypeError('Expected object as input. Got: ' + typeof(params) + JSON.stringify(params));
         }
 
         var outList = [];
@@ -129,6 +129,9 @@ var getData = (function ($, _, config) {
 
         var url = createIdUrl(params);
         get(url, function (rawData) {
+            if (rawData.rows.length === 0) {
+                return;  //don't do successFn.
+            }
             var modData = reformatByIdData(rawData);
             successFn(modData);
         }, errFn);
@@ -204,13 +207,13 @@ var getData = (function ($, _, config) {
      * val - a number or string
      * returns - number or string surrounded with quotes. ("input string")
      */
-    function NumbOrQuotedString(val) {
+    function numbOrQuotedString(val) {
         if (typeof(val) === 'number') {
             return val;
         } else if (typeof(val) === 'string') {
             return '"' + val + '"';
         } else {
-            throw new Error('Unexpected type: typeof(val)', typeof(val), 'val: ', val);
+            throw new Error('Unexpected type: typeof(val)' + typeof(val) + 'val: '+ val);
         }
     }
 
@@ -239,7 +242,7 @@ var getData = (function ($, _, config) {
             if (query[key] instanceof(Array)) {
                 //noinspection JSUnfilteredForInLoop
                 queryArray.push(_.template('<%= key %>:[<%= from %> TO <%= to %>]',
-                    {key: key, from: NumbOrQuotedString(query[key][0]), to: NumbOrQuotedString(query[key][1])}));
+                    {key: key, from: numbOrQuotedString(query[key][0]), to: numbOrQuotedString(query[key][1])}));
             } else {
                 //noinspection JSUnfilteredForInLoop
                 queryArray.push(_.template('<%= key %>:<%= val %>',
@@ -252,8 +255,6 @@ var getData = (function ($, _, config) {
         params.limit = params.limit || 20;  // default limit, just in case
         url += '&' + paramsToQuery(params);
 
-
-        console.log('createSearchUrl', searchName, query, params, ' ---> ', url);
         return url;
     }
 
@@ -286,7 +287,6 @@ var getData = (function ($, _, config) {
         var url = createSearchUrl(config.SEARCH_POSTS, query, params);
         get(url, function (rawData) {
             var modData = reformatSearch(rawData);
-            console.log(modData);
             successFn(modData);
         }, errFn);
     }

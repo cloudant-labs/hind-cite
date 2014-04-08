@@ -27,14 +27,14 @@
                         <option value='["top","all"]' >HN Front Page</option>
                     </optgroup>
                     <optgroup label='Most Points'>
-                        <option value='["points","all"]' >All data </option>
-                        <option value='["points",7]' >Past 7 days </option>
-                        <option value='["points",30]' >Past 30 days </option>
+                        <option value='["points","all"]' >Points - All data </option>
+                        <option value='["points",7]' >Points - Past 7 days </option>
+                        <option value='["points",30]' >Points - Past 30 days </option>
                     </optgroup>
                     <optgroup label='Most Comments'>
-                        <option value='["comments","all"]' >All data </option>
-                        <option value='["comments",7]' >Past 7 days </option>
-                        <option value='["comments",30]' >Past 30 days </option>
+                        <option value='["comments","all"]' >Comments - All data </option>
+                        <option value='["comments",7]' >Comments - Past 7 days </option>
+                        <option value='["comments",30]' >Comments - Past 30 days </option>
                     </optgroup>
                 </select>
             </form>
@@ -101,11 +101,6 @@
     </div>
 
     <br>
-    <p>d.postIds: {{ d.postIds }}</p>
-    <p>d.newIds: {{ d.newIds }}</p>
-    <p>d.dropdownToQueryResult: {{ d.dropdownToQueryResult }}</p>
-    <p>d.postListSelector: {{ d.postListSelector }}</p>
-
 
     <h1>{{ d.metric | titleCase}}</h1>
     <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"
@@ -120,7 +115,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="btn btn-primary closeButton pull-right" data-dismiss="modal">Done</button>
+                        <button type="button" class="btn btn-primary closeButton pull-right" data-dismiss="modal" ng-click="resetHnSearch()">Done</button>
                         <h1 class='modal-title'>Search Hacker News</h1>
 
 
@@ -131,7 +126,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary closeButton" data-dismiss="modal">Done</button>
+                        <button type="button" class="btn btn-primary closeButton" data-dismiss="modal" ng-click="resetHnSearch()">Done</button>
                     </div>
                 </div>
             </div>
