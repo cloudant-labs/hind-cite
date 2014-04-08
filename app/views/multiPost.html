@@ -109,7 +109,7 @@
 
     <h1>{{ d.metric | titleCase}}</h1>
     <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"
-                      metric="d.metric" rankRange="d.rankRange"></multi-post-chart>
+                      metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
 
 
     <div ng-controller="hnsearchCtrl">

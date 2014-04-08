@@ -136,6 +136,9 @@ angular.module('mainApp')
 
         $scope.removePostId = function (postId) {
             $scope.d.postIds = _.without($scope.d.postIds, postId);
+            if (postId in $scope.d.data) {
+                delete $scope.d.data[postId];
+            }
             if (!$scope.$$phase) {  // This can be called inside or outside of angular
                 $scope.$digest();
             }
@@ -146,6 +149,7 @@ angular.module('mainApp')
 
         $scope.clearAllIds = function () {
             $scope.d.postIds = [];
+            $scope.d.data={};
             // TODO - BUG - NVD3 doesn't delete chart when data is empty
             states.set('postIds', 'fromManual');
             states.set('chart', 'needsUpdate');
@@ -316,7 +320,16 @@ angular.module('mainApp')
 
         $scope.$on('chart', function (event, arg) {
             console.log(' <<< ' + event.name + '/' + arg);
+            $scope.d.chartNeedsUpdate= states.is('chart', 'needsUpdate');  // Use a data element to easily communicate with chart directive
+
             // TODO - need to figure out how to update the chart (sending events back and forth)
+        });
+        // If child directive is finished, update the state
+        $scope.$watch('d.chartNeedsUpdate', function(newVal, oldVal) {
+            if (newVal === null || newVal === oldVal) {
+                return;
+            }
+            states.set('chart',  !$scope.d.chartNeedsUpdate ? 'chartUpdated' : 'needsUpdate' );
         });
 
         $scope.$on('url', function (event, arg) {
