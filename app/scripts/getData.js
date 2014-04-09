@@ -161,6 +161,7 @@ var getData = (function ($, _, config) {
         ids.forEach(function (id) {
             getById(id, otherParams, function (data) {
                 returnedData.push(data);
+                returnedData = filterBadIds(returnedData);
                 if (returnedData.length === ids.length) {
                     clearTimeout(timeoutID);
                     callSuccessFn();
@@ -198,6 +199,7 @@ var getData = (function ($, _, config) {
         var url = createLatestUrl(params);
         get(url, function (rawData) {
             var modData = reformatLatest(rawData);
+            modData = filterBadIds(modData);
             successFn(modData);
         }, errFn);
     }
@@ -267,6 +269,24 @@ var getData = (function ($, _, config) {
     }
 
     /**
+     * Most records have id format == 9999999 (7)
+     * Some job records also have that id (if we can find it during scraping)
+     * Some job records do NOT have that format and instead have format: "JOB: <url><title>"
+     * These records aren't very important, aren't very common, and cause problems (in ui, in urls, in parsing id lists, etc.)
+     * Removing them here seems the best option (as opposed to removing the data at the scraper, which is irrevocable)
+     * @param data - [rec,rec,...,rec]
+     */
+    function filterBadIds(data) {
+        var out=[];
+        data.forEach(function(rec){
+            if (/^[0-9]{7}$/.test(rec.id)) {
+                out.push(rec);
+            }
+        });
+        return out;
+    }
+
+    /**
      * query: {key : val}
      * keys:
      *      createed/lastTimestamp: null, 2014* or ["2014-01-01 00:00:00", "9999"]
@@ -286,6 +306,7 @@ var getData = (function ($, _, config) {
         var url = createSearchUrl(config.SEARCH_POSTS, query, params);
         get(url, function (rawData) {
             var modData = reformatSearch(rawData);
+            modData = filterBadIds(modData);
             successFn(modData);
         }, errFn);
     }

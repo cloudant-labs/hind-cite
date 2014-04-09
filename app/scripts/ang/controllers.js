@@ -64,6 +64,7 @@ angular.module('mainApp')
         $scope.d.metric = 'rank';
         $scope.d.rankRange = 30;
         $scope.d.postListSelector = '["top","all"]';
+        $scope.d.unfoundIds = [];
 
         var states = statesService.stateManager({
             data: ['needsData', 'dataUpdated'],
@@ -85,9 +86,7 @@ angular.module('mainApp')
             var out = [];
             split.forEach(function (id) {
                 id = id.replace(/ /g, '');
-                if (/^[0-9]{7}$/.test(id)) {
-                    out.push(id);
-                }
+                out.push(id);
             });
 
             return out;
@@ -179,7 +178,7 @@ angular.module('mainApp')
             var out = {};
             for (var key in $scope.d.data) {
                 //noinspection JSUnfilteredForInLoop
-                if (/^[0-9]{7}$/.test(key)) {
+                if (! /^timestamp$/.test(key)) {
                     //noinspection JSUnfilteredForInLoop
                     out[key] = $scope.d.data[key];
                 }
@@ -193,9 +192,9 @@ angular.module('mainApp')
             var actualIds = keys.map(function (key) {
                 return data[key].id;
             });
-            var unFoundIds = _.difference($scope.d.postIds, actualIds);
-            if (unFoundIds.length > 0) {
-                $scope.d.postIds = _.difference($scope.d.postIds, unFoundIds);
+            $scope.d.unfoundIds = _.difference($scope.d.postIds, actualIds);
+            if ($scope.d.unfoundIds.length > 0) {
+                $scope.d.postIds = _.difference($scope.d.postIds, $scope.d.unfoundIds);
                 if (!$scope.$$phase) {
                     $scope.$digest();
                 }
@@ -233,7 +232,7 @@ angular.module('mainApp')
             } else if (dropdown[0] === 'comments') {
                 fn = 'getByComments';
             } else {
-                throw new Error('Improper query type: '+ dropdown[0]+dropdown);
+                throw new Error('Improper query type: ' + dropdown[0] + dropdown);
             }
 
             return {fn: fn, dateRange: dateRange, limit: limit};
@@ -261,7 +260,7 @@ angular.module('mainApp')
         function setUrl() {
             // No idea why I need to wrap the $location calls in a timeout. They are already in a $digest, but they aren't always getting rendered till the next digest. This fixes it.
             $timeout(function () {
-                if (states.is('postIds','fromList')) {
+                if (states.is('postIds', 'fromList')) {
                     var l = $parse($scope.d.postListSelector)();
                     if (l) {
                         $location.search({list: l[0], limit: l[1]}).replace();
@@ -376,7 +375,6 @@ angular.module('mainApp')
         $scope.$on('postIds', function (event, arg) {
             if (arg === 'fromManual') {
                 $scope.d.postListSelector = 'deselected';
-                states.set('postIds', 'fromManual');
             }
         });
     }]);
