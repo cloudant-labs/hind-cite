@@ -72,13 +72,21 @@ var getData = (function ($, _, config) {
             throw new Error('get called without success function');
         }
 
-        $.ajax({
+        function callSuccessFn(rawData) {
+            console.log('Got data: ', rawData);
+            successFn(rawData);
+        }
+
+        var config = {
             url: url,
             dataType: 'json',
             crossDomain: true,
             error: errFn,
-            success: successFn
-        });
+            success: callSuccessFn
+        };
+
+        console.log('Getting data:\n$.ajax('+ JSON.stringify(config, null, 4)+');');
+        $.ajax(config);
     }
 
 
@@ -162,13 +170,14 @@ var getData = (function ($, _, config) {
         var payload=JSON.stringify({keys: ids});
 
         function callSuccessFn(rawData) {
+            console.log('Got data: ', rawData);
+
             var modData = reformatMultIdData(rawData);
             modData = filterBadIds(modData);
-
             successFn(modData);
         }
 
-        $.ajax({
+        var config={
             url: url,
             dataType: 'json',
             crossDomain: true,
@@ -176,7 +185,11 @@ var getData = (function ($, _, config) {
             error: errFn,
             success: callSuccessFn,
             data: payload
-        });
+        };
+
+        console.log('Getting data:\n$.ajax('+ JSON.stringify(config, null, 4)+');');
+        $.ajax(config);
+
     }
 
     function reformatLatest(raw) {

@@ -23,10 +23,7 @@ angular.module('mainApp')
         $scope.d = {};
         $scope.d.data = [];
 
-        console.log('snapsPerDayCtrl - entering', $scope);
-
         getDataSvc.getSnapshots({group: true}, function success(data) {
-            console.log('snapsPerDayCtrl - got data. Raw: ', data);
             $scope.$apply($scope.d.data = data.rows);
             $scope.$apply($scope.d.data.timestamp = Date.now());
         });
@@ -311,7 +308,6 @@ angular.module('mainApp')
             if (states.is('postIds', 'fromManual')) {
 
                 getDataSvc.getMultIds($scope.d.postIds, null, function success(data) {
-                    console.log('multiPostCtrl - getMultIds - got data: ', data);
                     $scope.d.data = {};
                     data.forEach(function (rec) {
                         $scope.$apply($scope.d.data[rec.id] = rec);
@@ -327,7 +323,6 @@ angular.module('mainApp')
                 var q = dropdownToQuery();
 
                 var successFn = function success(data) {
-                    console.log('Got Data: ', data);
                     $scope.d.data = {};
                     $scope.d.postIds = [];
                     data.forEach(function (rec) {

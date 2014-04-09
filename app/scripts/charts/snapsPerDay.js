@@ -11,6 +11,7 @@ var chartSnapsPerDay = (function ($, _, nv) {
                 throw new Error('snapsPerDay.init - missing config properties: ', config);
             }
 
+            nv.dev = false;  // turn off nvd3 automatic console logging
             elId = config.elId;
             data = config.data;
 
@@ -51,7 +52,6 @@ var chartSnapsPerDay = (function ($, _, nv) {
                 {key: 'Snaps Per Day', values: datal[0]}
             ];
 
-            console.log('dataCloudantToNV. ', data, '-->', nvdata);
             return nvdata;
         }
 

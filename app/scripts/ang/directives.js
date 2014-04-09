@@ -27,11 +27,7 @@ angular.module('mainApp').directive('spdChart', ['getDataSvc',
                     scope.chart = chartSnapsPerDay.chart();
                     scope.chart.init({elId: scope.id, data: []});
 
-
-                    console.log('histChart directive - post link function. Scope: ', scope, 'attrs', attrs);
-
                     scope.$watch('datatimestamp', function (newVal) {
-                        console.log('spd-Chart: scope.datatimestamp watch signalled', newVal, scope.data);
                         if (newVal === null) {
                             return;
                         }
