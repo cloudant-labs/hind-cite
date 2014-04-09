@@ -74,7 +74,8 @@ var getData = (function ($, _, config) {
 
         $.ajax({
             url: url,
-            dataType: 'jsonp',
+            dataType: 'json',
+            crossDomain: true,
             error: errFn,
             success: successFn
         });
@@ -114,6 +115,16 @@ var getData = (function ($, _, config) {
         return rec;
     }
 
+    function reformatMultIdData(raw) {
+        var out=[];
+        raw.rows.forEach(function(rec) {
+            out.push(rec.value);
+            setTimestamps(out[out.length-1]);
+        });
+
+        return out;
+    }
+
     /**
      *
      * @param id - this is the key. eg: '6712703'
@@ -139,34 +150,32 @@ var getData = (function ($, _, config) {
 
     //noinspection JSUnusedLocalSymbols,JSHint
     /**
-     *
-     * @param ids - this is the key. eg: '6712703'
+     * @param ids - this is the key. eg: ['6712703', '7473752']
      * @param otherParams - other params to send (though not sure they are needed)
      */
+
     function getMultIds(ids, otherParams, successFn, errFn) {
         if (!ids) {
             throw new Error('getById: improper parameters. No id propery');
         }
-        var returnedData = [], timeoutID = null;
+        var url = createIdUrl(otherParams);
+        var payload=JSON.stringify({keys: ids});
 
-        function callSuccessFn() {
-            successFn(returnedData);
+        function callSuccessFn(rawData) {
+            var modData = reformatMultIdData(rawData);
+            modData = filterBadIds(modData);
+
+            successFn(modData);
         }
 
-        timeoutID = setTimeout(function () {
-            callSuccessFn();
-        }, 5000);
-
-
-        ids.forEach(function (id) {
-            getById(id, otherParams, function (data) {
-                returnedData.push(data);
-                returnedData = filterBadIds(returnedData);
-                if (returnedData.length === ids.length) {
-                    clearTimeout(timeoutID);
-                    callSuccessFn();
-                }
-            });
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            crossDomain: true,
+            type: 'POST',  // For sending multiple ids
+            error: errFn,
+            success: callSuccessFn,
+            data: payload
         });
     }
 

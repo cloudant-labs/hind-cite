@@ -3,8 +3,6 @@
 ## Todo
 * P1
     * Multichart: Stats - add stats such as highest rank, total points, total comments, time on page 1, etc
-    * Switch from jsonp to CORS
-    * For multipost, switch from individual gets to multi-key fetch
     * Move to Cloudant.com hosting
         * Website
             * Apache config
