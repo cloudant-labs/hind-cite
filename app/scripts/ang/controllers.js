@@ -261,7 +261,7 @@ angular.module('mainApp')
         function setUrl() {
             // No idea why I need to wrap the $location calls in a timeout. They are already in a $digest, but they aren't always getting rendered till the next digest. This fixes it.
             $timeout(function () {
-                if ($scope.d.dropdownIdsOnly && $scope.d.postListSelector !== 'deselected') {
+                if (states.is('postIds','fromList')) {
                     var l = $parse($scope.d.postListSelector)();
                     if (l) {
                         $location.search({list: l[0], limit: l[1]}).replace();
