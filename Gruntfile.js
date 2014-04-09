@@ -203,7 +203,27 @@ module.exports = function (grunt) {
         useminPrepare: {
             html: '<%= yeoman.app %>/index.html',
             options: {
-                dest: '<%= yeoman.dist %>'
+                dest: '<%= yeoman.dist %>',
+                flow: { steps: { 'js': ['uglifyjs'], 'css': ['concat', 'cssmin']}, post: {}}
+            }
+        },
+
+//        uglify: {
+//            options: {
+//                sourceMap : true
+//            },
+//            dist: {
+//                files: {
+//                    '<%= yeoman.dist %>/scripts/scripts.js': [
+//                        '<%= yeoman.dist %>/scripts/scripts.js'
+//                    ]
+//                }
+//            }
+//        },
+        uglify: {
+            options: {
+                sourceMap : false,
+                sourceMapIncludeSources: true
             }
         },
 
@@ -260,8 +280,8 @@ module.exports = function (grunt) {
             }
         },
 
-        // Allow the use of non-minsafe AngularJS files. Automatically makes it
-        // minsafe compatible so Uglify does not destroy the ng references
+// Allow the use of non-minsafe AngularJS files. Automatically makes it
+// minsafe compatible so Uglify does not destroy the ng references
         ngmin: {
             dist: {
                 files: [
@@ -275,14 +295,14 @@ module.exports = function (grunt) {
             }
         },
 
-        // Replace Google CDN references
+// Replace Google CDN references
         cdnify: {
             dist: {
                 html: ['<%= yeoman.dist %>/*.html']
             }
         },
 
-        // Copies remaining files to places other tasks can use
+// Copies remaining files to places other tasks can use
         copy: {
             dist: {
                 files: [
@@ -358,6 +378,7 @@ module.exports = function (grunt) {
         //   dist: {}
         // },
 
+
         // Test settings
         karma: {
             unit: {
@@ -396,7 +417,8 @@ module.exports = function (grunt) {
                 }
             }
         }
-    });
+    })
+    ;
 
     grunt.registerTask('pushto', function (target) {
         if (target === 'stage') {
@@ -455,6 +477,7 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
-};
+}
+;
 
 // TODO: It does not appear that this properly installs karma.  I manually installed karma-jasmine and karma-chrome-launcher, but it's missing a lot per this: https://github.com/yeoman/generator-karma/issues/44  ; But generator-karma and generator-angular are currently at incompatible versions!  SO, keep an eye on it and if I start having karma problems, look here first.  Uggh.

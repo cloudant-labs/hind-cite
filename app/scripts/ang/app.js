@@ -1,4 +1,3 @@
-'use strict';
 /*global $:false, angular:false */
 
 
@@ -10,6 +9,8 @@ angular.module('mainApp', [
         'statesServiceProvider'
     ])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+        'use strict';
+
         $locationProvider.html5Mode(true);
 
         $routeProvider
@@ -45,6 +46,7 @@ angular.module('mainApp', [
 
 // Also do non-angular project initialization
 $(document).ready(function() {
+    'use strict';
 
     $('* [rel="tooltip"]').tooltip({
         html: true,

@@ -1,4 +1,3 @@
-'use strict';
 /* global console:false, $:false, _:false, config:false */
 /* jshint camelcase:false */  // camel: created_d is used elsewhere
 /* exported getData*/
@@ -7,7 +6,7 @@
 
 //noinspection JSHint
 var getData = (function ($, _, config) {
-
+    'use strict';
     /**
      * Given an object, return a query string expected by couch
      * @param params Object with parameters

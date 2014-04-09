@@ -1,4 +1,3 @@
-'use strict';
 /*global angular:false, console:false, chartSnapsPerDay:false, chartMultiPost:false */
 
 
@@ -7,6 +6,7 @@
 
 angular.module('mainApp').directive('spdChart', ['getDataSvc',
     function factory() {
+        'use strict';
         //noinspection UnnecessaryLocalVariableJS
         var directiveDefinitionObject = {
             template: '<div class="chart_container">' +
@@ -49,6 +49,7 @@ angular.module('mainApp').directive('spdChart', ['getDataSvc',
 
 angular.module('mainApp').directive('multiPostChart', ['getDataSvc',
     function factory() {
+        'use strict';
         //noinspection UnnecessaryLocalVariableJS
         var directiveDefinitionObject = {
             template: '<div class="chart_container">' +

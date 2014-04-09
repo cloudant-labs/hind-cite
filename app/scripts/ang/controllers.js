@@ -1,9 +1,9 @@
-'use strict';
 /*global $:false, angular:false, console:false, _:false, HNSearch:false */
 
 
 angular.module('mainApp')
     .controller('mainCtrl', ['$scope', '$log', function ($scope, $log) {
+        'use strict';
         $log.log('******************************************************************************');
         $log.log('Brought to you by Cloudant.com, an IBM Company');
         $log.log('Cloudant - Distributed database as a service');
@@ -19,6 +19,7 @@ angular.module('mainApp')
 
 angular.module('mainApp')
     .controller('snapsPerDayCtrl', ['$scope', 'getDataSvc', function ($scope, getDataSvc) {
+        'use strict';
         $scope.d = {};
         $scope.d.data = [];
 
@@ -40,6 +41,7 @@ angular.module('mainApp')
  * @example sumHist($scope.d.data, 'comments') --> 25
  */
 function sumHistRec(data, field) {
+    'use strict';
 
     if (!data || !data.history) {
         return 0;
@@ -54,6 +56,7 @@ function sumHistRec(data, field) {
 
 angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', '$filter', '$parse', 'statesService', function ($scope, getDataSvc, $location, $timeout, $filter, $parse, statesService) {
+        'use strict';
         $scope.d = {};
         $scope.d.data = {};
         $scope.d.postIds = [];  // Current list of fetched ids
@@ -383,6 +386,7 @@ angular.module('mainApp')
  */
 angular.module('mainApp')
     .controller('hnsearchCtrl', ['$scope', function ($scope) {
+        'use strict';
         $scope.d.selectedId = null;  // NOTE - this requires a parent controller with $scope.d={}
 
         // Delay initializing HNsearch until all pieces are loaded

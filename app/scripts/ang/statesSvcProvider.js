@@ -1,9 +1,10 @@
-'use strict';
 /*global angular:false*/
 
 
 angular.module('statesServiceProvider', [])
     .factory('statesService', function () {
+        'use strict';
+
         /**
          * Simple state manager.
          * Example:

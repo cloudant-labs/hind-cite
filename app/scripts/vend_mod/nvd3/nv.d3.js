@@ -49,14 +49,14 @@ nv.log = function() {
   return arguments[arguments.length - 1];
 };
 
-
+// RR - tweaks to allow strict mode (removing arguments.callee). Problem upon concat and minification
 nv.render = function render(step) {
   step = step || 1; // number of graphs to generate in each timeout loop
 
   nv.render.active = true;
   nv.dispatch.render_start();
 
-  setTimeout(function() {
+  setTimeout(function innerFn() {
     var chart, graph;
 
     for (var i = 0; i < step && (graph = nv.render.queue[i]); i++) {
@@ -67,7 +67,7 @@ nv.render = function render(step) {
 
     nv.render.queue.splice(0, i);
 
-    if (nv.render.queue.length) setTimeout(arguments.callee, 0);
+    if (nv.render.queue.length) setTimeout(innerFn, 0);
     else {
       nv.dispatch.render_end();
       nv.render.active = false;

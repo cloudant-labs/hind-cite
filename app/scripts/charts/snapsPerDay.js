@@ -1,10 +1,10 @@
-'use strict';
 /* global d3:false, _:false, nv:false*/
 /* exported chartSnapsPerDay */
 
 var chartSnapsPerDay = (function ($, _, nv) {
+    'use strict';
     function chart() {
-        var elId, chartSize, data;
+        var elId, data;
 
         function init(config) {
             if (!config || !config.elId) {
@@ -12,7 +12,6 @@ var chartSnapsPerDay = (function ($, _, nv) {
             }
 
             elId = config.elId;
-            chartSize = config.chartSize;
             data = config.data;
 
             d3.select(idToSelector(elId, 'chart'))
