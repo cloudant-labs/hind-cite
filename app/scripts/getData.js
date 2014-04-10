@@ -107,27 +107,27 @@ var getData = (function ($, _, config) {
      * @returns - updates record IN PLACE
      */
     function setTimestamps(rec) {
-        rec.created_d = rec.created && _.hnDateStrToDate(rec.created);
+        rec.created_d = rec.created && hnutils.hnDateStrToDate(rec.created);
 
         if (rec.history) {
             rec.history.forEach(function (d) {
-                d.created_d = d.created && _.hnDateStrToDate(d.created);
-                d.timestamp_d = d.timestamp_str && _.hnDateStrToDate(d.timestamp_str);
+                d.created_d = d.created && hnutils.hnDateStrToDate(d.created);
+                d.timestamp_d = d.timestamp_str && hnutils.hnDateStrToDate(d.timestamp_str);
             });
         }
     }
 
     /**
-     *
-     * @param raw - raw data from cloudant
-     * @returns Just the relevant data, with created_d, and timestamp_d --> localized date objects.
+     * Supplment a set of data records with stats
+     * @param data
      */
-    function reformatByIdData(raw) {
-        var rec = raw.rows[0].value;
-
-        setTimestamps(rec);
-        return rec;
+    function addStats(data) {
+        data.forEach(function(rec){
+            rec.stats=hnutils.createStats(rec);
+        });
     }
+
+
 
     function reformatMultIdData(raw) {
         var out=[];
@@ -135,6 +135,7 @@ var getData = (function ($, _, config) {
             out.push(rec.value);
             setTimestamps(out[out.length-1]);
         });
+        addStats(out);
 
         return out;
     }
@@ -187,6 +188,7 @@ var getData = (function ($, _, config) {
             setTimestamps(curRec);
             out.push(curRec);
         });
+        addStats(out);
         return out;
     }
 
@@ -269,12 +271,13 @@ var getData = (function ($, _, config) {
     }
 
     function reformatSearch(rawData) {
-        return rawData.rows.map(function (row) {
+        var out=  rawData.rows.map(function (row) {
             var rec = row.doc;
             setTimestamps(rec);
             return rec;
         });
-
+        addStats(out);
+        return out;
     }
 
     /**

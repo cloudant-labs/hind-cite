@@ -409,5 +409,6 @@ angular.module('mainApp')
 // TODO - Add statistics
 // TODO - set order for post ids
 // TODO - add comments/points selector to url
-
+// TODO - FIX SORT ORDER (of raw data, or certainly of summary table)
+// TODO - BUG - sometimes selecting the list selector does NOT force a data get/ list change. Figure out what's up with that.
 

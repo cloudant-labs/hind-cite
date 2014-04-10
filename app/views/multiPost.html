@@ -53,12 +53,30 @@
         <thead>
             <tr>
                 <th> ID <button class="btn btn-danger btn-xs" ng-click="clearAllIds()">Clear all</button> </th>
+                <th class="text-center">Latest<br>Rank</th>
+                <th class="text-center">Highest<br>Rank</th>
+                <th class="text-center">Max<br>Points</th>
+                <th class="text-center">Max<br>Comments</th>
+                <th class="text-center">Exposure
+                    <a href="#" data-toggle="tooltip"
+                       title="Exposure=Sum((60-rank)*(Seconds at rank))/1000  It is a proxy for how many views a post gets.">*</a></th>
+                <th class="text-center">Hours<br>Page 1</th>
+                <th class="text-center">Hours<br>Page 1&2</th>
                 <th> Title </th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat=" (key, rec) in dataOnly()">
-                <td>{{ rec.id }} &nbsp; <span class="glyphicon glyphicon-minus-sign small text-danger" ng-click="removePostId(rec.id)"></span>
+                <td >{{ rec.id }} &nbsp; <span
+                        class="glyphicon glyphicon-minus-sign small text-danger"
+                                               ng-click="removePostId(rec.id)"></span>
+                <td class="text-right">{{ rec.stats.lastRank | numLocale}}</td>
+                <td class="text-right">{{ rec.stats.minRank | numLocale }}</td>
+                <td class="text-right">{{ rec.stats.maxPoints | numLocale}}</td>
+                <td class="text-right">{{ rec.stats.maxComments | numLocale }}</td>
+                <td class="text-right">{{ rec.stats.exposure / 1000 | number : 0 | numLocale }}</td>
+                <td class="text-right">{{ rec.stats.secTop30/60/60 | number:1  | numLocale}}</td>
+                <td class="text-right">{{ rec.stats.secTop60/60/60 | number:1  | numLocale}}</td>
                 <td><a href="{{ rec.href }}" target="_blank" >{{ rec.title }} </a></td>
             </tr>
 

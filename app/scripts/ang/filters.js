@@ -9,4 +9,10 @@ angular.module('mainApp')
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
             });
         };
+    })
+    .filter('numLocale', function () {
+        'use strict';
+        return function (input) {
+            return input.toLocaleString();
+        };
     });
