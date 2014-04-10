@@ -13,7 +13,7 @@
     * E2E - add end to end testing
     * Content - add content for cloudant, api, etc.
     * Blog post - write
-    * URL - expose url in UI so people can easily curl it
+    * Console.log - use wrapper so no errros if no console.
 
 * P2
     * MC: unfound id - give visual info telling 'id not found'

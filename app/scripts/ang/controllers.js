@@ -23,7 +23,7 @@ angular.module('mainApp')
         $scope.d = {};
         $scope.d.data = [];
 
-        getDataSvc.getSnapshots({group: true}, function success(data) {
+        getDataSvc.getSnapshots({group: true}, function success(data, context) {
             $scope.$apply($scope.d.data = data.rows);
             $scope.$apply($scope.d.data.timestamp = Date.now());
         });
@@ -62,6 +62,8 @@ angular.module('mainApp')
         $scope.d.rankRange = 30;
         $scope.d.postListSelector = '["top","all"]';
         $scope.d.unfoundIds = [];
+        $scope.d.CloudantUrl='';
+        $scope.d.CloudantPayload='';
 
         var states = statesService.stateManager({
             data: ['needsData', 'dataUpdated'],
@@ -307,22 +309,24 @@ angular.module('mainApp')
 
             if (states.is('postIds', 'fromManual')) {
 
-                getDataSvc.getMultIds($scope.d.postIds, null, function success(data) {
+                getDataSvc.getMultIds($scope.d.postIds, null, function success(data, context) {
                     $scope.d.data = {};
                     data.forEach(function (rec) {
-                        $scope.$apply($scope.d.data[rec.id] = rec);
+                        $scope.d.data[rec.id] = rec;
                     });
-                    $scope.$apply($scope.d.data.timestamp = Date.now());
-                    $scope.$apply($scope.d.requestByIdDirty = false);
+                    $scope.d.CloudantUrl = context.url;
+                    $scope.d.CloudantPayload = context.data;
                     states.set('data', 'dataUpdated');
                     states.set('url', 'needsUpdate');
+                    states.set('chart', 'needsUpdate');
                     $scope.updatePostIdsFromActual(data);
+                    $scope.$digest();  // WEIRD = setting the url with the // in an apply fails!
                 });
             } else if (states.is('postIds', 'fromList')) {
                 $scope.d.dropdownToQueryResult = dropdownToQuery();
                 var q = dropdownToQuery();
 
-                var successFn = function success(data) {
+                var successFn = function success(data, context) {
                     $scope.d.data = {};
                     $scope.d.postIds = [];
                     data.forEach(function (rec) {
@@ -330,9 +334,11 @@ angular.module('mainApp')
                         $scope.d.postIds.push(rec.id);
                     });
                     $scope.d.data.timestamp = Date.now();
-                    $scope.d.requestByLatestDirty = false;
+                    $scope.d.CloudantUrl = context.url;
+                    $scope.d.CloudantPayload = context.data;
                     states.set('data', 'dataUpdated');
                     states.set('url', 'needsUpdate');
+                    states.set('chart', 'needsUpdate');
                     $scope.updatePostIdsFromActual(data);
                     $scope.$digest();  // Do once
                 };

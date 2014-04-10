@@ -61,6 +61,12 @@ var getData = (function ($, _, config) {
         return createUrl(config.VIEW_LATEST, params);
     }
 
+    /**
+     *
+     * @param successFn
+     *   - data - reformated data
+     *   - context = ajax config data
+     */
     function get(url, successFn, errFn) {
         if (!errFn) {
             errFn = function (jqXHR, textStatus, errorThrown) {
@@ -74,7 +80,7 @@ var getData = (function ($, _, config) {
 
         function callSuccessFn(rawData) {
             console.log('Got data: ', rawData);
-            successFn(rawData);
+            successFn(rawData, this);
         }
 
         var config = {
@@ -133,33 +139,14 @@ var getData = (function ($, _, config) {
         return out;
     }
 
-    /**
-     *
-     * @param id - this is the key. eg: '6712703'
-     * @param otherParams - other params to send (though not sure they are needed)
-     */
-    function getById(id, otherParams, successFn, errFn) {
-        if (!id) {
-            throw new Error('getById: improper parameters. No id propery');
-        }
-        var params = {} || otherParams;
-        params.key = id;
-
-        var url = createIdUrl(params);
-        get(url, function (rawData) {
-            if (rawData.rows.length === 0) {
-                return;  //don't do successFn.
-            }
-            var modData = reformatByIdData(rawData);
-            successFn(modData);
-        }, errFn);
-    }
-
 
     //noinspection JSUnusedLocalSymbols,JSHint
     /**
      * @param ids - this is the key. eg: ['6712703', '7473752']
      * @param otherParams - other params to send (though not sure they are needed)
+     * @param successFn - fn(data, context)
+     *      - data - reformated data
+     *      - context = ajax config data
      */
 
     function getMultIds(ids, otherParams, successFn, errFn) {
@@ -174,7 +161,7 @@ var getData = (function ($, _, config) {
 
             var modData = reformatMultIdData(rawData);
             modData = filterBadIds(modData);
-            successFn(modData);
+            successFn(modData, this);
         }
 
         var config={
@@ -219,10 +206,10 @@ var getData = (function ($, _, config) {
         params.limit = limit;
 
         var url = createLatestUrl(params);
-        get(url, function (rawData) {
+        get(url, function (rawData, context) {
             var modData = reformatLatest(rawData);
             modData = filterBadIds(modData);
-            successFn(modData);
+            successFn(modData, context);
         }, errFn);
     }
 
@@ -326,10 +313,10 @@ var getData = (function ($, _, config) {
         params.limit = limit || 30;
 
         var url = createSearchUrl(config.SEARCH_POSTS, query, params);
-        get(url, function (rawData) {
+        get(url, function (rawData, context) {
             var modData = reformatSearch(rawData);
             modData = filterBadIds(modData);
-            successFn(modData);
+            successFn(modData, context);
         }, errFn);
     }
 
@@ -360,7 +347,6 @@ var getData = (function ($, _, config) {
         createIdUrl: createIdUrl,
         get: get,
         getSnapshots: getSnapshots,
-        getById: getById,
         createLatestUrl: createLatestUrl,
         getLatest: getLatest,
         reformatLatest: reformatLatest,

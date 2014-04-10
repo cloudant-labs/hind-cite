@@ -109,6 +109,12 @@
     <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"
                       metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
 
+    <div class="small">
+        <span>URL for this data: <a href="{{ d.CloudantUrl }}" target="_blank">{{ d.CloudantUrl }}</a></span><br>
+        <span ng-show="d.CloudantPayload">Payload for POST for this data: {{ d.CloudantPayload }} <br></span>
+        <span><i>See development console for the $.ajax() call used.</i></span>
+    </div>
+
 
     <div ng-controller="hnsearchCtrl">
 
