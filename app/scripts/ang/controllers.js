@@ -25,7 +25,7 @@ angular.module('mainApp')
 
         getDataSvc.getSnapshots({group: true}, function success(data, context) {
             $scope.$apply($scope.d.data = data.rows);
-            $scope.$apply($scope.d.data.timestamp = Date.now());
+            $scope.$apply($scope.d.dataTs = Date.now());
         });
 
     }]);
@@ -55,7 +55,7 @@ angular.module('mainApp')
     .controller('multiPostCtrl', ['$scope', 'getDataSvc', '$location', '$timeout', '$filter', '$parse', 'statesService', function ($scope, getDataSvc, $location, $timeout, $filter, $parse, statesService) {
         'use strict';
         $scope.d = {};
-        $scope.d.data = {};
+        $scope.d.data = [];
         $scope.d.postIds = [];  // Current list of fetched ids
         $scope.d.newIds = [];   // Ids that need to be added
         $scope.d.metric = 'rank';
@@ -153,9 +153,10 @@ angular.module('mainApp')
 
         $scope.removePostId = function (postId) {
             $scope.d.postIds = _.without($scope.d.postIds, postId);
-            if (postId in $scope.d.data) {
-                delete $scope.d.data[postId];
-            }
+            $scope.d.data = $scope.d.data.filter(function(rec){
+               return rec.id !== postId;
+            });
+
             if (!$scope.$$phase) {  // This can be called inside or outside of angular
                 $scope.$digest();
             }
@@ -166,31 +167,18 @@ angular.module('mainApp')
 
         $scope.clearAllIds = function () {
             $scope.d.postIds = [];
-            $scope.d.data = {};
+            $scope.d.data = [];
             // TODO - BUG - NVD3 doesn't delete chart when data is empty
             states.set('postIds', 'fromManual');
             states.set('chart', 'needsUpdate');
             states.set('url', 'needsUpdate');
         };
 
-        $scope.dataOnly = function () {
-            var out = {};
-            for (var key in $scope.d.data) {
-                //noinspection JSUnfilteredForInLoop
-                if (! /^timestamp$/.test(key)) {
-                    //noinspection JSUnfilteredForInLoop
-                    out[key] = $scope.d.data[key];
-                }
-            }
-            return out;
-        };
 
         // Given actual returned data, remove any postIds that were not found.
         $scope.updatePostIdsFromActual = function (data) {
-            var keys = Object.keys(data);
-            var actualIds = keys.map(function (key) {
-                return data[key].id;
-            });
+            var actualIds = data.map(function(rec){return rec.id;});
+
             $scope.d.unfoundIds = _.difference($scope.d.postIds, actualIds);
             if ($scope.d.unfoundIds.length > 0) {
                 $scope.d.postIds = _.difference($scope.d.postIds, $scope.d.unfoundIds);
@@ -310,10 +298,8 @@ angular.module('mainApp')
             if (states.is('postIds', 'fromManual')) {
 
                 getDataSvc.getMultIds($scope.d.postIds, null, function success(data, context) {
-                    $scope.d.data = {};
-                    data.forEach(function (rec) {
-                        $scope.d.data[rec.id] = rec;
-                    });
+                    $scope.d.data = data;
+                    $scope.d.dataTs = Date.now();
                     $scope.d.CloudantUrl = context.url;
                     $scope.d.CloudantPayload = context.data;
                     states.set('data', 'dataUpdated');
@@ -327,13 +313,9 @@ angular.module('mainApp')
                 var q = dropdownToQuery();
 
                 var successFn = function success(data, context) {
-                    $scope.d.data = {};
-                    $scope.d.postIds = [];
-                    data.forEach(function (rec) {
-                        $scope.d.data[rec.id] = rec;
-                        $scope.d.postIds.push(rec.id);
-                    });
-                    $scope.d.data.timestamp = Date.now();
+                    $scope.d.data = data;
+                    $scope.d.postIds=data.map(function(rec){return rec.id;});
+                    $scope.d.dataTs = Date.now();
                     $scope.d.CloudantUrl = context.url;
                     $scope.d.CloudantPayload = context.data;
                     states.set('data', 'dataUpdated');
@@ -378,6 +360,7 @@ angular.module('mainApp')
                 $scope.d.postListSelector = 'deselected';
             }
         });
+
     }]);
 
 /**

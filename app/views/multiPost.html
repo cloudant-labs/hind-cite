@@ -66,7 +66,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat=" (key, rec) in dataOnly()">
+            <tr ng-repeat=" rec in d.data">
                 <td ><a href={{"https://news.ycombinator.com/item?id="+rec.id}} target="_blank">{{ rec.id }}</a> &nbsp; <span
                         class="glyphicon glyphicon-minus-sign small text-danger"
                                                ng-click="removePostId(rec.id)"></span>
@@ -124,7 +124,7 @@
     <br>
 
     <h1>{{ d.metric | titleCase}}</h1>
-    <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.data.timestamp"
+    <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"
                       metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
 
     <div class="small">

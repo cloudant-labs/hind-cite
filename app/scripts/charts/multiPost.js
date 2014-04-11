@@ -26,30 +26,27 @@ var chartMultiPost = (function ($, _, nv) {
 
 
         function dataCloudantToNV(raw, metric) {
-            var rawSeries, outSeries, out = [];
+            var outSeries, out = [];
 
-            for (var key in raw) {
-                if (key === 'timestamp') {
-                    continue;
-                }
-
+            raw.forEach(function(rec){
                 //noinspection JSUnfilteredForInLoop
-                rawSeries = raw[key];
                 outSeries = {
-                    key: rawSeries.title, //.substring(0,10),
-                    id: rawSeries.id,
-                    title: rawSeries.title,
+                    key: rec.title, //.substring(0,10),
+                    id: rec.id,
+                    title: rec.title,
                     values: []
                 };
 
-                var t0 = rawSeries.history[0].timestamp_d.getTime();
+                var t0 = rec.history[0].timestamp_d.getTime();
                 // TODO - Change this? JSHINT doesn't like it. Maybe it is bad form?
-                rawSeries.history.forEach(function (snap) {
+                rec.history.forEach(function (snap) {
                     outSeries.values.push({x: (snap.timestamp_d.getTime() - t0) / (1000 * 60 * 60), y: snap[metric]}); // Time in hours since first snap
                 });
 
                 out.push(outSeries);
-            }
+            });
+
+
 
             return out;
         }
