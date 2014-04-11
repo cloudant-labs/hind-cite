@@ -411,4 +411,8 @@ angular.module('mainApp')
 // TODO - add comments/points selector to url
 // TODO - FIX SORT ORDER (of raw data, or certainly of summary table)
 // TODO - BUG - sometimes selecting the list selector does NOT force a data get/ list change. Figure out what's up with that.
+// TODO - Bug - if you select bad id from teh search box, you won't see the alert saying 'not found'
+// TODO - add date limit to algolias search
+// TODO - update algolia to use new algolia features
+
 

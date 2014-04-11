@@ -2,10 +2,12 @@
 
 ## Todo
 * P1
-    * Multichart: Stats - add stats such as highest rank, total points, total comments, time on page 1, etc
+    * Stats - do on cloudant? (Currently on client)
+    * Fix list-select bug
     * Move to Cloudant.com hosting
         * Website
             * Apache config
+            * Google analytics - page views & events
         * Scraper
     * CSS - integrate with cloudant css
     * Formatting / controls - make it look much better!
@@ -14,9 +16,14 @@
     * Content - add content for cloudant, api, etc.
     * Blog post - write
     * Console.log - use wrapper so no errros if no console.
+    * HTML snapshots!
 
 * P2
     * MC: unfound id - give visual info telling 'id not found'
+    * Data cleanup
+        * Charts with 0 comments
+        * Horiz lines on points charts
+        * Back angles on rank charts (all three - look at list - by points all time)
 
 * P3
     * NVD3 - submit pull request
