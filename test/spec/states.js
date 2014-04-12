@@ -7,7 +7,7 @@ var initStates = {
     obj: ['state1', 'state2', 'state3']
 };
 
-describe('stateManager initialization works', function () {
+xdescribe('stateManager initialization works', function () {
     it('should succeed', function () {
         expect(typeof(statesModule.stateManager(initStates))).toBe('object');
     });
@@ -24,7 +24,7 @@ describe('stateManager initialization works', function () {
     });
 });
 
-describe('stateManager works', function () {
+xdescribe('stateManager works', function () {
     var states;
 
     beforeEach(function () {

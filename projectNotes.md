@@ -2,8 +2,6 @@
 
 ## Todo
 * P1
-    * Stats - do on cloudant? (Currently on client)
-    * Fix list-select bug
     * Move to Cloudant.com hosting
         * Website
             * Apache config
@@ -11,8 +9,12 @@
         * Scraper
     * CSS - integrate with cloudant css
     * Formatting / controls - make it look much better!
-    * Tests - fix broken unit tests
-    * E2E - add end to end testing
+    * Testing
+        * Unit tests - Make more complete, esp. for new getData, and for statesService
+        * End to End
+    * Data validation
+        * Make sure the data is right
+        * Especially stats
     * Content - add content for cloudant, api, etc.
     * Blog post - write
     * Console.log - use wrapper so no errros if no console.
@@ -24,6 +26,8 @@
         * Charts with 0 comments
         * Horiz lines on points charts
         * Back angles on rank charts (all three - look at list - by points all time)
+    * Stats - do on cloudant? (Currently on client)
+    * Bug - sometimes the table wraps and sometimes it doesn't. Weird.
 
 * P3
     * NVD3 - submit pull request
