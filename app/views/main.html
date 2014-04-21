@@ -4,9 +4,51 @@
     <p class="lead">
         How did your post do on HackerNews? It's nice to know how many points it got, but we can do better.
     </p>
-    <small><p>Brought to you by your friends at <a href="http://cloudant.com" target="_blank">Cloudant.com</a> (YC2008)
+    <small><p>Brought to you by your friends at <a href="http://cloudant.com" target="_blank">Cloudant.com</a>
+        (YC2008) / IBM<span class="glyphicon glyphicon-registration-mark " style="font-size:8px;"></span>
     </p></small>
 
 </div>
+<div >
+    <div class="col-md-4 col-sm-6">
+        <div class="thumbnail">
+            <a href='/multiPost'><img src="images/PostsByRank300x300.jpg" height='300' width='300' alt="Post History"></a>
+            <div style='text-align:center;'>
+                <h3>
+                    <a href='/multiPost'>Post History</a>
+                </h3>
+                <p>
+                    Time series data of post performance.
+                </p>
+            </div>
+        </div>
+    </div>
 
-<ng-include src="'views/multiPost.html'"></ng-include>
+    <div class="col-md-4 col-sm-6">
+        <div class="thumbnail">
+            <a href='/snapsPerDay'><img src="/images/SnapsPerDay300x300.jpg" height='300'
+                                        width='300' alt="Snaps Per Day"></a>
+            <div style='text-align:center;'>
+                <h3>
+                    <a href='/snapsPerDay'>Snapshots per Day</a>
+                </h3>
+                <p>
+                    This is a new data set with occasional outages. This chart gives a quick overview.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6">
+        <div class="thumbnail">
+            <img src="/images/PlusSign300x300.jpg" height='300' width='300' alt="Comparison">
+            <div style='text-align:center;'>
+                <h3>
+                    <a href='/compare'>Add your own!</a>
+                </h3>
+                <p>
+                    Got a chart that you think people would like? We'd be happy to host it. <a href="git@github.com:rr326/HiNsight.git" target="_blank">Submit a pull request.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
