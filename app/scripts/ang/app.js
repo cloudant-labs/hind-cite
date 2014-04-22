@@ -39,6 +39,11 @@ angular.module('mainApp', [
                 caseInsensitiveMatch: true,
                 reloadOnSearch: false
             })
+            .when('/about', {
+                templateUrl: 'views/about.html',
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
+            })
             .otherwise({
                 redirectTo: '/'
             });

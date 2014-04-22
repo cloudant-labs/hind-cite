@@ -49,6 +49,17 @@ module.exports = function (grunt) {
             gruntfile: {
                 files: ['Gruntfile.js']
             },
+            md: {
+                files: ['*.md', 'docs/**/*.md'],
+                tasks: ['markdown']
+            },
+            livereload_md: {
+                files: ['.tmp/mdcompiled/**/*.html'],
+                options: {
+                    livereload: 35730,
+                    spawn: false
+                }
+            },
             livereload: {
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -102,6 +113,14 @@ module.exports = function (grunt) {
 
                         return middlewares;
                     }
+                }
+            },
+            livereload_md: {
+                options: {
+                    open: true,
+                    base: ['.tmp/mdcompiled'],
+                    port: 9001,
+                    livereload: 35730,
                 }
             },
             test: {
@@ -222,7 +241,7 @@ module.exports = function (grunt) {
 //        },
         uglify: {
             options: {
-                sourceMap : false,
+                sourceMap: false,
                 sourceMapIncludeSources: true
             }
         },
@@ -280,8 +299,8 @@ module.exports = function (grunt) {
             }
         },
 
-// Allow the use of non-minsafe AngularJS files. Automatically makes it
-// minsafe compatible so Uglify does not destroy the ng references
+        // Allow the use of non-minsafe AngularJS files. Automatically makes it
+        // minsafe compatible so Uglify does not destroy the ng references
         ngmin: {
             dist: {
                 files: [
@@ -295,14 +314,14 @@ module.exports = function (grunt) {
             }
         },
 
-// Replace Google CDN references
+        // Replace Google CDN references
         cdnify: {
             dist: {
                 html: ['<%= yeoman.dist %>/*.html']
             }
         },
 
-// Copies remaining files to places other tasks can use
+        // Copies remaining files to places other tasks can use
         copy: {
             dist: {
                 files: [
@@ -416,6 +435,18 @@ module.exports = function (grunt) {
                     recursive: false
                 }
             }
+        },
+        markdown: {
+            all: {
+                files: [
+                    {
+                        expand: true,
+                        src: ['*.md', 'docs/**/*.md'],
+                        dest: '.tmp/mdcompiled',
+                        ext: '.html'
+                    }
+                ]
+            }
         }
     })
     ;
@@ -429,6 +460,13 @@ module.exports = function (grunt) {
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
+        }
+
+        if (target === 'md') {
+            grunt.task.run([
+                'connect:livereload_md',
+                'watch'
+            ]);
         }
 
         grunt.task.run([
@@ -477,6 +515,8 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+
+
 }
 ;
 

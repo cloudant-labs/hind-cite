@@ -1,0 +1,145 @@
+<div>
+    <h1>About</h1>
+
+    <h2></h2>
+
+    <p>
+        As Y Combinator alums (2008) and dedicated hackers, we love Hacker News. And as a database-as-a-service
+        provider, we use Hacker News as an important channel for reaching developers. But other than watching a
+        post's performance as it happens, there hasn't been great data to actually analyze the time-based
+        performace of a post. So we figured we'd change that.
+    </p>
+
+    <p>HiNSight (HN + Insight) is a few things:</p>
+    <ul>
+        <li>A time-series database of post performance, with some views and queries to allow you to access
+            the database more effectively
+        </li>
+        <li>A REST interface</li>
+        <li>A website with a few starting charts</li>
+        <li>A community of hackers adding new charts and analyses, hosted here (Hopefully!)</li>
+    </ul>
+
+    <h2>The Data</h2>
+
+    <p>
+        HiNsight uses a screen scraper to capture the first two pages of Hacker News, approximately every 5 minutes.
+        We started collecting the data in January 2014. We had a few scraper problems, so the data doesn't get very
+        clean until mid-February. And even then, occasionally HN will be down, or our scraper's host will be down,
+        or we'll run into some other intermittent problem. The data is pretty clean, but not perfect. A good
+        way to glance at our data depth is with the <a href="/snapsPerDay">Snapshots Per Day chart</a>.
+    </p>
+
+    <h2>The Database</h2>
+
+    <p>
+        The database is hosted here: <a href="https://cs.cloudant.com/news">https://cs.cloudant.com/news</a>. Not
+        surprsingly, it is hosted on on <a href="https://cloudant.com">Cloudant</a> - a database-as-a-service
+        provider (and IBM&reg; company).
+    </p>
+
+    <h2>Quick Intro to Cloudant</h2>
+
+    <p>
+        Cloudant is a hosted and managed distributed database-as-a-service, based on a horizontally scalable version of
+        Apache CouchDB and other tools. A Cloudant database is a schemaless JSON document store sharded across a set of
+        nodes (a la Dynamo), featuring incrementally-updated MapReduce Views, secondary key indexing, built-in full text
+        search (based on Lucene), geo-spatial indexing, multi-master replication (supports global data distribution) and
+        communicates over an HTTP RESTful API. </p>
+
+    <h2>Views & Queries</h2>
+
+    <p>
+        Here are a few ways to access the data:
+    </p>
+    <ul>
+        <li>
+            <b>Base URI</b> - <a href="https://cs.cloudant.com/news">https://cs.cloudant.com/news</a></li>
+        <li>
+            <b>_all_docs</b> - _all_docs is the primary index and is available in any Cloudant database. Here's an
+            example:
+            <ul>
+                <li><a href="https://cs.cloudant.com/news/_all_docs?limit=1&include_docs=true">https://cs.cloudant.com/news/_all_docs?limit=1&include_docs=true</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>snaps-per-day view</b> - A view is a way of viewing and aggregating the data (using map/reduce). This
+            view shows the number of snapshots per day (where a "snapshot" is a view of a post at a moment in time -
+            so a screen capture of the HN homepage would have 30 snapshots).
+            This is also the raw data for the <a href="/snapsPerDay">SnapsPerDay chart</a>.
+            <ul>
+                <li>
+                    <a href="https://cs.cloudant.com/news/_design/by/_view/snaps-per-day?group=true&limit=10">https://cs.cloudant.com/news/_design/by/_view/snaps-per-day?group=true&limit=10</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>latest view</b> - This shows the latest posts that we have in our database. Since we only
+            screen-scrape the top two pages, at most this will return 60 records.
+            This is the
+            source for the <a href="multiPost?list=top&limit=all">Post History - latest chart</a>.
+            <ul>
+                <li>
+                    <a href="https://cs.cloudant.com/news/_design/by/_view/latest?reduce=true&group=true&group_level=1&limit=5">https://cs.cloudant.com/news/_design/by/_view/latest?reduce=true&group=true&group_level=1&limit=5</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Lucene Search</b> - Cloudant's Lucene search funcationality is a very powerful way of querying the
+            data, and is the source for the <a href="/multiPost?list=points&limit=all">Post History - Max Points
+            chart</a> and the <a href="/multiPost?list=comments&limit=all"> Post History - Max Comments chart</a>.
+            <ul>
+                <li><a href="https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO
+                    Infinity]&sort=-points&include_docs=true&limit=10">https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0
+                    TO
+                    Infinity]&sort=-points&include_docs=true&limit=10</a>
+                </li>
+                <li><a href="https://cs.cloudant.com/news/_design/by/_search/posts?q=comments:[0 TO
+                    Infinity]&sort=-comments&include_docs=true&limit=10">https://cs.cloudant.com/news/_design/by/_search/posts?q=comments:[0
+                    TO
+                    Infinity]&sort=-comments&include_docs=true&limit=10</a>
+                </li>
+                <li>Indexed Fields
+                    <ul>
+                        <li>points</li>
+                        <li>comments</li>
+                        <li>hightestrank</li>
+                        <li>created</li>
+                        <li>lastTimeStamp</li>
+                        <li>id</li>
+                        <li>title</li>
+                        <li>domain</li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+    </ul>
+
+    <h2>REST Interface</h2>
+
+    <p>Cloudant has a very powerful and flexible interface. With the above views you can probably do most of what you'd
+        want, but we're happy to add more views if needed. (Just submit an issue on the <a
+                href="https://github.com/rr326/HiNsight/issues">github repo</a>.) To learn more, check out:
+    <ul>
+        <li><a href="https://cloudant.com/for-developers/">Simple Overview</a></li>
+        <li><a href="API Reference">API Reference</a></li>
+        <li><b>Browser Devlopment Console </b> - Open any chart with the browser's developer console open. You'll see
+            the full jquery ajax call that serves the data for that page, as well as the returned JSON.
+        </li>
+
+    </ul>
+    </p>
+
+    <h2>This Website &amp; The Community</h2>
+
+    <p>
+        There are plenty of very interesting analyses this data makes available. With the REST interface and existing
+        queries, you can pretty much do whatever you'd like. But to make things easier, we're happy to host charts or
+        analyses based on the data. Just add a page and <a href="git@github.com:rr326/HiNsight.git">submit a pull
+        request</a>.
+    </p>
+
+
+</div>
