@@ -219,6 +219,7 @@ module.exports = function (grunt) {
         // Reads HTML for usemin blocks to enable smart builds that automatically
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
+        // RR: Note - the flow step and uglify configuration below enable the creation of a sourceMap, if needed. (currently off)
         useminPrepare: {
             html: '<%= yeoman.app %>/index.html',
             options: {
@@ -227,18 +228,6 @@ module.exports = function (grunt) {
             }
         },
 
-//        uglify: {
-//            options: {
-//                sourceMap : true
-//            },
-//            dist: {
-//                files: {
-//                    '<%= yeoman.dist %>/scripts/scripts.js': [
-//                        '<%= yeoman.dist %>/scripts/scripts.js'
-//                    ]
-//                }
-//            }
-//        },
         uglify: {
             options: {
                 sourceMap: false,
@@ -464,6 +453,7 @@ module.exports = function (grunt) {
 
         if (target === 'md') {
             grunt.task.run([
+                'markdown', // Initialize
                 'connect:livereload_md',
                 'watch'
             ]);
