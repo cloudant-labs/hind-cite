@@ -1,5 +1,5 @@
 # Developing with Cloudant - Tips & Best-Practices
-I've built a couple websites with Cloudant as a back end, the latest actually sponsored by Cloudant [HiNsight]
+I've built a couple of websites with Cloudant as a back end, the latest actually sponsored by Cloudant [HiNsight]
 (http://hnstage.k2company.com). I'm no expert, but I've learned a bunch and also have had some Cloudant-guidance to
 help me make the right decisions.  Here are a few things I've learned that might help.
 
@@ -53,16 +53,14 @@ and searches give you a lot of flexibility.
 * Compare the use of views and searches (note - open your developer console)
     * [Using a view](http://hnstage.k2company.com/multiPost?list=top&limit=all)
     * [Using a search](http://hnstage.k2company.com/multiPost?list=points&limit=all)
-    * Note - you can paste any of the urls into your browser to see the raw result,
-    but you need to de-escape it first. For instance:
 
-    `https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO
-    Infinity]&sort=\"-points\"&include_docs=true&limit=10`
+*Note* - you can paste any of the urls into your browser to see the raw result, but you need to de-escape it first. For instance:
 
-    becomes
+    https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO Infinity]&sort=\"-points\"&include_docs=true&limit=10
 
-    `https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO
-    Infinity]&sort="-points"&include_docs=true&limit=10`
+becomes
+
+    https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO Infinity]&sort="-points"&include_docs=true&limit=10
 
 
 ## UN/PW / Keys and Your Source Repo
@@ -70,17 +68,17 @@ If your repository is public, you don't want to store your Cloudant API keys in 
 the best practice is, but my solution is to store it in an environment variable (.bashrc) and then access it where
 needed.
 
-* .bashrc
+#### .bashrc
 
     export CLOUDANT_WRITE_KEY='theatchissintingetselylu'
     export CLOUDANT_WRITE_PW='bjUb2sdVqcrPXxnIqiRHSQoM'
 
-* Access in python
+#### Access in Python
 
     import os
     print 'Here is my write key: ', os.environ['CLOUDANT_WRITE_KEY']
 
-* Access in node
+#### Access in Node
 
     var process = require('process');
     console.log('Here is my write key: ', process.env.CLOUDANT_WRITE_KEY);

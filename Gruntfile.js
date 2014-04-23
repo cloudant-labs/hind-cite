@@ -51,7 +51,10 @@ module.exports = function (grunt) {
             },
             md: {
                 files: ['*.md', 'docs/**/*.md'],
-                tasks: ['markdown']
+                tasks: ['markdown'],
+                options: {
+                    spawn : false
+                }
             },
             livereload_md: {
                 files: ['.tmp/mdcompiled/**/*.html'],
