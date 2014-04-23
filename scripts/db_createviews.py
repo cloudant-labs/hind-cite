@@ -6,12 +6,17 @@ from pprint import pprint, pformat
 # Set globals
 COUCH_SERVER='cs.cloudant.com'
 COUCH_DB='news'
-with open('local_config.json','r') as f:
-    localConfig=json.load(f)
-    with open(localConfig['CLOUDANT_PW_FILE'], 'r') as f2:
-        tmp=json.load(f2)
-        COUCH_UN=tmp['COUCH_UN']
-        COUCH_PW=tmp['COUCH_PW']
+
+#
+# Note - this requires environment variables
+# eg: .bshrc contains export HN_UN='XXXX'
+#
+if ('HN_UN' not in os.environ or 'HN_PW' not in os.environ):
+    print '*'*80+'\n'+'You must set HN_UN & HN_PW as environment variables (in .bashrc)\n'+'*'*80
+    raise
+
+COUCH_UN=os.environ['HN_UN']
+COUCH_PW=os.environ['HN_PW']
 
 COUCH_FULLPATH='https://{0}:{1}@{2}/{3}'.format(COUCH_UN, COUCH_PW, COUCH_SERVER, COUCH_DB)
 
