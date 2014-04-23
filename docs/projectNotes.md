@@ -9,6 +9,8 @@
         * Scraper
     * CSS - integrate with cloudant css
     * Formatting / controls - make it look much better!
+    * Fix couchapp upload scripts to use environment variables
+    * Put hnscrape up on github public (but first remove UN/PW
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End

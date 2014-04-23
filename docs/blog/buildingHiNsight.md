@@ -114,7 +114,7 @@ but probably
  and the db, which is designed to scale.  Nice.
 
 When I started using Cloudant a year ago, my biggest beef was the thin documentation.  But they've improved that
-dramatically.  And you can also ping them for quick answers on IRC - #cloudant.
+dramatically.  And you can also ping them for quick answers on IRC / cloudant.
 
 > ### Takeaway
 > Use Cloudant.  Duh!
