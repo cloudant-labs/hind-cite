@@ -2,7 +2,7 @@
 [HiNsight](http://hnstage.k2company.com/) may look like a pretty simple website, but it's got a lot going on under
 the covers, largely because it relies heavily on a lot of great tools. I'm a novice programmer,
 but this little website has a sophisticated, scalable noSQL backend (Cloudant), a robust build system (Grunt),
-a modern front-end MVC framework (Angular), and a powerful visualization library (D3).  So pretty cool for a novice!
+a modern front-end MVC framework (Angular), a powerful visualization library (D3), and a responsive web design (Bootstrap).  So pretty cool for a novice!
 
 Much of the effort, however, was setting up the infrastructure. This wasn't hard, but it *should* be easy. I'm hoping
  that sharing this will make it easier for others as well.  (Note: If you're an expert web developer,
@@ -17,29 +17,29 @@ golden bundle of tools and frameworks, provided with documentation and authority
 What this means is you get some default structure, some scaffolding, and a lot of grunt tasks to build an application
 as a pro. I think it is worth using, but there are a few gotchas.
 
-The biggest challenge I found is that its
+The biggest challenge I found is that it's
 grunt-based build system is quite sophisticated.  When you couple this with buggy generators or a desire to do
 something outside the default, it can be quite a challenge. I spent a week trying to get the angular-require
-gernator to work (the bug has apparently since been fixed), but after reading a lot of grunt tasks and NPM code,
+generator to work (the bug has apparently since been fixed), but after reading a lot of grunt tasks and NPM code,
 I finally gave up and switched to a straight angular generator. I also ran into slight problems getting Karma to run
 properly.
 
 The bottom line is that Yeoman is mostly great and will help you work more like a pro. But it isn't dead simple and
-you'll probably spend a bunch of time getting small things to work properly.  Oh well.
+you'll probably spend a bunch of time getting small things to work properly.  Oh well. (That said, when you're done you'll also have a decent understanding of Grunt and industry best-practices, so not a bad tradeoff.)
 
 > ### Takeaways:
 > * Use the default angular generator
 > * Use http-rewrite-middleware - With an angular app you want all the urls to redirect to index. For development,
-Yeoman uses a grunt local server, but it doesn't have rewrite rules by default.  Search HiNsite's Gruntfile for
+Yeoman uses a grunt local server, but it doesn't have rewrite rules by default.  Search [HiNsite's Gruntfile](https://github.com/rr326/HiNsight/blob/master/Gruntfile.js) for
 'http-rewrite-middleware'.
 > * Karma - For some reason Karma wasn't included in my default yeoman install (maybe fixed?).  I manually installed:
  `npm install --save-dev karma-jasmine karma-chrome-launcher`
 > * Other tidbits - these aren't as universal, but they took me time and I needed them. Maybe they'll save you some
 time too.
->   * pushto/rsync (search for pushto) - Yeoman gives you a nice localhost serving method,
+>   * pushto/rsync (search [Gruntfile](https://github.com/rr326/HiNsight/blob/master/Gruntfile.js) for pushto) - Yeoman gives you a nice localhost serving method,
 but I also wanted a publicly staged option. I built a rsync-based pushto task. (Note the use of grunt's process to
 access local environment variables (stored outside of your repo) for UN/PW
->   * Sourcmap (search for SourceMap) - I had a bug that reguired a sourcemap to debug. Getting this setup wasn't
+>   * Sourcmap (search [Gruntfile](https://github.com/rr326/HiNsight/blob/master/Gruntfile.js) for SourceMap) - I had a bug that reguired a sourcemap to debug. Getting this setup wasn't
 trivial for me.
 >   * Markdown - A small one to enable live viewing of compiled markdown.
 
@@ -64,7 +64,7 @@ of docs? Things I found 6 months ago seem to have disappeared.  If you use Angul
 be prepared to do a lot of Google searches for answers.
 
 One side note - if you actually look at the code you'll see a whole mess where I dumbly integrated Algolia's
-excellent search interface (the HN Search tool) with my code. I should have rebuilt the code as an Angular directive
+excellent search interface (the [HN Search tool](https://hn.algolia.com)) with my code. I should have rebuilt the code as an Angular directive
  to match the rest of my application. It would have been simpler, more maintainable, and more elegant than just jury rigging it the way I did. It was a mistake.
 
 > ### Takeaway:
@@ -81,12 +81,12 @@ website, it was built with D3.  I used it for my first project ([weather-explore
 For HiNsight, I wanted to see if I could code faster, maybe at the expense of some flexibility.  There are few
 frameworks built on top of D3.  I first tried [Rickshaw](http:/code.shutterstock.com/rickshaw).  Rickshaw was super
 cool and their code and their charts are beautiful. But in my day playing with it I realized: 1) I'd have to
-customize it; 2) the rickshaw way of doing to things is pretty different from stock D3; and 3) the community is
+customize it; 2) the Rickshaw way of doing to things is pretty different from stock D3; and 3) the community is
 pretty small.
 
 So I then tried [NVD3](http://nvde3.org).  This was a good call. NVD3's community is larger than Rickshaws (though
 still pretty small).  It's also got plenty of bugs and limitations. But it gives really good results with little
-code, and when you need to fix NVD3 or supplement it, the code is easy to read and similar to D3. It's more of an
+code, and when you need to fix NVD3 or supplement it, the code is easy to read and similar to D3. Its more of an
 extension of D3 than a wrapper.  With NVD3, easy things are easy, medium things are pretty easy,
 and hard things are doable.
 
@@ -95,7 +95,7 @@ and hard things are doable.
 
 ## Cloudant
 *Disclaimer: Cloudant hired me to build HiNsight so I'm not unbiased.*
-At the heart of a data-based website is the data.  In this case, I built a scraper in Python (gevent, requests,
+At the heart of a data-based website is the data.  In this case, I built [a scraper in Python](https://github.com/rr326/HNScraper) (gevent, requests,
 BeautifulSoup) that scrapes the first two pages of HackerNews every 5 minutes.  But where to store the data?
 
 Obviously I used Cloudant, but let me tell you what I like about Cloudant (for this and two other projects I've done):
@@ -105,16 +105,16 @@ or scalability.  All those become complete non-issues for me.  Think about that 
 difficult and time-consuming than my database. Awesome.
 * Pricing - That was irrelevant here, but great for my other projects.  For small-scale usage,
 Cloudant is free. I wouldn't have minded paying something, but I really didn't know what my usage would be.  With
-Dynamo, for instance, you have predict your throughput needs. For my hobbyist site, I would have loved massive success
+Dynamo, for instance, you have to predict your throughput needs. For my hobbyist site, I would have loved massive success
 but probably
- wouldn't get it. What to I estimate? With Cloudant, that was a non-issue.
+ wouldn't get it. What to I estimate? With Cloudant, that was a non-issue.  You just pay for what you use.
 * NoSQL & REST Interface - Lot's have been said about that elsewhere, but those are pretty nice and easy.
 * Website Scalability - With an Angular app and a Cloudant backend, you get fantastic scalability and responsiveness.
  Your web server simply serves some static files (which get cached). After that, all interaction is between the user
  and the db, which is designed to scale.  Nice.
 
 When I started using Cloudant a year ago, my biggest beef was the thin documentation.  But they've improved that
-dramatically.  And you can also ping them for quick answers on IRC / cloudant.
+dramatically.  And you can also ping them for quick answers on [IRC #cloudant](http://webchat.freenode.net/?channels=cloudant&uio=MTE9MTk117).
 
 > ### Takeaway
 > Use Cloudant.  Duh!

@@ -7,22 +7,19 @@
             * Apache config
             * Google analytics - page views & events
         * Scraper
-    * CSS - integrate with cloudant css
     * Formatting / controls - make it look much better!
-    * Fix couchapp upload scripts to use environment variables
-    * Put hnscrape up on github public (but first remove UN/PW
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End
+    * Google analytics
     * Data validation
         * Make sure the data is right
         * Especially stats
-    * Content - add content for cloudant, api, etc.
-    * Blog post - write
     * Console.log - use wrapper so no errros if no console.
     * HTML snapshots!
 
 * P2
+    * NVD3 - submit pull request
     * MC: unfound id - give visual info telling 'id not found'
     * Data cleanup
         * Charts with 0 comments
@@ -31,22 +28,15 @@
     * Stats - do on cloudant? (Currently on client)
     * Bug - sometimes the table wraps and sometimes it doesn't. Weird.
 
-* P3
-    * NVD3 - submit pull request
-
 
 * ?
-    * Data - what to do about posts where I don't have an id? (certain jobs) - get from algolia?
+    * Data - what to do about posts where I don't have an id? (certain jobs)
 
 ## Yeoman setup
-* Use angular-require (with the fix on the github issue)
 * Use angular html5mode
     * Do XXX to get it working again (I forget)
 * Install http-rewrite-middleware
     * with rewrite rule to route everything to index.html
-* Questionable
-    * Dir structure - instead of controllers dir, all controllers in one file
-    * Instead of hardcoding app name for services, directives, etc (hnApp.module(...) do generically (module('servicesProvider')) and then include dependency in main application
 * Try jasmine 2.0 (1.3 is current verion)
 
 
