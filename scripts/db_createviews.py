@@ -13,7 +13,7 @@ COUCH_DB='news'
 #
 if ('HN_UN' not in os.environ or 'HN_PW' not in os.environ):
     print '*'*80+'\n'+'You must set HN_UN & HN_PW as environment variables (in .bashrc)\n'+'*'*80
-    raise
+    raise Exception('Error - You must set HN_UN & HN_PW as environment variables (in .bashrc) ')
 
 COUCH_UN=os.environ['HN_UN']
 COUCH_PW=os.environ['HN_PW']

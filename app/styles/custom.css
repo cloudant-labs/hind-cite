@@ -62,3 +62,9 @@ td.vcenter{
     }
 }
 
+.jumbotron {
+  padding: 30px;
+  margin-bottom: 30px;
+  color: inherit;
+  background-color: #E6F4FF;
+}
