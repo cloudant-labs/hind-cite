@@ -380,7 +380,7 @@ angular.module('mainApp')
                 if (Date.now() - startTime < maxDelay) {
                     return;
                 } else {
-                    log('*** Timing out initialization of hnsearchCtrl!');
+                    logit('*** Timing out initialization of hnsearchCtrl!');
                 }
             }
             window.clearInterval(intId);

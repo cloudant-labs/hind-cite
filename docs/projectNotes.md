@@ -14,7 +14,6 @@
     * Data validation
         * Make sure the data is right
         * Especially stats
-    * Console.log - use wrapper so no errros if no console.
     * HTML snapshots!
 
 * P2
