@@ -1,4 +1,4 @@
-/*global angular:false, console:false, chartSnapsPerDay:false, chartMultiPost:false */
+/*global angular:false, chartSnapsPerDay:false, chartMultiPost:false */
 
 
 // requires
@@ -7,7 +7,7 @@
 angular.module('mainApp').directive('spdChart', ['getDataSvc',
     function factory() {
         'use strict';
-        //noinspection UnnecessaryLocalVariableJS
+        //noinspection UnnecessaryLocalVariableJS,JSHint
         var directiveDefinitionObject = {
             template: '<div class="chart_container">' +
                 ' <div class="chart"></div>' +

@@ -71,11 +71,11 @@ describe('getLatest works', function(){
         runs(function() {
             getData.getLatest(5, {}, function(data){
                 retVal=data;
-                console.log('MANUAL: Compare the following list with HackerNews Page 1 (should be similar)');
-                console.log('rank\t\ttitle');
-                console.log('====\t\t==============');
+                log('MANUAL: Compare the following list with HackerNews Page 1 (should be similar)');
+                log('rank\t\ttitle');
+                log('====\t\t==============');
                 retVal.forEach(function(rec, i){
-                   console.log("    ".substring(0, 4 - (String(i).length))+i+'\t\t'+rec.title);
+                   log("    ".substring(0, 4 - (String(i).length))+i+'\t\t'+rec.title);
                 });
                 done=true;
             }, function(){

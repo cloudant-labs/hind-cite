@@ -1,7 +1,6 @@
 /* exported hnutils */
-/* global _:false */
 
-var hnutils = (function (_) {
+var hnutils = (function () {
     'use strict';
 
     function dateStrToDate(hnDateStr) {
@@ -70,4 +69,4 @@ var hnutils = (function (_) {
         createStats: createStats
     };
 
-}(_));
+}());

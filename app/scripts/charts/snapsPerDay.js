@@ -48,6 +48,7 @@ var chartSnapsPerDay = (function ($, _, nv) {
 
             });
 
+            //noinspection UnnecessaryLocalVariableJS
             var nvdata = [
                 {key: 'Snaps Per Day', values: datal[0]}
             ];

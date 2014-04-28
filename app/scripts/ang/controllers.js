@@ -1,4 +1,4 @@
-/*global $:false, angular:false, console:false, _:false, HNSearch:false */
+/*global $:false, angular:false, log:false, _:false, HNSearch:false */
 
 
 angular.module('mainApp')
@@ -23,6 +23,7 @@ angular.module('mainApp')
         $scope.d = {};
         $scope.d.data = [];
 
+        //noinspection JSHint
         getDataSvc.getSnapshots({group: true}, function success(data, context) {
             $scope.$apply($scope.d.data = data.rows);
             $scope.$apply($scope.d.dataTs = Date.now());
@@ -379,7 +380,7 @@ angular.module('mainApp')
                 if (Date.now() - startTime < maxDelay) {
                     return;
                 } else {
-                    console.log('*** Timing out initialization of hnsearchCtrl!');
+                    log('*** Timing out initialization of hnsearchCtrl!');
                 }
             }
             window.clearInterval(intId);

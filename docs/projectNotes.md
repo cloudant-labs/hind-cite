@@ -7,7 +7,6 @@
             * Apache config
             * Google analytics - page views & events
         * Scraper
-    * Formatting / controls - make it look much better!
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End

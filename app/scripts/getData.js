@@ -1,4 +1,4 @@
-/* global console:false, $:false, _:false, config:false */
+/* global log:false, $:false, _:false, config:false , hnutils:false*/
 /* jshint camelcase:false */  // camel: created_d is used elsewhere
 /* exported getData*/
 
@@ -70,7 +70,7 @@ var getData = (function ($, _, config) {
     function get(url, successFn, errFn) {
         if (!errFn) {
             errFn = function (jqXHR, textStatus, errorThrown) {
-                console.log('Error getting url:', url, textStatus, errorThrown);
+                log('Error getting url:', url, textStatus, errorThrown);
             };
         }
 
@@ -79,7 +79,8 @@ var getData = (function ($, _, config) {
         }
 
         function callSuccessFn(rawData) {
-            console.log('Got data: ', rawData);
+            log('Got data: ', rawData);
+            //noinspection JSHint
             successFn(rawData, this);
         }
 
@@ -91,7 +92,7 @@ var getData = (function ($, _, config) {
             success: callSuccessFn
         };
 
-        console.log('Getting data:\n$.ajax('+ JSON.stringify(config, null, 4)+');');
+        log('Getting data:\n$.ajax('+ JSON.stringify(config, null, 4)+');');
         $.ajax(config);
     }
 
@@ -158,10 +159,11 @@ var getData = (function ($, _, config) {
         var payload=JSON.stringify({keys: ids});
 
         function callSuccessFn(rawData) {
-            console.log('Got data: ', rawData);
+            log('Got data: ', rawData);
 
             var modData = reformatMultIdData(rawData);
             modData = filterBadIds(modData);
+            //noinspection JSHint
             successFn(modData, this);
         }
 
@@ -175,7 +177,7 @@ var getData = (function ($, _, config) {
             data: payload
         };
 
-        console.log('Getting data:\n$.ajax('+ JSON.stringify(config, null, 4)+');');
+        log('Getting data:\n$.ajax('+ JSON.stringify(config, null, 4)+');');
         $.ajax(config);
 
     }
