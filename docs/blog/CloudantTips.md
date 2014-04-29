@@ -18,7 +18,7 @@ to your Cloudant database as a design document.
 
 * Install couchapp - [Couchapp Repo](https://github.com/couchapp/couchapp)
 * Read the documentation - Unfortunately the documentation isn't very good and currently isn't even up! (Hopefully it
- will get fixed.)  But here's a link: [Couchapp documentation](http://www.couchapp.org/page/getting-started)
+ will get fixed.)  But here's a link: [Couchapp documentation (Not working>)](http://www.couchapp.org/page/getting-started)  [Info on Couchapp in Couchdb Book](http://guide.couchdb.org/draft/managing.html)
 * Then set up your directory structure, build your design documents, and write a little script for easy uploading
 * Rather than detail ever step, check out my code here: [HiNsight Design Docs & Scripts](https://github
 .com/rr326/HiNsight/tree/master/scripts)

@@ -10,7 +10,7 @@ window.logit = function () {
     //noinspection JSHint
     logit.history = logit.history || [];   // store logs to an array for reference
     logit.history.push(arguments);
-    if (this.console) {
+    if (window.console) { // was 'this.console) Note - in concat with strict mode, this.console fails
         if (arguments.length === 1 && typeof(arguments[0]) === 'string') {
             console.log(arguments[0]);
         } else {

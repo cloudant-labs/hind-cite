@@ -15,6 +15,8 @@
         * Make sure the data is right
         * Especially stats
     * HTML snapshots!
+    * Dist seemst to have bower_components. Not necessary, right?
+    * Do clean checkout adn build to test process
 
 * P2
     * NVD3 - submit pull request

@@ -495,7 +495,7 @@ module.exports = function (grunt) {
         'concat',
         'ngmin',
         'copy:dist',
-        'cdnify',
+        //'cdnify',  // Not actually using (prefer manual selection) and causing problems.
         'cssmin',
         'uglify',
         'rev',
