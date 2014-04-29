@@ -31,6 +31,20 @@ var config = (function () {
         VIEW_LATEST : 'latest',
         SEARCH_POSTS : 'posts',
 
+        // Google Analytics
+        GA_DEV : {
+            domain: 'dev.hackernews.com',
+            code: 'UA-4174464-6'
+        },
+        GA_STAGE: {
+            domain: 'hnstage.k2company.com',
+            code: 'UA-4174464-6'
+        },
+        GA_PROD: {
+            domain: 'hackernews.com',
+            code: 'UA-4174464-6'
+        },
+
         medChartSize: medChartSize
 
 

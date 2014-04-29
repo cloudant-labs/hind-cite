@@ -1,4 +1,4 @@
-/*global $:false, angular:false, log:false, _:false, HNSearch:false */
+/*global $:false, angular:false, log:false, _:false, HNSearch:false , logit: false*/
 
 
 angular.module('mainApp')
@@ -14,6 +14,10 @@ angular.module('mainApp')
         $log.log('Algolia - POWERFUL REALTIME SEARCH API BUILT FOR DEVELOPERS');
         $log.log('******************************************************************************\n');
 
+        $scope.$on('$routeChangeSuccess', function (event, current) {
+            log.page(window.location.pathname);  //current.$$route.templateUrl
+            // TODO - Set page title based on view?
+        });
     }]);
 
 
@@ -166,7 +170,13 @@ angular.module('mainApp')
             states.set('chart', 'needsUpdate');
         };
 
+        $scope.manualRemovePostId = function(postId) {
+            log.event(window.location.pathname+': manualRemove', 'remove', postId);
+            $scope.removePostId(postId);
+        };
+
         $scope.clearAllIds = function () {
+            log.event(window.location.pathname+': clearAllIds');
             $scope.d.postIds = [];
             $scope.d.data = [];
             // TODO - BUG - NVD3 doesn't delete chart when data is empty
@@ -362,6 +372,39 @@ angular.module('mainApp')
             }
         });
 
+        // Look for user actions and log event
+        // Note - Some are done here, some are scattered throughout the code. Not the most elegant!
+        $scope.$watchCollection('[d.postListSelector, d.postIdsText, d.metric, d.rankRange, d.unfoundIds]',function(newVals, oldVals) {
+            if (newVals === oldVals || typeof(oldVals) !== 'object' || newVals.length !== oldVals.length ) {
+                return;
+            }
+            for (var i=0; i<newVals.length; i++) {
+                if (angular.equals(newVals[i], oldVals[i])) {
+                    continue;
+                }
+                // Found a change. Note - the ORDER of the above list is used here
+                if (i===0) {
+                    // d.postListSelector
+                    log.event(window.location.pathname + ': selector list', 'changed', $scope.d.postListSelector);
+                } else if (i===1) {
+                    // d.postIdsText
+                    if ($scope.d.postIdsText.trim().length>0){
+                        log.event(window.location.pathname + ': textbox entry', 'changed', $scope.d.postIdsText);
+                    }
+                } else if (i === 2) {
+                    // d.metric
+                    log.event(window.location.pathname + ': chart metric', 'changed', $scope.d.metric);
+                } else if (i === 3) {
+                    // d.rankRange
+                    log.event(window.location.pathname + ': chart', 'changed', $scope.d.rankRange);
+                } else if (i===4) {
+                    // d.unfoundIds
+                    if ($scope.d.unfoundIds.length > 0 ){
+                        log.event(window.location.pathname + ': idsNotFound', 'notFound', $scope.d.unfoundIds.toString());
+                    }
+                }
+            }
+        });
 
     }]);
 

@@ -69,7 +69,7 @@
             <tr ng-repeat=" rec in d.data">
                 <td ><a href={{"https://news.ycombinator.com/item?id="+rec.id}} target="_blank">{{ rec.id }}</a> &nbsp; <span
                         class="glyphicon glyphicon-minus-sign small text-danger"
-                                               ng-click="removePostId(rec.id)"></span>
+                                               ng-click="manualRemovePostId(rec.id)"></span>
                 <td class="text-right">{{ rec.stats.lastRank | numLocale}}</td>
                 <td class="text-right">{{ rec.stats.minRank | numLocale }}</td>
                 <td class="text-right">{{ rec.stats.maxPoints | numLocale}}</td>

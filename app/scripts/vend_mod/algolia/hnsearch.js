@@ -49,10 +49,12 @@ Number.prototype.number_with_delimiter = function (delimiter) {
                 }
 
                 if (el.hasClass('srch_add')) {
+                    log.event(window.location.pathname+': search', 'add', selectedId);
                     hnsearch.$scope.addNewId(selectedId);
                     el.toggleClass('srch_add srch_remove btn-success btn-danger');
                     el.html('<span class="glyphicon glyphicon-minus-sign small"></span> Remove');
                 } else if (el.hasClass('srch_remove')){
+                    log.event(window.location.pathname+': search', 'remove', selectedId);
                     hnsearch.$scope.removePostId(selectedId);
                     el.toggleClass('srch_add srch_remove btn-success btn-danger');
                     el.html('<span class="glyphicon glyphicon-plus-sign small"></span> Add');

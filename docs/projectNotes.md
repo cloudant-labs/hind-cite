@@ -10,7 +10,7 @@
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End
-    * Google analytics
+        * Google Analytics
     * Data validation
         * Make sure the data is right
         * Especially stats
