@@ -7,16 +7,17 @@
             * Apache config
             * Google analytics - page views & events
         * Scraper
+    * Remove bower_components from dist: https://github.com/yeoman/generator-angular/issues/590
+
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End
         * Google Analytics
+        * Do clean checkout and build to test process
     * Data validation
         * Make sure the data is right
         * Especially stats
     * HTML snapshots!
-    * Dist seemst to have bower_components. Not necessary, right?
-    * Do clean checkout adn build to test process
 
 * P2
     * NVD3 - submit pull request
