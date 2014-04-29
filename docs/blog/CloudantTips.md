@@ -1,5 +1,5 @@
 # Developing with Cloudant - Tips & Best-Practices
-I've built a couple of websites with Cloudant as a back end, the latest actually sponsored by Cloudant [HiNsight]
+I've built a couple of websites with Cloudant as a back end, the latest actually sponsored by Cloudant [hind-cite]
 (http://hnstage.k2company.com). I'm no expert, but I've learned a bunch and also have had some guidance from the Cloudant team to help me make the right decisions.  Here are a few things I've learned that might help.
 
 ## Documentation
@@ -20,17 +20,17 @@ to your Cloudant database as a design document.
 * Read the documentation - Unfortunately the documentation isn't very good and currently isn't even up! (Hopefully it
  will get fixed.)  But here's a link: [Couchapp documentation (Not working>)](http://www.couchapp.org/page/getting-started)  [Info on Couchapp in Couchdb Book](http://guide.couchdb.org/draft/managing.html)
 * Then set up your directory structure, build your design documents, and write a little script for easy uploading
-* Rather than detail ever step, check out my code here: [HiNsight Design Docs & Scripts](https://github
-.com/rr326/HiNsight/tree/master/scripts)
+* Rather than detail ever step, check out my code here: [hind-cite Design Docs & Scripts](https://github
+.com/rr326/hind-cite/tree/master/scripts)
 * Stuck? Reach out to Cloudant on [IRC](http://webchat.freenode.net/?channels=cloudant&uio=MTE9MTk117)!
 
 ## $.ajax()
 Now you've got your sweet Cloudant db all set up.  How do you use it on a website? The guys as Cloudant suggested
 just going the simple route - with a $.ajax() call. (That's jquery, btw.)
 
-Probably the easiest way to see how to do this is to open [HiNsight](http://hnstage.k2company.com/multiPost) and open
+Probably the easiest way to see how to do this is to open [hind-cite](http://hnstage.k2company.com/multiPost) and open
  the developer console. Then every db query will print out the $.ajax() call used and the resulting JSON data. And
- you can see the code [here](https://github.com/rr326/HiNsight/blob/master/app/scripts/getData.js).
+ you can see the code [here](https://github.com/rr326/hind-cite/blob/master/app/scripts/getData.js).
 
 ## CORS
 If you're building a website that talks directly to your Cloudant database, you may well run into Cross Origin

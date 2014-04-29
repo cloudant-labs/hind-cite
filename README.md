@@ -1,4 +1,4 @@
-# HiNsight
+# hind-cite
 _Hacker News data, charts, and statistics_
 
 ## Overview

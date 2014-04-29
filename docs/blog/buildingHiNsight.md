@@ -1,12 +1,12 @@
-# Building HiNsight
-[HiNsight](http://hnstage.k2company.com/) may look like a pretty simple website, but it's got a lot going on under
+# Building hind-cite
+[hind-cite](http://hnstage.k2company.com/) may look like a pretty simple website, but it's got a lot going on under
 the covers, largely because it relies heavily on a lot of great tools. I'm a novice programmer,
 but this little website has a sophisticated, scalable noSQL backend (Cloudant), a robust build system (Grunt),
 a modern front-end MVC framework (Angular), a powerful visualization library (D3), and a responsive web design (Bootstrap).  So pretty cool for a novice!
 
 Much of the effort, however, was setting up the infrastructure. This wasn't hard, but it *should* be easy. I'm hoping
  that sharing this will make it easier for others as well.  (Note: If you're an expert web developer,
- you'll learn little here. But if you can't whip up a website like HiNsight in a week, hopefully this will help.)
+ you'll learn little here. But if you can't whip up a website like hind-cite in a week, hopefully this will help.)
 
 ## Yeoman
 [Yeoman](http://yeoman.io/) is a GREAT idea. Their website describes it well:
@@ -30,16 +30,16 @@ you'll probably spend a bunch of time getting small things to work properly.  Oh
 > ### Takeaways:
 > * Use the default angular generator
 > * Use http-rewrite-middleware - With an angular app you want all the urls to redirect to index. For development,
-Yeoman uses a grunt local server, but it doesn't have rewrite rules by default.  Search [HiNsite's Gruntfile](https://github.com/rr326/HiNsight/blob/master/Gruntfile.js) for
+Yeoman uses a grunt local server, but it doesn't have rewrite rules by default.  Search [HiNsite's Gruntfile](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js) for
 'http-rewrite-middleware'.
 > * Karma - For some reason Karma wasn't included in my default yeoman install (maybe fixed?).  I manually installed:
  `npm install --save-dev karma-jasmine karma-chrome-launcher`
 > * Other tidbits - these aren't as universal, but they took me time and I needed them. Maybe they'll save you some
 time too.
->   * pushto/rsync (search [Gruntfile](https://github.com/rr326/HiNsight/blob/master/Gruntfile.js) for pushto) - Yeoman gives you a nice localhost serving method,
+>   * pushto/rsync (search [Gruntfile](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js) for pushto) - Yeoman gives you a nice localhost serving method,
 but I also wanted a publicly staged option. I built a rsync-based pushto task. (Note the use of grunt's process to
 access local environment variables (stored outside of your repo) for UN/PW
->   * Sourcmap (search [Gruntfile](https://github.com/rr326/HiNsight/blob/master/Gruntfile.js) for SourceMap) - I had a bug that reguired a sourcemap to debug. Getting this setup wasn't
+>   * Sourcmap (search [Gruntfile](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js) for SourceMap) - I had a bug that reguired a sourcemap to debug. Getting this setup wasn't
 trivial for me.
 >   * Markdown - A small one to enable live viewing of compiled markdown.
 
@@ -78,7 +78,7 @@ website, it was built with D3.  I used it for my first project ([weather-explore
 .com)).  The problem is it is SUPER low-level.  Want to draw a bar chart? You have to figure out the X & Y coordinates
  of each point!  With D3, hard things are doable, and easy things are hard. (Hard compared to matplotlib plt.bar()!)
 
-For HiNsight, I wanted to see if I could code faster, maybe at the expense of some flexibility.  There are few
+For hind-cite, I wanted to see if I could code faster, maybe at the expense of some flexibility.  There are few
 frameworks built on top of D3.  I first tried [Rickshaw](http:/code.shutterstock.com/rickshaw).  Rickshaw was super
 cool and their code and their charts are beautiful. But in my day playing with it I realized: 1) I'd have to
 customize it; 2) the Rickshaw way of doing to things is pretty different from stock D3; and 3) the community is
@@ -94,7 +94,7 @@ and hard things are doable.
 > Use NVD3 instead of stock D3.
 
 ## Cloudant
-*Disclaimer: Cloudant hired me to build HiNsight so I'm not unbiased.*
+*Disclaimer: Cloudant hired me to build hind-cite so I'm not unbiased.*
 At the heart of a data-based website is the data.  In this case, I built [a scraper in Python](https://github.com/rr326/HNScraper) (gevent, requests,
 BeautifulSoup) that scrapes the first two pages of HackerNews every 5 minutes.  But where to store the data?
 
