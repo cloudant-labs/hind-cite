@@ -1,0 +1,23 @@
+[
+    {
+        "from": "",
+        "to": "/index.html"
+    },
+    {
+        "from": "/about",
+        "to": "/index.html"
+    },
+    {
+        "from": "/multipost",
+        "to": "/index.html"
+    },
+    {
+        "from": "snapsperday",
+        "to": "/index.html"
+    },
+    {
+        "from": "/*",
+        "to": "/*"
+    }
+
+]
