@@ -12,7 +12,15 @@
         "to": "/index.html"
     },
     {
+        "from": "/multiPost",
+        "to": "/index.html"
+    },
+    {
         "from": "snapsperday",
+        "to": "/index.html"
+    },
+    {
+        "from": "snapspPerDay",
         "to": "/index.html"
     },
     {
