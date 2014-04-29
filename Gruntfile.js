@@ -426,6 +426,14 @@ module.exports = function (grunt) {
                     syncDest: false,
                     recursive: false
                 }
+            },
+            prod_couch: { // Copies dist to couch_app/_attachments
+                options: {
+                    src: 'dist/',
+                    dest: 'couch_app/_attachments',
+                    syncDest: true,
+                    recursive: true
+                }
             }
         },
         markdown: {
@@ -439,13 +447,32 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        shell : {
+            couchapp: {
+                command: 'couchapp push couch_app prod',
+                callback: function(err, stdout, stderr, cb) {
+                    console.log('Couchapp push finished: ', err, stdout, stderr);
+                    cb();
+                }
+            }
         }
     })
     ;
 
     grunt.registerTask('pushto', function (target) {
         if (target === 'stage') {
-            return grunt.task.run(['rsync:stage_site', 'rsync:stage_apache']);
+            return grunt.task.run([
+                'rsync:stage_site',
+                'rsync:stage_apache'
+            ]);
+        } else if( target === 'prod') {
+            return grunt.task.run([
+                'rsync:prod_couch',
+                'shell:couchapp'
+            ]);
+        } else {
+            throw Error('Invalid target: '+target);
         }
     });
 

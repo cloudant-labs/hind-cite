@@ -14,6 +14,7 @@
         * End to End
         * Google Analytics
         * Do clean checkout and build to test process
+        * Test on windows, phone, safari, and old windows
     * Data validation
         * Make sure the data is right
         * Especially stats
