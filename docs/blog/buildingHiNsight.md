@@ -30,7 +30,7 @@ you'll probably spend a bunch of time getting small things to work properly.  Oh
 > ### Takeaways:
 > * Use the default angular generator
 > * Use http-rewrite-middleware - With an angular app you want all the urls to redirect to index. For development,
-Yeoman uses a grunt local server, but it doesn't have rewrite rules by default.  Search [HiNsite's Gruntfile](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js) for
+Yeoman uses a grunt local server, but it doesn't have rewrite rules by default.  Search [hind-cite's Gruntfile](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js) for
 'http-rewrite-middleware'.
 > * Karma - For some reason Karma wasn't included in my default yeoman install (maybe fixed?).  I manually installed:
  `npm install --save-dev karma-jasmine karma-chrome-launcher`

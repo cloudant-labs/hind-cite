@@ -2,12 +2,12 @@
 _Hacker News data, charts, and statistics_
 
 ## Overview
-This is the source code for the HiNsite website (currently hosted at http://hnstage.k2company.com but soon to be
+This is the source code for the hind-cite website (currently hosted at http://hnstage.k2company.com but soon to be
 hosted in a proper location).
 
 The purpose of the site is to give meaningful data and analysis of how individual posts do on Hacker News. You can
 currently retrieve point-in-time data on the number of points or comments a post received,
-but you can't get timeseries data of rank, points, or comments. HiNsite provides that data,
+but you can't get timeseries data of rank, points, or comments. hind-cite provides that data,
 and the beginnings of an analysis of that data.
 
 ## The Data
