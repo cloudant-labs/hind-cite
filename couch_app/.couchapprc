@@ -1,0 +1,7 @@
+{
+    "env" : {
+        "prod" : {
+            "db" : "https://$HINDCITE_UN:$HINDCITE_PW@rrosen326.cloudant.com/hind-cite"
+        }
+    }
+}
