@@ -34,15 +34,15 @@ var config = (function () {
         // Google Analytics
         GA_DEV : {
             domain: '<anything>',
-            code: 'UA-4174464-6'
+            code: 'UA-8329838-4'
         },
         GA_STAGE: {
             domain: 'hnstage.k2company.com',
-            code: 'UA-4174464-6'
+            code: 'UA-8329838-5'
         },
         GA_PROD: {
             domain: 'www.hind-cite.com',
-            code: 'UA-4174464-6'
+            code: 'UA-8329838-3'
         },
 
         medChartSize: medChartSize

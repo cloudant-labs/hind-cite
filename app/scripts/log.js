@@ -53,7 +53,7 @@ var log = (function (config) {
             extra = {'cookieDomain': 'none'};
         }
 
-        ga('create', site.code, extra);
+        ga('create', site.code, 'hind-cite.com', extra);
         logit('ga.create:', site.code, extra);
 
         window.onerror=error;

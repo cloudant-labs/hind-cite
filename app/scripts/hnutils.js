@@ -31,9 +31,9 @@ var hnutils = (function () {
             inside = {10: false, 30: false, 60: false};
 
 
-        o.lastRank = hnRec.history[l].rank;
-        o.maxPoints = hnRec.history[l].points;
-        o.maxComments = hnRec.history[l].comments;
+        o.lastRank = hnRec.history[l].rank || -1;
+        o.maxPoints = hnRec.history[l].points || 0;
+        o.maxComments = hnRec.history[l].comments || 0;
 
         hnRec.history.forEach(function (snap) {
             o.minRank = Math.min(o.minRank, snap.rank);
