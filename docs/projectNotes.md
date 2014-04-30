@@ -2,12 +2,12 @@
 
 ## Todo
 * P1
+    * delete dist/bower_components
     * Move to Cloudant.com hosting
         * Website
             * Apache config
             * Google analytics - page views & events
         * Scraper
-    * Remove bower_components from dist: https://github.com/yeoman/generator-angular/issues/590
 
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService

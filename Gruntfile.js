@@ -53,14 +53,8 @@ module.exports = function (grunt) {
                 files: ['*.md', 'docs/**/*.md'],
                 tasks: ['markdown'],
                 options: {
-                    spawn : false
-                }
-            },
-            livereload_md: {
-                files: ['.tmp/mdcompiled/**/*.html'],
-                options: {
-                    livereload: 35730,
-                    spawn: false
+                    spawn : false,
+                    livereload: 35731
                 }
             },
             livereload: {
@@ -118,12 +112,12 @@ module.exports = function (grunt) {
                     }
                 }
             },
-            livereload_md: {
+            md: {
                 options: {
                     open: true,
                     base: ['.tmp/mdcompiled'],
-                    port: 9001,
-                    livereload: 35730,
+                    port: 9002,
+                    livereload: 35731
                 }
             },
             test: {
@@ -484,8 +478,8 @@ module.exports = function (grunt) {
         if (target === 'md') {
             grunt.task.run([
                 'markdown', // Initialize
-                'connect:livereload_md',
-                'watch'
+                'connect:md',
+                'watch:md'
             ]);
         }
 

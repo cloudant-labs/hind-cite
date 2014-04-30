@@ -33,7 +33,7 @@ var config = (function () {
 
         // Google Analytics
         GA_DEV : {
-            domain: 'dev.hackernews.com',
+            domain: '<anything>',
             code: 'UA-4174464-6'
         },
         GA_STAGE: {
@@ -41,7 +41,7 @@ var config = (function () {
             code: 'UA-4174464-6'
         },
         GA_PROD: {
-            domain: 'hackernews.com',
+            domain: 'www.hind-cite.com',
             code: 'UA-4174464-6'
         },
 

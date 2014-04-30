@@ -1,33 +1,13 @@
-## Generated CouchApp
+# Couchapp to host hind-cite
 
-This is meant to be an example CouchApp and to ship with most of the CouchApp goodies.
+### Steps to create this
+1. Install couchapp.py
+1. `couchapp generate couch_app`
+1. Update .couchapprc to point to your database
+    * Be sure you are setting UN & PW in your shell OUTSIDE your repo and referencing properly
+1. Go through the generated boilerplate and delete all the stuff you don't need
+1. Add rewrites.json
+1. Copy actual website code to _attachments folder
+1. Push to Cloudant: `couchapp push <folder> <dest db>`
+    * Note: See Gruntfile pushto:prod task to see the details
 
-Clone with git:
-
-    git clone git://github.com/couchapp/example.git
-    cd example
-
-Install with 
-    
-    couchapp push . http://localhost:5984/example
-
-or (if you have security turned on)
-
-    couchapp push . http://adminname:adminpass@localhost:5984/example
-  
-You can also create this app by running
-
-    couchapp generate example && cd example
-    couchapp push . http://localhost:5984/example
-
-Deprecated: *couchapp generate proto && cd proto*
-
-
-## Todo
-
-* factor CouchApp Commonjs to jquery.couch.require.js
-* use $.couch.app in app.js
-
-## License
-
-Apache 2.0
