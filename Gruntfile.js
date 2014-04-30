@@ -170,7 +170,16 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            server: '.tmp'
+            server: '.tmp',
+            distbower: {
+                files: [
+                    {
+                        dot: true,
+                        src: '<%= yeoman.dist %>/bower_components'
+                    }
+
+                ]
+            }
         },
 
         // Add vendor prefixed styles
@@ -521,7 +530,8 @@ module.exports = function (grunt) {
         'uglify',
         'rev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'clean:distbower'  // Current build process includes all bower components, but I don't need them
     ]);
 
     grunt.registerTask('default', [

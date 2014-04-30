@@ -86,6 +86,10 @@ angular.module('mainApp')
         };
 
         $scope.textToIds = function (idtext) {
+            if(! idtext) {
+                return [];
+            }
+
             var split = idtext.split(/[\s,;.]+/);
             var out = [];
             split.forEach(function (id) {

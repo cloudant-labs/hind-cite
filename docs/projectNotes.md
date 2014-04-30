@@ -2,13 +2,7 @@
 
 ## Todo
 * P1
-    * delete dist/bower_components
-    * Move to Cloudant.com hosting
-        * Website
-            * Apache config
-            * Google analytics - page views & events
-        * Scraper
-
+    * Cloudant GA codes
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End
@@ -21,6 +15,12 @@
     * HTML snapshots!
 
 * P2
+    * Move to Cloudant.com hosting
+        * Website
+            * Apache config
+            * Google analytics - page views & events
+        * Scraper
+
     * NVD3 - submit pull request
     * MC: unfound id - give visual info telling 'id not found'
     * Data cleanup
