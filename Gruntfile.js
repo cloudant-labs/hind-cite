@@ -38,10 +38,6 @@ module.exports = function (grunt) {
                     livereload: true
                 }
             },
-            jsTest: {
-                files: ['test/spec/**/*.js'],
-                tasks: ['newer:jshint:test', 'karma']
-            },
             styles: {
                 files: ['<%= yeoman.app %>/styles/**/*.css'],
                 tasks: ['newer:copy:styles', 'autoprefixer']
@@ -118,16 +114,6 @@ module.exports = function (grunt) {
                     base: ['.tmp/mdcompiled'],
                     port: 9002,
                     livereload: 35731
-                }
-            },
-            test: {
-                options: {
-                    port: 9001,
-                    base: [
-                        '.tmp',
-                        'test',
-                        '<%= yeoman.app %>'
-                    ]
                 }
             },
             dist: {
@@ -356,9 +342,6 @@ module.exports = function (grunt) {
             server: [
                 'copy:styles'
             ],
-            test: [
-                'copy:styles'
-            ],
             dist: [
                 'copy:styles',
                 'imagemin',
@@ -366,36 +349,14 @@ module.exports = function (grunt) {
             ]
         },
 
-        // By default, your `index.html`'s <!-- Usemin block --> will take care of
-        // minification. These next options are pre-configured if you do not wish
-        // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/**/*.css',
-        //         '<%= yeoman.app %>/styles/**/*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/scripts/scripts.js': [
-        //         '<%= yeoman.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
-
-
         // Test settings
         karma: {
             unit: {
+                configFile: 'karma.conf.js',
+                singleRun: false,
+                autoWatch: true
+            },
+            singleRun: {
                 configFile: 'karma.conf.js',
                 singleRun: true
             }
@@ -475,7 +436,7 @@ module.exports = function (grunt) {
                 'shell:couchapp'
             ]);
         } else {
-            throw Error('Invalid target: '+target);
+            throw new Error('Invalid target: '+target);
         }
     });
 
@@ -508,13 +469,6 @@ module.exports = function (grunt) {
         grunt.task.run(['serve']);
     });
 
-    grunt.registerTask('test', [
-        'clean:server',
-        'concurrent:test',
-        'autoprefixer',
-        'connect:test',
-        'karma'
-    ]);
 
     grunt.registerTask('build', [
         'clean:dist',
@@ -536,12 +490,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'newer:jshint',
-        'test',
+        'karma:singleRun',
         'build'
     ]);
 
 
-}
-;
-
-// TODO: It does not appear that this properly installs karma.  I manually installed karma-jasmine and karma-chrome-launcher, but it's missing a lot per this: https://github.com/yeoman/generator-karma/issues/44  ; But generator-karma and generator-angular are currently at incompatible versions!  SO, keep an eye on it and if I start having karma problems, look here first.  Uggh.
+};

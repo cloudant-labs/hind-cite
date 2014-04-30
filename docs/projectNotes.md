@@ -2,7 +2,6 @@
 
 ## Todo
 * P1
-    * Cloudant GA codes
     * Testing
         * Unit tests - Make more complete, esp. for new getData, and for statesService
         * End to End
