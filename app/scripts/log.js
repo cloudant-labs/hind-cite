@@ -54,7 +54,6 @@ var log = (function (config) {
         }
 
         ga('create', site.code, 'hind-cite.com', extra);
-        logit('ga.create:', site.code, extra);
 
         window.onerror=error;
     }

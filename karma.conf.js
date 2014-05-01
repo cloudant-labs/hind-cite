@@ -52,10 +52,24 @@ module.exports = function (config) {
             'scripts/vend_mod/algolia/algoliaSearch.js',
             'scripts/vend_mod/algolia/hnsearch.js',
 
+            '../test/spec/**/*.js',
 
-            '../test/mock/**/*.js',
-            '../test/spec/**/*.js'
+            {pattern: '../test/fixtures/*', watch:false, serve:false, include:false}
         ],
+
+
+
+        preprocessors: {
+            '../test/fixtures/*': ['html2js']
+        },
+
+        ngHtml2JsPreprocessor: {
+            moduleName: 'cachedFiles',
+            cacheIdFromPath: function(filepath){  // Flatten and just use filename not path
+                return filepath.substring(filepath.lastIndexOf('/')+1);
+            }
+        },
+
 
         // list of files / patterns to exclude
         exclude: [],
