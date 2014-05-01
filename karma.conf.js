@@ -23,6 +23,7 @@ module.exports = function (config) {
             'bower_components/angular-cookies/angular-cookies.js',
             'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/angular-route/angular-route.js',
+            'bower_components/angular-mocks/angular-mocks.js',
             'bower_components/d3/d3.js',
             'bower_components/hogan/web/builds/2.0.0/hogan-2.0.0.min.js',
             'scripts/safelog.js',

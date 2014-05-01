@@ -8,27 +8,40 @@ var initStates = {
 };
 
 describe('stateManager initialization works', function () {
+    var statesService;
+    beforeEach(function () {
+        module('statesServiceProvider');
+        inject(function (_statesService_) {
+            statesService = _statesService_;
+        });
+    });
+
     it('should succeed', function () {
-        expect(typeof(statesModule.stateManager(initStates))).toBe('object');
+        expect(typeof(statesService.stateManager(initStates))).toBe('object');
     });
     it('should fail', function () {
         expect(function () {
-            statesModule.stateManager(['state1', 'state2']);
+            statesService.stateManager(['state1', 'state2']);
         }).toThrow();
         expect(function () {
-            statesModule.stateManager({obj1: 'state1', obj2: 'state2'});
+            statesService.stateManager({obj1: 'state1', obj2: 'state2'});
         }).toThrow();
         expect(function () {
-            statesModule.stateManager({obj1: {a: 10, b: 20}, obj2: {a: 10, b: 20}});
+            statesService.stateManager({obj1: {a: 10, b: 20}, obj2: {a: 10, b: 20}});
         }).toThrow();
     });
 });
 
 describe('stateManager works', function () {
     var states;
+    var statesService;
 
     beforeEach(function () {
-        states = statesModule.stateManager(initStates);
+        module('statesServiceProvider');
+        inject(function (_statesService_) {
+            statesService = _statesService_;
+        });
+        states = statesService.stateManager(initStates);
     });
 
     it('should succeed', function () {
@@ -38,10 +51,18 @@ describe('stateManager works', function () {
     });
 
     it('should fail', function () {
-        expect(function(){states.is('xxx','getData')}).toThrow();
-        expect(function(){states.is('data','XXX')}).toThrow();
-        expect(function(){states.set('xxx','getData')}).toThrow();
-        expect(function(){states.set('data','XXX')}).toThrow();
+        expect(function () {
+            states.is('xxx', 'getData')
+        }).toThrow();
+        expect(function () {
+            states.is('data', 'XXX')
+        }).toThrow();
+        expect(function () {
+            states.set('xxx', 'getData')
+        }).toThrow();
+        expect(function () {
+            states.set('data', 'XXX')
+        }).toThrow();
     });
 
 

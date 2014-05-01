@@ -71,11 +71,11 @@ describe('getLatest works', function(){
         runs(function() {
             getData.getLatest(5, {}, function(data){
                 retVal=data;
-                log('MANUAL: Compare the following list with HackerNews Page 1 (should be similar)');
-                log('rank\t\ttitle');
-                log('====\t\t==============');
+                logit('MANUAL: Compare the following list with HackerNews Page 1 (should be similar)');
+                logit('rank\t\ttitle');
+                logit('====\t\t==============');
                 retVal.forEach(function(rec, i){
-                   log("    ".substring(0, 4 - (String(i).length))+i+'\t\t'+rec.title);
+                   logit("    ".substring(0, 4 - (String(i).length))+i+'\t\t'+rec.title);
                 });
                 done=true;
             }, function(){
@@ -87,7 +87,7 @@ describe('getLatest works', function(){
 
         waitsFor(function() {
             return done;
-        }, 'timed out', 2500);
+        }, 'timed out', 3500);
 
         runs(function(){
             expect(retVal.length).toEqual(5);
