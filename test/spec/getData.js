@@ -20,6 +20,70 @@ function testAllRecsFormat(recs) {
     });
 }
 
+
+var testCases=[
+    {
+        name : 'getMultIds',
+        func : getData.getMultIds,
+        args : [['7373566','7216471','7566069'], {}],
+        fixture : 'getMultIds.json'
+    },
+    {
+        name : 'getByPoints',
+        func : getData.getByPoints,
+        args : [['2014-01-01', '2014-04-15'], 3, {}],
+        fixture : 'getByPoints.json'
+    },
+    {
+        name : 'getByComments',
+        func : getData.getByComments,
+        args : [['2014-01-01', '2014-04-15'], 3, {}],
+        fixture : 'getByComments.json'
+    }
+];
+
+function doTestCases(cases){
+    cases.forEach(function(testCase){
+        describe(testCase.name + ' works', function () {
+            var retVal, done, fixture;
+
+            beforeEach(function () {
+                retVal = {};
+                done = false;
+                module('cachedFiles');
+                inject(function ($templateCache) {
+                    fixture = $templateCache.get(testCase.fixture);
+                });
+            });
+
+            it('returns proper data', function () {
+                runs(function () {
+                    var success = function (data) {
+                            retVal = data;
+                            done = true;
+                        },
+                        error = function () {
+                            retVal = 'ERROR';
+                            done = true;
+                        },
+                        allArgs = testCase.args.slice().concat(success, error);
+                    testCase.func.apply(this, allArgs);
+                });
+
+
+                waitsFor(function () {
+                    return done;
+                }, 'timed out', 6000);
+
+                runs(function () {
+                    testAllRecsFormat(retVal);
+                    expect(JSON.stringify(retVal)).toEqual(fixture);
+                });
+            });
+        });
+    });
+}
+
 if (skipGetData) {
     var txt =
         '\n***************************\n' +
@@ -50,7 +114,7 @@ if (skipGetData) {
     });
 
 
-    describe('getData return values are correct', function () {
+    describe('getSnapshots return values are correct', function () {
         var retVal, done;
 
         beforeEach(function () {
@@ -117,95 +181,16 @@ if (skipGetData) {
 
             runs(function () {
                 expect(retVal.length).toEqual(5);
-                expect(retVal[0].history).toBeDefined();
                 expect(retVal[0].history[retVal[0].history.length - 1].rank).toEqual(1);
                 expect(retVal[4].history[retVal[4].history.length - 1].rank).toEqual(5);
-                expect(retVal[0].created_d).toBeDefined();
-                expect(retVal[0].history[0].timestamp_d).toBeDefined();
-                expect(retVal[0].history[0].created_d).toBeDefined();
-            });
-
-        });
-
-    });
-
-
-    describe('getMultIds works', function () {
-        var retVal, done;
-
-        beforeEach(function () {
-            retVal = {};
-            done = false;
-        });
-
-
-        it('returns proper data', function () {
-            runs(function () {
-                getData.getMultIds(['7415660', '7412612'], {}, function (data) {
-                    retVal = data;
-                    done = true;
-                }, function () {
-                    retVal = 'ERROR';
-                    done = true;
-                });
-            });
-
-
-            waitsFor(function () {
-                return done;
-            }, 'timed out', 6000);
-
-            runs(function () {
-                expect(retVal.length).toBe(2);
                 testAllRecsFormat(retVal);
             });
 
         });
+
     });
 
-    describe('getByPoints works', function () {
-        var retVal, done, getByPointsJSON;
 
-        beforeEach(function () {
-            retVal = {};
-            done = false;
-            module('cachedFiles');
-            inject(function ($templateCache) {
-                getByPointsJSON = $templateCache.get('getByPoints.json');
-            });
-        });
-
-
-        it('returns proper data', function () {
-            runs(function () {
-                getData.getByPoints(['2014-01-01', '2014-04-15'], 3, {}, function (data) {
-                    retVal = data;
-                    done = true;
-                }, function () {
-                    retVal = 'ERROR';
-                    done = true;
-                });
-            });
-
-
-            waitsFor(function () {
-                return done;
-            }, 'timed out', 6000);
-
-            runs(function () {
-                expect(retVal.length).toBe(3);
-                testAllRecsFormat(retVal);
-                expect(JSON.stringify(retVal)).toEqual(getByPointsJSON);
-            });
-        });
-    });
-
-    var testCases=[
-        {
-            name : getByPoints,
-            func : getData.getByPoints,
-            args : [['2014-01-01', '2014-04-15'], 3, {}],
-            fixture :' getByPoints.json'
-        }
-    ];
+    // This runs multiple test cases
+    doTestCases(testCases);
 }
