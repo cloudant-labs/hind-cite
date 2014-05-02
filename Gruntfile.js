@@ -420,7 +420,24 @@ module.exports = function (grunt) {
                     cb();
                 }
             }
-        }
+        },
+        protractor: {
+            options: {
+                configFile: "protractor.conf.js",
+                keepAlive: true,
+                noColor: false,
+                debug: true
+                args: {
+                    // Arguments passed to the command
+                }
+            },
+            your_target: {
+                options: {
+                    configFile: "e2e.conf.js", // Target-specific config file
+                    args: {} // Target-specific arguments
+                }
+            },
+        },
     })
     ;
 
