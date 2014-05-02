@@ -420,9 +420,28 @@ module.exports = function (grunt) {
                     cb();
                 }
             }
+        },
+        protractor: {
+            options: {
+                configFile: 'node_modules/protractor/referenceConf.js',
+                keepAlive: true,
+                args: {
+                    // Arguments passed to the command
+                }
+            },
+            test: {
+                configFile: 'protractor.conf.js', // Target-specific config file
+                options: {
+                    args: {} // Target-specific arguments
+                }
+            }
         }
-    })
-    ;
+    });
+
+    grunt.registerTask('test-e2e', [
+        'protractor:test'
+    ]);
+
 
     grunt.registerTask('pushto', function (target) {
         if (target === 'stage') {
