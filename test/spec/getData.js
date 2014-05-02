@@ -42,6 +42,19 @@ var testCases=[
     }
 ];
 
+/*
+ Testing setup:
+    npm - install karma-ng-html2js-preprocessor/  (but NOT same w/o 'ng' !)
+    karma.conf - set up as in my file (moduleName: cachedFiles, cachedIdFromPath, file watch, etc.)
+    Use module() and inject() and $templateCache.get, as below
+
+ If things don't work:
+    karma.conf: logLevel: config.LOG_DEBUG
+    karma-ng-html2js-preprocessor: modify the code with good logging, or run in npm debug mode
+    Chances are the file names aren't syncing up.
+
+ */
+
 function doTestCases(cases){
     cases.forEach(function(testCase){
         describe(testCase.name + ' works', function () {
