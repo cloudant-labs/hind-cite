@@ -438,9 +438,19 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test-e2e', [
-        'protractor:test'
-    ]);
+    grunt.registerTask('test', function(target){
+        target = target || 'unit'; // default
+
+        if (target === 'unit') {
+            return grunt.task.run(['karma:unit']);
+        } else if (target === 'unit-single') {
+            return grunt.task.run(['karma:singleRun']);
+        } else if (target === 'e2e') {
+            return grunt.task.run(['protractor:test']);
+        } else {
+            throw new Error('Improper target: "'+target+'"');
+        }
+    });
 
 
     grunt.registerTask('pushto', function (target) {
