@@ -1,14 +1,14 @@
 <div ng-controller="multiPostCtrl">
 
 
-    <div class="panel panel-default ">
+    <div class="panel panel-default " id="postsSelectors">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <div>Add Posts</div>
             </h3>
         </div>
         <div class="panel-body]">
-           <form class="form-inline" role="form">
+            <form class="form-inline" role="form">
                 <label>&nbsp; By Id &nbsp;</label>
 
                 <div class="form-group">
@@ -24,17 +24,17 @@
                 <select class="form-control" ng-model="d.postListSelector">
                     <option value="deselected" disabled selected>By List</option>
                     <optgroup label="Current top posts">
-                        <option value='["top","all"]' >HN Front Page</option>
+                        <option value='["top","all"]'>HN Front Page</option>
                     </optgroup>
                     <optgroup label='Most Points'>
-                        <option value='["points","all"]' >Points - All data </option>
-                        <option value='["points",7]' >Points - Past 7 days </option>
-                        <option value='["points",30]' >Points - Past 30 days </option>
+                        <option value='["points","all"]'>Points - All data</option>
+                        <option value='["points",7]'>Points - Past 7 days</option>
+                        <option value='["points",30]'>Points - Past 30 days</option>
                     </optgroup>
                     <optgroup label='Most Comments'>
-                        <option value='["comments","all"]' >Comments - All data </option>
-                        <option value='["comments",7]' >Comments - Past 7 days </option>
-                        <option value='["comments",30]' >Comments - Past 30 days </option>
+                        <option value='["comments","all"]'>Comments - All data</option>
+                        <option value='["comments",7]'>Comments - Past 7 days</option>
+                        <option value='["comments",30]'>Comments - Past 30 days</option>
                     </optgroup>
                 </select>
             </form>
@@ -46,77 +46,82 @@
         <b>Note:</b> The following ids were not found in our data set: {{ d.unfoundIds }}
     </div>
 
-    <h1>Post Comparison</h1>
-
-
-    <table class="table table-striped table-bordered table-condensed">
-        <thead>
+    <div id="postDataTable">
+        <h1>Post Comparison</h1>
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
             <tr>
-                <th> ID <button class="btn btn-danger btn-xs" ng-click="clearAllIds()">Clear all</button> </th>
+                <th> ID
+                    <button class="btn btn-danger btn-xs" ng-click="clearAllIds()">Clear all</button>
+                </th>
                 <th class="text-center">Latest<br>Rank</th>
                 <th class="text-center">Highest<br>Rank</th>
                 <th class="text-center">Max<br>Points</th>
                 <th class="text-center">Max<br>Comments</th>
                 <th class="text-center">Exposure
                     <a href="#" data-toggle="tooltip"
-                       title="Exposure=Sum((60-rank)*(Seconds at rank))/1000  It is a proxy for how many views a post gets.">*</a></th>
+                       title="Exposure=Sum((60-rank)*(Seconds at rank))/1000  It is a proxy for how many views a post gets.">*</a>
+                </th>
                 <th class="text-center">Hours<br>Page 1</th>
                 <th class="text-center">Hours<br>Page 1&2</th>
-                <th> Title </th>
+                <th> Title</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr ng-repeat=" rec in d.data">
-                <td ><a href={{"https://news.ycombinator.com/item?id="+rec.id}} target="_blank">{{ rec.id }}</a> &nbsp; <span
-                        class="glyphicon glyphicon-minus-sign small text-danger"
-                                               ng-click="manualRemovePostId(rec.id)"></span>
+                <td><a href={{"https://news.ycombinator.com/item?id="+rec.id}} target="_blank">{{ rec.id }}</a>
+                    &nbsp; <span
+                            class="glyphicon glyphicon-minus-sign small text-danger"
+                            ng-click="manualRemovePostId(rec.id)"></span>
                 <td class="text-right">{{ rec.stats.lastRank | numLocale}}</td>
                 <td class="text-right">{{ rec.stats.minRank | numLocale }}</td>
                 <td class="text-right">{{ rec.stats.maxPoints | numLocale}}</td>
                 <td class="text-right">{{ rec.stats.maxComments | numLocale }}</td>
                 <td class="text-right">{{ rec.stats.exposure / 1000 | number : 0 | numLocale }}</td>
-                <td class="text-right">{{ rec.stats.secTop30/60/60 | number:1  | numLocale}}</td>
-                <td class="text-right">{{ rec.stats.secTop60/60/60 | number:1  | numLocale}}</td>
-                <td><a href="{{ rec.href }}" target="_blank" >{{ rec.title }} </a></td>
+                <td class="text-right">{{ rec.stats.secTop30/60/60 | number:1 | numLocale}}</td>
+                <td class="text-right">{{ rec.stats.secTop60/60/60 | number:1 | numLocale}}</td>
+                <td><a href="{{ rec.href }}" target="_blank">{{ rec.title }} </a></td>
             </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+    </div>
 
 
     <br>
 
-    <div class="panel panel-default ">
+    <div class="panel panel-default " id="chartControls">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <div>Chart Controls</div>
             </h3>
         </div>
         <div class="panel-body]">
-           <form class="form-inline" role="form">
-               <div class="form-group">
-                   <label>&nbsp; Metric: &nbsp;</label>
-                   <!-- TODO - Shouldn't need nbsp, and vert alignment is wrong-->
-                   <label class="radio-inline">
-                       <input type="radio" value="rank" ng-model="d.metric"> Rank
-                   </label>
-                   <label class="radio-inline">
-                       <input type="radio" value="points" ng-model="d.metric"> Points
-                   </label>
-                   <label class="radio-inline">
-                       <input type="radio" value="comments" ng-model="d.metric"> Comments
-                   </label>
-               </div>
-               <div class="form-group" ng-show="d.metric == 'rank'">
-                   <label>&nbsp;&nbsp; Rank Range: &nbsp;</label>
-                   <label class="radio-inline">
-                       <input type="radio" value="30" ng-model="d.rankRange"> 1-30
-                   </label>
-                   <label class="radio-inline">
-                       <input type="radio" value="60" ng-model="d.rankRange"> 1-60
-                   </label>
-               </div>
-           </form>
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <label>&nbsp; Metric: &nbsp;</label>
+                    <!-- TODO - Shouldn't need nbsp, and vert alignment is wrong-->
+                    <label class="radio-inline">
+                        <input type="radio" value="rank" ng-model="d.metric"> Rank
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="points" ng-model="d.metric"> Points
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="comments" ng-model="d.metric"> Comments
+                    </label>
+                </div>
+                <div class="form-group" ng-show="d.metric == 'rank'">
+                    <label>&nbsp;&nbsp; Rank Range: &nbsp;</label>
+                    <label class="radio-inline">
+                        <input type="radio" value="30" ng-model="d.rankRange"> 1-30
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="60" ng-model="d.rankRange"> 1-60
+                    </label>
+                </div>
+            </form>
         </div>
 
     </div>
@@ -124,8 +129,8 @@
     <br>
 
     <h1>{{ d.metric | titleCase}}</h1>
-    <multi-post-chart id="chart1" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"
-                      metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
+    <multi-post-chart id="postsChart" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"
+                      metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate" ></multi-post-chart>
 
     <div class="small">
         <span>URL for this data: <a href="{{ d.CloudantUrl }}" target="_blank">{{ d.CloudantUrl }}</a></span><br>
@@ -142,7 +147,9 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="btn btn-primary closeButton pull-right" data-dismiss="modal" ng-click="resetHnSearch()">Done</button>
+                        <button type="button" class="btn btn-primary closeButton pull-right" data-dismiss="modal"
+                                ng-click="resetHnSearch()">Done
+                        </button>
                         <h1 class='modal-title'>Search Hacker News</h1>
 
 
@@ -153,7 +160,9 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary closeButton" data-dismiss="modal" ng-click="resetHnSearch()">Done</button>
+                        <button type="button" class="btn btn-primary closeButton" data-dismiss="modal"
+                                ng-click="resetHnSearch()">Done
+                        </button>
                     </div>
                 </div>
             </div>
@@ -162,4 +171,8 @@
 
     </div>
 
+    <!-- This is a holder for state info for use in e2e testing -->
+    <div id="stateDiv" data="{{ state('data') }}" chart="{{ state('chart') }}" url="state('url')" postIds="state('postIds')">
+
+    </div>
 </div>

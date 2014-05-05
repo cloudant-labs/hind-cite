@@ -111,6 +111,9 @@ angular.module('mainApp')
         $scope.numPoints = function () {
             return sumHistRec($scope.d.data, 'points');
         };
+        $scope.state =function(obj){
+            return states.get(obj);
+        };
 
 
         /**
