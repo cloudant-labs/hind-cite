@@ -10,6 +10,10 @@ exports.config = {
     specs: [
         'test/e2e/**/*.js'
     ],
+    exclude: [
+        'test/e2e/suppport/*'
+    ],
+
 
     jasmineNodeOpts: {
         showColors: true,
