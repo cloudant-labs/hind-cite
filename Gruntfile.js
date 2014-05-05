@@ -425,6 +425,7 @@ module.exports = function (grunt) {
             options: {
                 configFile: 'node_modules/protractor/referenceConf.js',
                 keepAlive: true,
+                debug: false,
                 args: {
                     // Arguments passed to the command
                 }

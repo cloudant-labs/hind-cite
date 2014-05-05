@@ -2,7 +2,7 @@ exports.config = {
      seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.41.0.jar',  // start the selenium server first with ./node_modules/.bin/webdriver-manager start
     //seleniumAddress: 'http://localhost:4444/wd/hub',
     chromeDriver: 'node_modules/chromedriver/bin/chromedriver',
-    baseUrl:'http://localhost:9090/index.html',
+    baseUrl:'http://localhost:9000',
     capabilities: {
         'browserName': 'chrome'
     },
@@ -13,6 +13,7 @@ exports.config = {
 
     jasmineNodeOpts: {
         showColors: true,
+        isVerbose: true,
         defaultTimeoutInterval: 30000
     }
 };
