@@ -1,7 +1,7 @@
 'use strict';
 
 var n = require('./helpers/navbar.js');
-var _und = require('../../app/bower_components/underscore/underscore.js')
+var _und = require('../../app/bower_components/underscore/underscore.js');
 
 /**
  * returns promise for a boolean
@@ -42,63 +42,68 @@ function compareCol(colModelText, compareFn) {
  */
 function WaitForState(objName, stateIsTrue) {
     return function () {
-        browser.sleep(250); // wait a little to give Angular time to run a digest and set state.
         return element(by.id('stateDiv')).getAttribute(objName)
             .then(function (strObj) {
                 var obj = JSON.parse(strObj);
-                console.log('WaitForState: ', objName, stateIsTrue, obj[stateIsTrue]);
+//                if (obj[stateIsTrue]) {
+//                    console.log('WaitForState: ', objName, obj[stateIsTrue]);
+//                }
+
                 return obj[stateIsTrue];
             });
     };
+}
+
+function selectDropdown(dropdownValueStr) {
+    var options = element.all(by.tagName('option'));
+    options.each(function (elm) {
+        elm.getAttribute('value').then(function (text) {
+            if (text === dropdownValueStr) {
+                //console.log('found ' + dropdownValueStr + ' - clicking');
+                elm.click();
+            }
+
+        });
+    });
+
+    var waitDataFn = new WaitForState('data', 'dataUpdated');
+    browser.wait(waitDataFn, 5000, 'data failed to load after clicking most points');
+    var waitChartFn = new WaitForState('chart', 'chartUpdated');
+    browser.wait(waitChartFn, 5000, 'data failed to load after clicking most points');
+
+
 }
 
 
 function testTable(expNumPosts, shouldTitle, colModelText, compareFn) {
 
 
-    // Wait til table is initialized with data
-    var waitFn = new WaitForState('data', 'dataUpdated');
-    browser.wait(waitFn, 5000, 'multiPost failed to load data properly')
-        .then(function () {
-            console.log('testTable after wait ', expNumPosts, shouldTitle, colModelText);
+    it('table should have ' + expNumPosts + '  row', function () {
+        expect(element.all(by.css('#postDataTable tbody tr')).count()).toBe(expNumPosts);
+    });
 
-            describe('test table', function () {
-                it('table should have a ' + expNumPosts + '  lines', function () {
-                    expect(element.all(by.css('#postDataTable tbody tr')).count()).toBe(expNumPosts);
-                    console.log('im here');
-
-                });
-
-                it(shouldTitle, function () {
-                    compareCol(colModelText, compareFn).then(function (retVal) {
-                        expect(retVal).toBe(true);
-                        console.log('and im here');
-                    });
-
-                });
-            });
-
+    it(shouldTitle, function () {
+        compareCol(colModelText, compareFn).then(function (retVal) {
+            expect(retVal).toBe(true);
         });
 
-}
-
-function testChart(expNumPosts, sortFn) {
-
-    var expNumPosts = 10;
-
-    // Wait til chart is initialized with data
-    var waitFn = new WaitForState('chart', 'chartUpdated');
-    browser.wait(waitFn, 5000, 'multiPost failed to load chart properly');
-
-    it('chart should have a ' + expNumPosts + '  lines', function () {
-        expect(element.all(by.css('.nv-group')).count()).toBe(2 * expNumPosts);  // one for stroke, one for fill
     });
 
 
 }
 
+function testChart(expNumPosts) {
+
+    it('chart should have ' + expNumPosts + '  lines drawn', function () {
+        expect(element.all(by.css('.nv-group')).count()).toBe(2 * expNumPosts);  // one for stroke, one for fill
+    });
+
+}
+
 describe('hind-cite multiPost', function () {
-    var waitFn = new WaitForState('data', 'dataUpdated');
+    beforeEach(function () {
+        browser.get('/multiPost');
+    });
 
     describe('key elements', function () {
         browser.get('/multiPost');
@@ -124,18 +129,10 @@ describe('hind-cite multiPost', function () {
     });
 
     describe('latest', function () {
-        browser.get('/multiPost');
-        var options = element.all(by.tagName('option'));
-        options.each(function (elm, idx) {
-            elm.getAttribute('value').then(function (text) {
-                if (text === '["top","all"]') {
-                    console.log('found HN Front Page - clicking');
-                    elm.click();
-                }
-
-            });
+        beforeEach(function () {
+            browser.get('/multiPost');
+            selectDropdown('["top","all"]');
         });
-
 
         testTable(10, 'table (lastRank) should be ordered 1 to 10', 'stats.lastRank', function (inAr) {
             return _und.isEqual(inAr, ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
@@ -143,18 +140,10 @@ describe('hind-cite multiPost', function () {
         testChart(10, null);
     });
 
-    xdescribe('most points', function () {
-        browser.get('/multiPost');
-
-        var options = element.all(by.tagName('option'));
-        options.each(function (elm, idx) {
-            elm.getAttribute('value').then(function (text) {
-                if (text === '["points","all"]') {
-                    console.log('found points all - clicking');
-                    elm.click();
-                }
-
-            });
+    describe('most points', function () {
+        beforeEach(function () {
+            browser.get('/multiPost');
+            selectDropdown('["points","all"]');
         });
 
         testTable(10, 'table (most points) should have decreasing points', 'stats.maxPoints', function (inAr) {
@@ -170,5 +159,26 @@ describe('hind-cite multiPost', function () {
         });
         testChart(10, null);
     });
+
+    describe('most comments - 7 days ', function () {
+        beforeEach(function () {
+            browser.get('/multiPost');
+            selectDropdown('["comments",7]');
+        });
+
+        testTable(10, 'table (most comments) should have decreasing comments', 'stats.maxComments', function (inAr) {
+            // each val should be <= previous (note - inAr are strings, eg: '1,323'
+            var retVal = true,
+                lastVal = Number(inAr[0].replace(/,/g, '')),
+                val;
+            inAr.forEach(function (str) {
+                val = Number(str.replace(/,/g, ''));
+                retVal = retVal && val <= lastVal;
+            });
+            return retVal;
+        });
+        testChart(10, null);
+    });
+
 });
 
