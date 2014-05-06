@@ -5,8 +5,10 @@ var n = require('./helpers/navbar.js');
 
 describe('hind-cite snapsPerDay', function () {
     describe('key elements', function () {
+        beforeEach(function () {
+            browser.get('/snapsPerDay');
+        });
 
-        browser.get('/snapsPerDay');
         n.testNavbar();
 
         it('should display a heading', function () {
@@ -24,13 +26,15 @@ describe('hind-cite snapsPerDay', function () {
 
 
     describe('snapsPerDay chart', function () {
+        beforeEach(function () {
+            browser.get('/snapsPerDay');
 
-        browser.get('/snapsPerDay');
+            // Wait til chart is initialized with data
+            browser.wait(function () {
+                return element(by.css('svg rect.nv-bar')).isPresent();
+            }, 5000, 'snapsPerDay failed to load chart properly');
+        });
 
-        // Wait til chart is initialized with data
-        browser.wait(function () {
-            return element(by.css('svg rect.nv-bar')).isPresent();
-        }, 5000, 'snapsPerDay failed to load chart properly');
 
         it('should have a lot of bars', function () {
             expect(element.all(by.css('svg rect.nv-bar')).count()).toBeGreaterThan(90);

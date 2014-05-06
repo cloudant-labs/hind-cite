@@ -45,9 +45,10 @@ function WaitForState(objName, stateIsTrue) {
         return element(by.id('stateDiv')).getAttribute(objName)
             .then(function (strObj) {
                 var obj = JSON.parse(strObj);
-//                if (obj[stateIsTrue]) {
-//                    console.log('WaitForState: ', objName, obj[stateIsTrue]);
-//                }
+                if (obj[stateIsTrue]) {
+                    // console.log('WaitForState: ', objName, obj[stateIsTrue]);
+                    browser.sleep(250);  // give angular time to update the ui
+                }
 
                 return obj[stateIsTrue];
             });
@@ -101,12 +102,11 @@ function testChart(expNumPosts) {
 }
 
 describe('hind-cite multiPost', function () {
-    beforeEach(function () {
-        browser.get('/multiPost');
-    });
-
     describe('key elements', function () {
-        browser.get('/multiPost');
+        beforeEach(function(){
+            browser.get('/multiPost');
+        });
+
 
         n.testNavbar();
 

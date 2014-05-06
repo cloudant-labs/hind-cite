@@ -9,6 +9,8 @@ exports.config = {
 
     specs: [
         'test/e2e/**/*.js'
+        //'test/e2e/snapsPerDay.js'
+        //'test/e2e/multiPost.js'
     ],
     exclude: [
         'test/e2e/suppport/*'
