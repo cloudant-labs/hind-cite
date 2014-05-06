@@ -20,5 +20,17 @@ gaps - eg: 3/20/14.  See: http://www.hind-cite.com/snapsPerDay
 We are hosting this site and have provided an initial start on some analysis, but we are hoping the community will
 contribute and turn this from moderately interesting to utterly awesome.  Have at it.
 
+## Development Intallation
+    mkdir hind-cite
+    git clone https://github.com/rr326/hind-cite hind-cite
+    cd hind-cite
+    npm install
+    bower install
+    ./node_modules/protractor/bin/webdriver-manager update
+    grunt build   # Make sure it builds
+    grunt serve   # Make sure it serves (and keep running for test)
+    grunt test:all  # Make sure tests work
+    # You're up and running. 
+
 ## Check the Website for More...
 The website should have all this information and much more.
