@@ -1,6 +1,10 @@
 {
-  "name": "hn",
-  "version": "0.0.0",
+  "name": "hind-cite",
+  "version": "0.1.0",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/rr326/hind-cite"
+  },
   "dependencies": {
     "grunt-concurrent": "~0.4.3",
     "grunt-contrib-compass": "~0.6.0",
@@ -67,5 +71,6 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "postinstall":"./node_modules/protractor/bin/webdriver-manager update"
 }
