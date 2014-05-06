@@ -27,6 +27,7 @@ contribute and turn this from moderately interesting to utterly awesome.  Have a
     npm install
     bower install
     ./node_modules/protractor/bin/webdriver-manager update
+    pip install couchapp
     grunt build   # Make sure it builds
     grunt serve   # Make sure it serves (and keep running for test)
     grunt test:all  # Make sure tests work
