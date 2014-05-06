@@ -52,7 +52,7 @@ module.exports = function (config) {
             'scripts/vend_mod/algolia/algoliaSearch.js',
             'scripts/vend_mod/algolia/hnsearch.js',
 
-            '../test/spec/**/*.js',
+            '../test/unit/**/*.js',
 
             {pattern: '../test/fixtures/*', watch:false, serve:false, include:false}
         ],

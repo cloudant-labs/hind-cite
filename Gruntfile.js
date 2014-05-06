@@ -446,13 +446,20 @@ module.exports = function (grunt) {
     grunt.registerTask('test', function (target) {
         target = target || 'unit'; // default
 
+        console.log('********************************************************');
+        console.log('if running e2e test, the local server must be running');
+        console.log('(either grunt serve or grunt serve:dist');
+        console.log('********************************************************');
+
         if (target === 'unit') {
             return grunt.task.run(['karma:unit']);
         } else if (target === 'unit-single') {
             return grunt.task.run(['karma:singleRun']);
         } else if (target === 'e2e') {
             return grunt.task.run(['protractor:test']);
-        } else {
+        } else if (target === 'all') {
+            return grunt.task.run(['karma:singleRun', 'protractor:test']);
+        }else {
             throw new Error('Improper target: "' + target + '"');
         }
     });

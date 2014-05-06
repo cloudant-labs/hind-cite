@@ -3,15 +3,15 @@
 ## Todo
 * P1
     * Testing
-        * Unit tests - Make more complete, esp. for new getData, and for statesService
-        * End to End
         * Google Analytics
         * Do clean checkout and build to test process
         * Test on windows, phone, safari, and old windows
     * Data validation
         * Make sure the data is right
         * Especially stats
-    * HTML snapshots!
+    * NVD3 - submit pull request
+
+
 
 * P2
     * Move to Cloudant.com hosting
@@ -20,7 +20,11 @@
             * Google analytics - page views & events
         * Scraper
 
-    * NVD3 - submit pull request
+    * Testing
+        * Complete e2e tests
+    * HTML snapshots!
+    * Algolia - upgrade search interface
+
     * MC: unfound id - give visual info telling 'id not found'
     * Data cleanup
         * Charts with 0 comments
