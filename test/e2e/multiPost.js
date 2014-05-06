@@ -182,3 +182,14 @@ describe('hind-cite multiPost', function () {
 
 });
 
+/**
+ * Other e2e tests
+ *    It would be nice to make these tests complete.
+ *    My next one would have been testing Search functionality.
+ *    Unfortunately, sendkeys() isn't working. I suspect it is typing the data too fast and
+ *    the autofill functionality in the control is somehow capturing the keys. Regardless, when I do:
+ *            element(by.css('#inputfield input')).sendKeys('Elon Musk: To the People of New Jersey')
+ *    I only get a random amount of keystrokes properly entered.
+ *    Enough with fighting webdriver! Some other day.
+ *
+ */

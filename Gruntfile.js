@@ -19,6 +19,33 @@ module.exports = function (grunt) {
 
     var process = require('process');
 
+    // Define rewrite rules -  so that /* gets sent to index.html
+    // https://github.com/viart/http-rewrite-middleware
+    function rewriteMiddlewareFn(connect, options) {
+        var middlewares = [];
+
+        // RewriteRules support
+        middlewares.push(rewriteModule.getMiddleware([
+            // list multiple rules here
+            {from: '^/[^/.]*$', to: '/index.html'}
+        ], {verbose: false}));
+
+        if (!Array.isArray(options.base)) {
+            options.base = [options.base];
+        }
+
+        var directory = options.directory || options.base[options.base.length - 1];
+        options.base.forEach(function (base) {
+            // Serve static files.
+            middlewares.push(connect.static(base));
+        });
+
+        // Make directory browse-able.
+        middlewares.push(connect.directory(directory));
+
+        return middlewares;
+    }
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -49,7 +76,7 @@ module.exports = function (grunt) {
                 files: ['*.md', 'docs/**/*.md'],
                 tasks: ['markdown'],
                 options: {
-                    spawn : false,
+                    spawn: false,
                     livereload: 35731
                 }
             },
@@ -80,32 +107,7 @@ module.exports = function (grunt) {
                         '.tmp',
                         '<%= yeoman.app %>'
                     ],
-                    // Define rewrite rules -  so that /* gets sent to index.html
-                    // https://github.com/viart/http-rewrite-middleware
-                    middleware: function (connect, options) {
-                        var middlewares = [];
-
-                        // RewriteRules support
-                        middlewares.push(rewriteModule.getMiddleware([
-                            // list multiple rules here
-                            {from: '^/[^/.]*$', to: '/index.html'}
-                        ], {verbose: false}));
-
-                        if (!Array.isArray(options.base)) {
-                            options.base = [options.base];
-                        }
-
-                        var directory = options.directory || options.base[options.base.length - 1];
-                        options.base.forEach(function (base) {
-                            // Serve static files.
-                            middlewares.push(connect.static(base));
-                        });
-
-                        // Make directory browse-able.
-                        middlewares.push(connect.directory(directory));
-
-                        return middlewares;
-                    }
+                    middleware: rewriteMiddlewareFn
                 }
             },
             md: {
@@ -118,7 +120,9 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
-                    base: '<%= yeoman.dist %>'
+                    open: true,
+                    base: '<%= yeoman.dist %>',
+                    middleware: rewriteMiddlewareFn
                 }
             }
         },
@@ -412,10 +416,10 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        shell : {
+        shell: {
             couchapp: {
                 command: 'couchapp push couch_app prod',
-                callback: function(err, stdout, stderr, cb) {
+                callback: function (err, stdout, stderr, cb) {
                     console.log('Couchapp push finished: ', err, stdout, stderr);
                     cb();
                 }
@@ -439,7 +443,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test', function(target){
+    grunt.registerTask('test', function (target) {
         target = target || 'unit'; // default
 
         if (target === 'unit') {
@@ -449,7 +453,7 @@ module.exports = function (grunt) {
         } else if (target === 'e2e') {
             return grunt.task.run(['protractor:test']);
         } else {
-            throw new Error('Improper target: "'+target+'"');
+            throw new Error('Improper target: "' + target + '"');
         }
     });
 
@@ -460,13 +464,13 @@ module.exports = function (grunt) {
                 'rsync:stage_site',
                 'rsync:stage_apache'
             ]);
-        } else if( target === 'prod') {
+        } else if (target === 'prod') {
             return grunt.task.run([
                 'rsync:prod_couch',
                 'shell:couchapp'
             ]);
         } else {
-            throw new Error('Invalid target: '+target);
+            throw new Error('Invalid target: ' + target);
         }
     });
 
@@ -491,12 +495,6 @@ module.exports = function (grunt) {
             'connect:livereload',
             'watch'
         ]);
-    });
-
-
-    grunt.registerTask('server', function () {
-        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-        grunt.task.run(['serve']);
     });
 
 
