@@ -8,8 +8,7 @@ exports.config = {
     },
 
     specs: [
-        'test/e2e/multiPost.js'
-        //'test/e2e/**/*.js'
+        'test/e2e/**/*.js'
     ],
     exclude: [
         'test/e2e/suppport/*'
@@ -22,8 +21,4 @@ exports.config = {
         defaultTimeoutInterval: 30000
     }
 };
-console.log('****************************');
-console.log('****************************');
-console.log('Only testing current WIP spec');
-console.log('****************************');
-console.log('****************************');
+

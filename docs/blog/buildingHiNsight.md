@@ -74,6 +74,26 @@ I won't say much about Bootstrap, but for completeness I should include it here.
 
 One tip: there are lots of free or inexpensive Bootstrap templates out there. (eg: http://bootstrapzero.com/ & https://wrapbootstrap.com/)  I built the site using vanilla Bootstrap and then looked for a theme to reskin it.  I think I should have done it the other way - first found a theme I liked and then built to it, since many of the themes / templates require you to build to a certain style. 
 
+## Testing (Karma & Protractor)
+Getting testing set up wasn't terribly hard, but wasn't trivial either.  I have by no means done a great or complete job in my test suite, but once again getting going was the hard part.  Here are some tips I learned:
+* Karma 
+    * Karma is only partially installed with the angular generator. You also need to do 
+        * `npm install --save-dev karma-chrome-launcher karma-jasmine`
+* Protractor
+    * The angular generator uses the angular scenario runner, but [Protractor](https://github.com/angular/protractor) is the designated successor. 
+    * Installing isn't terribly difficult. I followed the [instructions on their main page](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js) [(and here)](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js).
+    * You need to tweak your settings - take a look at mine here: [protractor.conf.js](https://github.com/rr326/hind-cite/blob/master/protractor.conf.js)
+    * Learning Protractor - there were a few things that got me hung up for a while:
+        * Using the interactive mode was quite helpful: [Testing Interactively](https://github.com/angular/protractor/blob/master/docs/debugging.md).  Note though that this seems to crap out frequently, so testing in it is limited. 
+        * (I also use Webstorm, and using that was easier than just using the shell: [Webstorm](https://github.com/angular/protractor/blob/master/docs/debugging.md))
+        * The first hangup I had was sometimes you would think you would be getting a result, but actually you are receiving a promise (even though the docs / examples would suggest it would be a resolved promise!).  So, that was a huge step - once I realized that was the issue, my debugging amounted to trying to figure out if I was receiving a promise or a value. 
+        * Another hangup is that the order things happen can be surprising. 
+        > Protractor adapts Jasmine so that each spec automatically waits until the control flow is empty before exiting.
+        * Long story short - I tried to avoid doing setup in a beforeEach() (since I only needed it done once per suite), but that didn't work. All setup goes in a beforeEach(), even if that is inefficient. 
+* Grunt tasks
+    * I cleaned up the tasks a bit more to my liking. You can see them in my [Gruntfile](https://github.com/rr326/hind-cite/blob/master/Gruntfile.js).
+
+
 ## Conclusion
 One of my personal goals in this project was to figure out how to remove the overhead in developing a website.  About a quarter of the project time was just in setting up infrastructure, even relying on a lot of robust tools.  Now with what I've learned, I think I could do that in a day or so. Which is great, because that means I can spend my time on my next project mostly focusing on adding value.
 
