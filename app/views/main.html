@@ -1,4 +1,4 @@
-<div class="jumbotron " >
+<div class="jumbotron ">
     <h1>HackerNews Charts, Data, and Statistics</h1>
 
     <p class="lead">
@@ -9,14 +9,17 @@
     </p></small>
 
 </div>
-<div >
+<div>
     <div class="col-md-4 col-sm-6">
         <div class="thumbnail">
-            <a href='/multiPost'><img src="images/PostsByRank300x300.jpg" height='300' width='300' alt="Post History"></a>
+            <a href='/multiPost'><img src="images/PostsByRank300x300.jpg" height='300' width='300'
+                                      alt="Post History"></a>
+
             <div style='text-align:center;'>
                 <h3>
                     <a href='/multiPost'>Post History</a>
                 </h3>
+
                 <p>
                     Time series data of post performance.
                 </p>
@@ -28,10 +31,12 @@
         <div class="thumbnail">
             <a href='/snapsPerDay'><img src="/images/SnapsPerDay300x300.jpg" height='300'
                                         width='300' alt="Snaps Per Day"></a>
+
             <div style='text-align:center;'>
                 <h3>
                     <a href='/snapsPerDay'>Snapshots per Day</a>
                 </h3>
+
                 <p>
                     This is a new data set with occasional outages. This chart gives a quick overview.
                 </p>
@@ -40,15 +45,82 @@
     </div>
     <div class="col-md-4 col-sm-6">
         <div class="thumbnail">
-           <a href="https://github.com/rr326/hind-cite"> <img src="/images/PlusSign300x300.jpg" height='300' width='300' alt="Comparison"></a>
+            <a href="https://github.com/rr326/hind-cite"> <img src="/images/PlusSign300x300.jpg" height='300'
+                                                               width='300' alt="Comparison"></a>
+
             <div style='text-align:center;'>
                 <h3>
                     <a href='/compare'>Add your own!</a>
                 </h3>
+
                 <p>
-                    Got a chart that you think people would like? We'd be happy to host it. <a href="https://github.com/rr326/hind-cite" target="_blank">Submit a pull request.</a>
+                    Got a chart that you think people would like? We'd be happy to host it. <a
+                        href="https://github.com/rr326/hind-cite" target="_blank">Submit a pull request.</a>
                 </p>
             </div>
         </div>
     </div>
+</div>
+
+<p>&nbsp</p> <!-- Weird - the chart well was connecting to the images above -->
+
+<div ng-controller="multiPostCtrl">
+
+
+
+    <div class="panel panel-default " id="chartControls">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <div>Chart Controls</div>
+            </h3>
+        </div>
+        <div class="panel-body]">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <label>&nbsp; Metric: &nbsp;</label>
+                    <!-- TODO - Shouldn't need nbsp, and vert alignment is wrong-->
+                    <label class="radio-inline">
+                        <input type="radio" value="rank" ng-model="d.metric"> Rank
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="points" ng-model="d.metric"> Points
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="comments" ng-model="d.metric"> Comments
+                    </label>
+                </div>
+                <div class="form-group" ng-show="d.metric == 'rank'">
+                    <label>&nbsp;&nbsp; Rank Range: &nbsp;</label>
+                    <label class="radio-inline">
+                        <input type="radio" value="30" ng-model="d.rankRange"> 1-30
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="60" ng-model="d.rankRange"> 1-60
+                    </label>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <br>
+
+    <h1>Show HN: hind-cite.com</h1>
+    <h2>{{ d.metric | titleCase}}</h2>
+    <multi-post-chart id="postsChart" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"
+                      metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
+
+    <div class="small">
+        <span>URL for this data: <a href="{{ d.CloudantUrl }}" target="_blank">{{ d.CloudantUrl }}</a></span><br>
+        <span ng-show="d.CloudantPayload">Payload for POST for this data: {{ d.CloudantPayload }} <br></span>
+        <span><i>See development console for the $.ajax() call used.</i></span>
+    </div>
+
+
+</div>
+
+<!-- This is a holder for state info for use in e2e testing -->
+<div id="stateDiv" data="{{ state('data') }}" chart="{{ state('chart') }}" url="state('url')"
+     postIds="state('postIds')">
+
 </div>

@@ -2,6 +2,7 @@
 
 ## Todo
 * P1
+    * Make sure I can post a multichart on the home page
     * Data validation
         * Make sure the data is right
         * Especially stats
