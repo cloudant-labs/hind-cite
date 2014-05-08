@@ -11,11 +11,15 @@
     "angular-sanitize": "~1",
     "angular-route": "~1",
     "d3": "~3.4.3",
-    "hogan": "~3.0.0"
+    "hogan": "~3.0.0",
+    "nvd3": "git@github.com:rr326/nvd3.git#hindcite"
   },
   "devDependencies": {
     "angular-mocks": "~1",
     "angular-scenario": "~1",
     "underscore": "~1.6.0"
+  },
+  "resolutions": {
+    "d3": "~3.4.3"
   }
 }

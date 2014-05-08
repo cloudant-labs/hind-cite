@@ -5,7 +5,6 @@
     * Data validation
         * Make sure the data is right
         * Especially stats
-    * NVD3 - submit pull request
     * 404 handling - ask garbados_absent
 
 
