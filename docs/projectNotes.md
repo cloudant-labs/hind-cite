@@ -1,13 +1,14 @@
 # Project Notes
 
+## TEST
+
+
 ## Todo
 * P1
-    * Show 'not found' error on search page
 
     * Data validation
         * Make sure the data is right
         * Especially stats
-    * NVD3 - submit pull request
     * 404 handling - ask garbados_absent
 
 
@@ -41,7 +42,3 @@
 
 ## Features
 * P3 Make charts update with live data - see notes in git. Good feature, but nvd3 is buggy, so skip for now.  (If I do do it, have the new data show up with a highlight rect and text eg: Rank: -1, Comments: +2, Points: +4
-
-
-(old vhost)
-www.hind-cite.com → rrosen326.cloudant.com/hind-cite/_design/couch_app/_rewrite
