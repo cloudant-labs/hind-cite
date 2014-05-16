@@ -76,6 +76,7 @@ One tip: there are lots of free or inexpensive Bootstrap templates out there. (e
 
 ## Testing (Karma & Protractor)
 Getting testing set up wasn't terribly hard, but wasn't trivial either.  I have by no means done a great or complete job in my test suite, but once again getting going was the hard part.  Here are some tips I learned:
+
 * Karma 
     * Karma is only partially installed with the angular generator. You also need to do 
         * `npm install --save-dev karma-chrome-launcher karma-jasmine`
