@@ -4,7 +4,7 @@ For better or worse, [Hacker News](http://news.ycombinator.com) remains the domi
 
 # The Data 
 
-We focus on providing time-dependent data by politely scraping the first two pages of HN.  We also scrape the "newest" page to augment initial data for posts.  To abide by HN guidance, we do not scrape deeper pages, although we believe we are sampling the most interesting portion of the data.  At specific intervals we snapshot the page and store the rank, number of comments, and number of points as JSON documents in a world readable [cloudant database](https://cs.cloudant.com/news).  The result is that we can track not just the final number of points and comments for a post, but the trajectory of how those metrics, plus the rank, evolved over time.  We believe this enables a wide variety of interesting studies.  For example, impact: the integral of `rank*dt`, evaluated for rank>30 (front page) or rank>60 (second page), is the most basic quantitative emeasure of your exposure in units of [rank][minutes].  We imagine this is of great interest for launch events, marketing, etc.  
+We focus on providing time-dependent data by politely scraping the first two pages of HN.  To abide by HN guidance, we do not scrape deeper pages, although we believe we are sampling the most interesting portion of the data.  At specific intervals we snapshot the page and store the rank, number of comments, and number of points as JSON documents in a world readable [cloudant database](https://cs.cloudant.com/news).  The result is that we can track not just the final number of points and comments for a post, but the trajectory of how those metrics, plus the rank, evolved over time.  We believe this enables a wide variety of interesting studies.  For example, impact: the integral of `rank*dt`, evaluated for rank>30 (front page) or rank>60 (second page), is the most basic quantitative emeasure of your exposure in units of [rank][minutes].  We imagine this is of great interest for launch events, marketing, etc.  
 
 # The Questions
 
@@ -50,7 +50,7 @@ Finally, when digging into a single post performance, you can either punch in th
 
 ![./search](./search.png)
 
-(Note, we began capturing data reliably in February, 2014, so the search plug-in may return posts for which we have no recorded data.) Putting this all togheter, we can look at the total impact of the announcement of IBM's acquisition of Cloudant:
+(Note, we began capturing data reliably in February, 2014, so the search plug-in may return posts for which we have no recorded data.) Putting this all together, we can look at the total impact of the announcement of IBM's acquisition of Cloudant:
 
 ![plot](./plot.png)
 
@@ -62,7 +62,7 @@ Thanks to davis_m, whomever you are, for posting.  You had Cloudant as high as #
 Every post is encapsulated as a single document in Cloudant.  We reserve future posts for additional detail on the choice of data model, but simply note a few things:
 
 * All data about a post (e.g. [`http://www.hind-cite.com/multiPost?postIds=7290931`](http://www.hind-cite.com/multiPost?postIds=7290931)) is pulled directly from cloudant ([`https://cs.cloudant.com/news/_design/by/_view/id?key="7290931"`](https://cs.cloudant.com/news/_design/by/_view/id?key=%227290931%22)).
-* The application itself (discussed in more detail in the next post) is client-side Javascript and itself delivered directly to the browser from Cloudant [https://cs.cloudant.com/news/_design/by](https://cs.cloudant.com/news/_design/by).  We use the a cloudant VHOST to map ` `www.hind-cite.com` to `cs.cloudant.com/news/_design/by/_rewrite`
+* The application itself (discussed in more detail in the next post) is client-side Javascript and itself delivered directly to the browser from Cloudant [https://cs.cloudant.com/news/_design/by](https://cs.cloudant.com/news/_design/by).  We use the a cloudant VHOST to map `www.hind-cite.com` to `cs.cloudant.com/news/_design/by/_rewrite`
 
 And, since the data comes directly from Cloudant, that means we get a built-in API for free.  If you're familiar with the Apache CouchDB API you already know how to query the hind-cite API.  If you have questions, then we have a few ways for you to get started easily:
 
@@ -73,4 +73,4 @@ And, since the data comes directly from Cloudant, that means we get a built-in A
 
 # Thanks
 
-As with all open source projects, we'd like to thank the following communities/authors for their code that we adapted or used: [edparcell](https://github.com/edparcell) for the python scrape, [angular.js](https://angularjs.org), [d3](http://d3js.org), [NVD3](http://nvd3.org), [Yeoman](http://yeoman.io), [Grunt](http://gruntjs.com), [Bootstrap](http://getbootstrap.com), [StackOverflow](http://StackOverflow.com)
+As with all open source projects, we'd like to thank the following communities/authors for their code that we adapted or used: [angular.js](https://angularjs.org), [d3](http://d3js.org), [NVD3](http://nvd3.org), [Yeoman](http://yeoman.io), [Grunt](http://gruntjs.com), [Bootstrap](http://getbootstrap.com), [StackOverflow](http://StackOverflow.com)
