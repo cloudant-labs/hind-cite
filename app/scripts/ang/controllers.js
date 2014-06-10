@@ -279,7 +279,6 @@ angular.module('mainApp')
 
         }
 
-
         //
         //  Watches
         //
