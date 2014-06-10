@@ -15,13 +15,13 @@ You really want your design docs in your source control.  And it's nice to be ab
 * Install couchapp - [Couchapp Repo](https://github.com/couchapp/couchapp)
 * Read the documentation - Unfortunately the documentation isn't very good and currently isn't even up! (Hopefully it will get fixed.)  But here's a link: [Couchapp documentation (Not working)](http://www.couchapp.org/page/getting-started) And here's some info from an old couchdb book: [Info on Couchapp in Couchdb Book](http://guide.couchdb.org/draft/managing.html)
 * Then set up your directory structure, build your design documents, and write a little script for easy uploading
-* Rather than detail every step, check out my code here: [hind-cite Design Docs & Scripts](https://github.com/rr326/hind-cite/tree/master/scripts)
+* Rather than detail every step, check out my code here: [hind-cite Design Docs & Scripts](https://github.com/cloudant-labs/hind-cite/tree/master/scripts)
 * Stuck? Reach out to Cloudant on [IRC](http://webchat.freenode.net/?channels=cloudant&uio=MTE9MTk117)!
 
 ## $.ajax()
 Now you've got your sweet Cloudant db all set up.  How do you use it on a website? The guys as Cloudant suggested just going the simple route - with a $.ajax() call. (That's jquery, btw.)
 
-Probably the easiest way to see how to do this is to open [hind-cite](http://www.hind-cite.com/multiPost) and open the developer console. Then every db query will print out the $.ajax() call used and the resulting JSON data. And  you can see the code [here](https://github.com/rr326/hind-cite/blob/master/app/scripts/getData.js).
+Probably the easiest way to see how to do this is to open [hind-cite](http://www.hind-cite.com/multiPost) and open the developer console. Then every db query will print out the $.ajax() call used and the resulting JSON data. And  you can see the code [here](https://github.com/cloudant-labs/hind-cite/blob/master/app/scripts/getData.js).
 
 ## CORS
 If you're building a website that talks directly to your Cloudant database, you may well run into Cross Origin restrictions. The ways to deal with that are to 1) route all your requests through a server that you control; 2) use JSONP; or 3) set your db up with CORS.
@@ -72,9 +72,9 @@ If your repository is public, you don't want to store your Cloudant API keys in 
 
 
 ### Method 2: File
-I only used this one because I had a lot of trouble getting my upstart configuration to properly use an environment variable. (Upstart is a [ubuntu](http://upstart.ubuntu.com/cookbook/) tool for starting and stopping services, like [hnscraper](https://github.com/rr326/HNScraper).)
-* Put a file OUTSIDE your repo with security credentials. [For example](https://github.com/rr326/HNScraper/blob/master/scripts/hn_credentials.json)
-* Then read the file to get the credentials (python code from [hnscraper](https://github.com/rr326/HNScraper/blob/master/scripts/config.py))
+I only used this one because I had a lot of trouble getting my upstart configuration to properly use an environment variable. (Upstart is a [ubuntu](http://upstart.ubuntu.com/cookbook/) tool for starting and stopping services, like [hnscraper](https://github.com/cloudant-labs/hind-cite-scraper).)
+* Put a file OUTSIDE your repo with security credentials. [For example](https://github.com/cloudant-labs/hind-cite-scraper/blob/master/scripts/hn_credentials.json)
+* Then read the file to get the credentials (python code from [hnscraper](https://github.com/cloudant-labs/hind-cite-scraper/blob/master/scripts/config.py))
 
         # Module main
         args = parseArgs()  # Get credential file's name from command-line
@@ -111,6 +111,6 @@ There are two things named 'couchapp': 1) the python tool for uploading data to 
 To make a couchapp, I use couchapp.py.  It's not difficult, but it's easy to make little mistakes, and the couchapp documentation sucks (and is down). Further, while couchdb has a lot of flexibility, it's not as flexible (or as well documented) as Apache. Feel free to make a couchapp, but I'd actually recommend just serving from a web server with Apache. If you do want to make a couchapp, here are some resources:
 * [Managing applications on Cloudant](https://cloudant.com/blog/app-management/#.U2E4qOZdWyU) - Note - the first app is CouchApp.py. But since that isn't underdevelopment anymore, I'd recommend trying a different tool.
 * [Rewriting URLs](https://cloudant.com/blog/pretty-urls-with-cloudant/#.U2E5CuZdWyV)
-* [Sample couchapp (hind-cite)](https://github.com/rr326/hind-cite/tree/master/couch_app)
+* [Sample couchapp (hind-cite)](https://github.com/cloudant-labs/hind-cite/tree/master/couch_app)
 
 

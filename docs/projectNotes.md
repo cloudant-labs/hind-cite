@@ -2,29 +2,28 @@
 
 ## Todo
 * P1
-    * Make sure I can post a multichart on the home page
+    * Update readmes
+    * Update cloudantTips
+    * 404 handling - ask garbados_absent
+
     * Data validation
         * Make sure the data is right
         * Especially stats
-    * 404 handling - ask garbados_absent
 
 
 
 
 * P2
     * IE <=9 - either make work or throw an error page
-    * unfound id - give visual info telling 'id not found' when in a search box modal
     * Fix main page boxes, per Sean email (make the same size using tables)
     * Move to Cloudant.com hosting
-        * Website
-            * Apache config
-            * Google analytics - page views & events
         * Scraper
-
     * Testing
         * Complete e2e tests
     * HTML snapshots!
-    * Algolia - upgrade search interface
+    * Algolia
+        - upgrade search interface
+        - set default date > 2/14/14
 
 
     * Data cleanup

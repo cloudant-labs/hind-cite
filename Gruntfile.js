@@ -369,7 +369,7 @@ module.exports = function (grunt) {
         // Rsync for deployment - https://www.npmjs.org/package/grunt-rsync
         rsync: {
             options: {
-                args: ['-izha', '--stats'],
+                args: ['-izha', '--stats', '--verbose'],
                 exclude: ['.git*', '*.scss', 'node_modules'],
                 recursive: true,
                 ssh: true,
