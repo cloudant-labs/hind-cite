@@ -49,6 +49,11 @@ angular.module('mainApp', [
                 caseInsensitiveMatch: true,
                 reloadOnSearch: false
             })
+            .when('/chart_only', {
+                templateUrl: 'views/chart_only.html',
+                caseInsensitiveMatch: true,
+                reloadOnSearch: false
+            })
             .otherwise({
                 redirectTo: '/'
             });

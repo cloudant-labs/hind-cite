@@ -1,0 +1,52 @@
+<div ng-controller="multiPostCtrl">
+    <div class="panel panel-default " id="chartControls">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <div>Chart Controls</div>
+            </h3>
+        </div>
+        <div class="panel-body]">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <label>&nbsp; Metric: &nbsp;</label>
+                    <!-- TODO - Shouldn't need nbsp, and vert alignment is wrong-->
+                    <label class="radio-inline">
+                        <input type="radio" value="rank" ng-model="d.metric"> Rank
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="points" ng-model="d.metric"> Points
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="comments" ng-model="d.metric"> Comments
+                    </label>
+                </div>
+                <div class="form-group" ng-show="d.metric == 'rank'">
+                    <label>&nbsp;&nbsp; Rank Range: &nbsp;</label>
+                    <label class="radio-inline">
+                        <input type="radio" value="30" ng-model="d.rankRange"> 1-30
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" value="60" ng-model="d.rankRange"> 1-60
+                    </label>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <br>
+
+    <h1>Example: How is THIS post doing?</h1>
+    <h2>{{ d.metric | titleCase}}</h2>
+    <multi-post-chart id="postsChart" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"
+                      metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
+
+    <div class="small">
+        <span>URL for this data: <a href="{{ d.CloudantUrl }}" target="_blank">{{ d.CloudantUrl }}</a></span><br>
+        <span ng-show="d.CloudantPayload">Payload for POST for this data: {{ d.CloudantPayload }} <br></span>
+        <span><i>See development console for the $.ajax() call used.</i></span>
+    </div>
+
+
+
+</div>

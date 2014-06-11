@@ -24,6 +24,14 @@
         "to": "/index.html"
     },
     {
+        "from": "chart_only",
+        "to": "/index.html"
+    },
+    {
+        "from": "introduction",
+        "to": "/index.html"
+    },
+    {
         "from": "/*",
         "to": "/*"
     }
