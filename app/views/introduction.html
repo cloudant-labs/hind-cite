@@ -12,20 +12,21 @@
 
 <h1>The Data</h1>
 
-<p>We focus on providing time-dependent data by politely scraping the first two pages of HN ...</p>
+<p ng-hide="d.showBody"> We focus on providing time-dependent data by politely scraping the first two pages of HN ... </p>
 
-<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#postbody">
-    Show/hide introduction post...
+<button type="button" class="btn btn-primary" ng-click="d.showBody=true" ng-hide="d.showBody">
+    Read more ...
 </button>
-<a  type="button" class="btn btn-primary" href="/">
-    Skip the intro page - go Home
-</a>
+<button type="button" class="btn btn-primary " ng-click="d.showBody=false" ng-show="d.showBody" >
+    Hide
+</button>
+
 <br>
 <br>
 <br>
 
-    <div class="collapse" id="postbody">
-    <p>To abide by HN guidance, we do not scrape deeper pages, although we believe we are sampling the most interesting portion of the data.  At specific intervals we snapshot the page and store the rank, number of comments, and number of points as JSON documents in a world readable <a href="https://cs.cloudant.com/news">cloudant database</a>.  The result is that we can track not just the final number of points and comments for a post, but the trajectory of how those metrics, plus the rank, evolved over time.  We believe this enables a wide variety of interesting studies.  For example, impact: the integral of <code>rank*dt</code>, evaluated for rank>30 (front page) or rank>60 (second page), is the most basic quantitative emeasure of your exposure in units of [rank][minutes].  We imagine this is of great interest for launch events, marketing, etc.  </p>
+    <div ng-show="d.showBody">
+    <p>We focus on providing time-dependent data by politely scraping the first two pages of HN. To abide by HN guidance, we do not scrape deeper pages, although we believe we are sampling the most interesting portion of the data.  At specific intervals we snapshot the page and store the rank, number of comments, and number of points as JSON documents in a world readable <a href="https://cs.cloudant.com/news">cloudant database</a>.  The result is that we can track not just the final number of points and comments for a post, but the trajectory of how those metrics, plus the rank, evolved over time.  We believe this enables a wide variety of interesting studies.  For example, impact: the integral of <code>rank*dt</code>, evaluated for rank>30 (front page) or rank>60 (second page), is the most basic quantitative emeasure of your exposure in units of [rank][minutes].  We imagine this is of great interest for launch events, marketing, etc.  </p>
 
 <h1>The Questions</h1>
 
@@ -101,12 +102,15 @@
 
 <p>As with all open source projects, we'd like to thank the following communities/authors for their code that we adapted or used: <a href="https://angularjs.org">angular.js</a>, <a href="http://d3js.org">d3</a>, <a href="http://nvd3.org">NVD3</a>, <a href="http://yeoman.io">Yeoman</a>, <a href="http://gruntjs.com">Grunt</a>, <a href="http://getbootstrap.com">Bootstrap</a>, <a href="http://StackOverflow.com">StackOverflow</a></p>
 
-<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#postbody">
-    Hide introduction post...
+<button type="button" class="btn btn-primary " ng-click="d.showBody=false" ng-show="d.showBody" >
+    Hide introduction post
 </button>
+
 <br><br><br>
 
 </div>
+
+<hr>
 
 <div ng-controller="multiPostCtrl">
     <div class="panel panel-default " id="chartControls">
@@ -146,7 +150,7 @@
 
     <br>
 
-    <h1>Show HN: hind-cite.com</h1>
+    <h1>Example: How is THIS post doing?</h1>
     <h2>{{ d.metric | titleCase}}</h2>
     <multi-post-chart id="postsChart" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"
                       metric="d.metric" rankRange="d.rankRange" needsUpdate="d.chartNeedsUpdate"></multi-post-chart>
