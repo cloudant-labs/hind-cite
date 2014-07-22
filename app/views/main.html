@@ -4,12 +4,9 @@
     <p class="lead">
         How did your post do on HackerNews? It's nice to know how many points it got, but we can do better.
     </p>
-    <small><p>Brought to you by your friends at <a href="http://cloudant.com" target="_blank">Cloudant.com</a>
-        (YC2008) / IBM<span class="glyphicon glyphicon-registration-mark " style="font-size:8px;"></span>
-    </p></small>
 
 </div>
-<div>
+<div class="row">
     <div class="col-md-4 col-sm-6">
         <div class="thumbnail">
             <a href='/multiPost'><img src="images/PostsByRank300x300.jpg" height='300' width='300'
@@ -69,3 +66,7 @@
      postIds="state('postIds')">
 
 </div>
+
+
+<!-- This is for including the Day 1 intro data-->
+<div ng-include="'views/introduction.html'"></div>

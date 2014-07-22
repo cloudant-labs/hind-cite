@@ -29,12 +29,12 @@ var log = (function (config) {
             title: url
         });
 
-        logit('log.page:', url);
+//        logit('log.page:', url);
     }
 
     function event(category, action, label, value) {
         ga('send', 'event', category, action, label, value);
-        logit('log.event:', category, action, label, value);
+//        logit('log.event:', category, action, label, value);
     }
 
     function error(message, url, lineeno) {
