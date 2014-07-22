@@ -1,39 +1,38 @@
 [
     {
-        "from": "",
-        "to": "/index.html"
+        "from": "/scripts/*",
+        "to": "/scripts/*"
     },
     {
-        "from": "/about",
-        "to": "/index.html"
+        "from": "/styles/*",
+        "to": "/styles/*"
     },
     {
-        "from": "/multipost",
-        "to": "/index.html"
+        "from": "/fonts/*",
+        "to": "/fonts/*"
     },
     {
-        "from": "/multiPost",
-        "to": "/index.html"
+        "from": "/views/*",
+        "to": "/views/*"
     },
     {
-        "from": "snapsperday",
-        "to": "/index.html"
+        "from": "/images/*",
+        "to": "/images/*"
     },
     {
-        "from": "snapsPerDay",
-        "to": "/index.html"
+        "from": "/robots.txt",
+        "to": "/robots.txt"
     },
     {
-        "from": "chart_only",
-        "to": "/index.html"
+        "from": "/favicon.ico",
+        "to": "favicon.ico"
     },
     {
-        "from": "introduction",
-        "to": "/index.html"
+        "from": "/404.html",
+        "to": "/404.html"
     },
     {
         "from": "/*",
-        "to": "/*"
+        "to": "/index.html"
     }
-
 ]

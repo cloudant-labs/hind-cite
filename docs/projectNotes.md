@@ -1,14 +1,10 @@
 # Project Notes
 
 ## Todo
-* P0
-    * Favicon
-    * Mike post & chart on home page
 
 * P1
     * Update readmes
     * Update cloudantTips
-    * 404 handling - ask garbados_absent
 
     * Data validation
         * Make sure the data is right
