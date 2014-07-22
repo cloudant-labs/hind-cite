@@ -75,15 +75,9 @@
             data, and is the source for the <a href="/multiPost?list=points&limit=all">Post History - Max Points
             chart</a> and the <a href="/multiPost?list=comments&limit=all"> Post History - Max Comments chart</a>.
             <ul>
-                <li><a href="https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO
-                    Infinity]&sort=-points&include_docs=true&limit=10">https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0
-                    TO
-                    Infinity]&sort=-points&include_docs=true&limit=10</a>
+                <li><a href='https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO Infinity]&sort="-points"&include_docs=true&limit=10'>https://cs.cloudant.com/news/_design/by/_search/posts?q=points:[0 TO Infinity]&sort=\"-points\"&include_docs=true&limit=10</a>
                 </li>
-                <li><a href="https://cs.cloudant.com/news/_design/by/_search/posts?q=comments:[0 TO
-                    Infinity]&sort=-comments&include_docs=true&limit=10">https://cs.cloudant.com/news/_design/by/_search/posts?q=comments:[0
-                    TO
-                    Infinity]&sort=-comments&include_docs=true&limit=10</a>
+                <li><a href='https://cs.cloudant.com/news/_design/by/_search/posts?q=comments:[0 TO Infinity]&sort="-comments"&include_docs=true&limit=10'>https://cs.cloudant.com/news/_design/by/_search/posts?q=comments:[0 TO Infinity]&sort=-comments&include_docs=true&limit=10</a>
                 </li>
                 <li>Indexed Fields
                     <ul>
@@ -109,7 +103,7 @@
                 href="https://github.com/rr326/hind-cite/issues">github repo</a>.) To learn more, check out:
     <ul>
         <li><a href="https://cloudant.com/for-developers/">Simple Overview</a></li>
-        <li><a href="API Reference">API Reference</a></li>
+        <li><a href="https://docs.cloudant.com/api/index.html">API Reference</a></li>
         <li><b>Browser Devlopment Console </b> - Open any chart with the browser's developer console open. You'll see
             the full jquery ajax call that serves the data for that page, as well as the returned JSON.
         </li>
@@ -122,8 +116,7 @@
     <p>
         There are plenty of very interesting analyses this data makes available. With the REST interface and existing
         queries, you can pretty much do whatever you'd like. But to make things easier, we're happy to host charts or
-        analyses based on the data. Just add a page and <a href="git@github.com:rr326/hind-cite.git">submit a pull
-        request</a>.
+        analyses based on the data. Just add a page and <a href="https://github.com/rr326/hind-cite/pulls">submit a pull request</a>.
     </p>
 
     <h2>Sponsored By Cloudant</h2>
