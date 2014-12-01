@@ -3,7 +3,7 @@
 
 
 STATIC_IP : "192.168.10.19"
-LOCAL_DIR : "src"
+LOCAL_DIR : "app"
 SITE_SUFFIX: hindcite
 
 
