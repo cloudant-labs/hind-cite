@@ -21,10 +21,23 @@ var config = (function () {
         height: 400 - standardChartMargin.top - standardChartMargin.bottom
     };
 
+    var servers = {
+        prod :   {
+            COUCH_SERVER: 'cs.cloudant.com',
+            COUCH_DB: 'news'
+        },
+        test : {
+            COUCH_SERVER: 'rrosen326.cloudant.com',
+            COUCH_DB: 'hind-cite'
+        }
+    };
+
+    /* SET THIS */
+    var server = servers.test;
 
     return {
-        COUCH_SERVER : 'cs.cloudant.com',
-        COUCH_DB : 'news',
+        COUCH_SERVER : server.COUCH_SERVER,
+        COUCH_DB : server.COUCH_DB,
         COUCH_DESIGN : 'by',
         VIEW_SNAPSPERDAY : 'snaps-per-day',
         VIEW_ID : 'id',
