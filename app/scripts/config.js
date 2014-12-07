@@ -33,7 +33,7 @@ var config = (function () {
     };
 
     /* SET THIS */
-    var server = servers.test;
+    var server = servers.prod;
 
     return {
         COUCH_SERVER : server.COUCH_SERVER,

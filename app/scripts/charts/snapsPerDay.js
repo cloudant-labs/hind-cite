@@ -56,6 +56,40 @@ var chartSnapsPerDay = (function ($, _, nv) {
             return nvdata;
         }
 
+        /**
+         Makes sure every date between first and last has at least a 0 value
+         */
+        function fillEmptyDates(data) {
+            if (data === null || data[0].values.length === 0) {
+                return data;
+            }
+
+            if (Date.prototype.tomorrow == null) {
+                Date.prototype.tomorrow=function(){
+                    /* Returns a new date object*/
+                    var newd = new Date(this);
+                    newd.setDate(newd.getDate()+1);
+                    return newd;
+                };
+            }
+
+
+            var newdata = [];
+
+            var curDate = data[0].values[0].x;
+
+            data[0].values.forEach(function(d){
+                while(curDate < d.x) {
+                    newdata.push({x:curDate, y:0});
+                    curDate = curDate.tomorrow();
+                }
+                newdata.push(d);
+                curDate = curDate.tomorrow();
+            });
+
+            return [{key: 'Snaps Per Day', values: newdata}];
+        }
+
         function idToSelector(id, subSelector) {
             if (!_.contains(['chart', 'svg'], subSelector)) {
                 throw new Error('idToSelector - unexpected element name: ', subSelector);
@@ -79,6 +113,7 @@ var chartSnapsPerDay = (function ($, _, nv) {
             }
 
             var postData = dataCloudantToNV(config.data);
+            postData = fillEmptyDates(postData);
 
             nv.addGraph(function () {
                 var chart = nv.models.multiBarChart()

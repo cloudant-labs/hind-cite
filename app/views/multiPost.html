@@ -127,6 +127,14 @@
     </div>
 
     <br>
+    <div>
+        <h4 class="text-info">Note on Comments</h4>
+        <p>As of 12/6/14, hind-cite uses the <a href="https://github.com/HackerNews/API">Hacker News API (v0)</a>.
+            Unfortunately, the API does not make it easy to get the count of comments.
+            This will be rectified in the next version of the API, but until then, the number of
+            comments will be incorrect.
+        </p>
+    </div>
 
     <h1>{{ d.metric | titleCase}}</h1>
     <multi-post-chart id="postsChart" chartsize="medChartSize" data="d.data" datatimestamp="d.dataTs"

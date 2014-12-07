@@ -17,11 +17,15 @@
     <h2>The Data</h2>
 
     <p>
-        hind-cite uses a screen scraper to capture the first two pages of Hacker News, approximately every 5 minutes.
-        We started collecting the data in January 2014. We had a few scraper problems, so the data doesn't get very
-        clean until mid-February. And even then, occasionally HN will be down, or our scraper's host will be down,
-        or we'll run into some other intermittent problem. The data is pretty clean, but not perfect. A good
-        way to glance at our data depth is with the <a href="/snapsPerDay">Snapshots Per Day chart</a>.
+        For 1/14 - 10/8, hind-cite used a screen scraper to capture the first two pages of Hacker News, approximately every 5 minutes.
+        We had a few scraper problems, so the data doesn't get very
+        clean until mid-February.
+    </p>
+    <p> From 10/8 - 12/5, the scraper was down. From 12/6 and on, hind-cite now uses the
+        <a href="https://github.com/HackerNews/API">Hacker News API (v0)</a>. Unfortunately it currently doesn't make
+        it easy to get comment data, so comment counts will be wrong (0) for a while.
+    </p>
+    <p> A good way to glance at our data depth is with the <a href="/snapsPerDay">Snapshots Per Day chart</a>.
     </p>
 
     <h2>The Database</h2>

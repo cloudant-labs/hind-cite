@@ -1,6 +1,10 @@
 # hind-cite
 _Hacker News data, charts, and statistics_
 
+# BUG
+Currently the snaps per day shows one bar per data item. So if there is no data for 2 months, you can't tell.
+Fix this!
+
 ## Overview
 This is the source code for the [hind-cite website](http://www.hind-cite.com/) .
 
