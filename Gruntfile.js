@@ -380,14 +380,14 @@ module.exports = function (grunt) {
                 options: {
                     exclude: ['robots.txt'],
                     src: 'dist/',
-                    dest: '/var/www/hnstage.k2company.com',
+                    dest: '/var/www/hindcite',
                     host: process.env.SSH_USER + '@hnstage.k2company.com',
                     syncDest: true
                 }
             },
             stage_apache: {
                 options: {
-                    src: 'apache_config/*',
+                    src: 'apache_config/sites-available/*',
                     dest: '/etc/apache2/sites-available',
                     host: process.env.SSH_USER + '@hnstage.k2company.com',
                     exclude: [],
